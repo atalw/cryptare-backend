@@ -3,6 +3,7 @@
 import requests
 import pyrebase
 import time
+import json as jsonmodule
 
 config = {
   "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -55,6 +56,7 @@ def update_coinsecure_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("coinsecure_price").push(data)
 
+
 def update_pocketbits_price():
     prices = get_pocketbits_price()
     if prices is not None:
@@ -62,6 +64,47 @@ def update_pocketbits_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("pocketbits_price").push(data)
 
+
+def update_throughbit_price():
+    prices = get_throughbit_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("throughtbit_price").push(data)
+
+
+def update_koinex_price():
+    prices = get_koinex_price()
+    if prices is not None:
+        buy_price, sell_price, day_volume = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
+        db.child("koinex_price").push(data)
+
+
+def update_coinbase_price():
+    prices = get_coinbase_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("coinbase_price").push(data)
+
+
+def update_kraken_price():
+    prices = get_kraken_price()
+    if prices is not None:
+        buy_price, sell_price, day_volume = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
+        db.child("kraken_price").push(data)
+
+
+def update_poloniex_price():
+    prices = get_poloniex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("poloniex_price").push(data)
+    else:
+        print("error")
 
 ###################################################
 
@@ -134,6 +177,85 @@ def get_pocketbits_price():
                 return buy_price, sell_price
     return None
 
+def get_throughbit_price():
+    url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice/type/btc/inr"
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0'}
+    r = requests.get(url, headers=headers)
+    if r.status_code == 200:
+        # print(r.headers)
+        print(r.content)
+        json = jsonmodule.loads(r.text)
+        buy_price = json["data"]["price"][0]["buy_price"]
+        sell_price = json["data"]["price"][0]["sell_price"]
+
+        if buy_price is not None and sell_price is not None:
+            return buy_price, sell_price
+    return None
+
+
+def get_koinex_price():
+    url = "https://koinex.in/api/ticker"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["stats"]["BTC"]["highest_bid"]
+        sell_price = json["stats"]["BTC"]["lowest_ask"]
+        day_volume = json["stats"]["BTC"]["vol_24hrs"]
+
+        if buy_price is not None and sell_price is not None and day_volume is not None:
+            return buy_price, sell_price, day_volume
+    return None
+
+def get_coinbase_price():
+    buy_url = "https://api.coinbase.com/v2/prices/BTC-USD/buy"
+    sell_url = "https://api.coinbase.com/v2/prices/BTC-USD/sell"
+
+    buy_request = requests.get(buy_url)
+    if buy_request.status_code == 200:
+        json = buy_request.json()
+        buy_price = json["data"]["amount"]
+
+        sell_request = requests.get(sell_url)
+        if sell_request.status_code == 200:
+            json = sell_request.json()
+            sell_price = json["data"]["amount"]
+
+            if buy_price is not None and sell_price is not None:
+                return buy_price, sell_price
+    return None
+
+
+def get_kraken_price():
+    url = "https://api.kraken.com/0/public/Ticker?pair=xbtusd"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["result"]["XXBTZUSD"]["a"][0]
+        sell_price = json["result"]["XXBTZUSD"]["b"][0]
+        day_volume = json["result"]["XXBTZUSD"]["v"][1]
+
+        if buy_price is not None and sell_price is not None and day_volume is not None:
+            return buy_price, sell_price, day_volume
+    return None
+
+
+def get_poloniex_price():
+    url = "https://poloniex.com/public?command=returnTicker"
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0',
+                'cookie': '_cfduid=d8b5b9d7ee920012a5de62f760368aeb31512142306; cf_clearance=648be1c84d68bb01f29a3516bd12401348480efa-1512142329-1800; POLOSESSID=fsfqn9tseg0foclkll5sj14s20'}
+
+    r = requests.get(url, headers=headers)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["USDT_BTC"]["lowestAsk"]
+        sell_price = json["USDT_BTC"]["highestBid"]
+
+        if buy_price is not None and sell_price is not None:
+            return buy_price, sell_price
+    return None
+
 ###################################################
 
 
@@ -142,3 +264,8 @@ def get_pocketbits_price():
 # update_localbitcoins_price()
 # update_coinsecure_price()
 # update_pocketbits_price()
+# update_throughbit_price()
+# update_koinex_price()
+# update_coinbase_price()
+# update_kraken_price()
+update_poloniex_price()
