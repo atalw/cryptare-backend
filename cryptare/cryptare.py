@@ -21,6 +21,34 @@ currencies = ["INR", "USD"]
 ###################################################
 
 
+def execute():
+    while True:
+        update_all()
+        time.sleep(60)
+
+def update_all():
+    update_current_bitcoin_price()
+    update_exchanges()
+
+
+def update_exchanges():
+    update_zebpay_price()
+    update_localbitcoins_price()
+    update_coinsecure_price()
+    update_pocketbits_price()
+    update_throughbit_price()
+    update_koinex_price()
+    update_coinbase_price()
+    update_kraken_price()
+    # update_poloniex_price()
+    update_gemini_price()
+    update_bitfinex_price()
+    update_bitstamp_price()
+    update_bittrex_price()
+
+###################################################
+
+
 def update_current_bitcoin_price():
     for currency in currencies:
         price = get_current_bitcoin_price(currency)
@@ -29,6 +57,8 @@ def update_current_bitcoin_price():
             data = {"timestamp": time.time(), "price": price}
             title = "current_btc_price_{}".format(currency)
             db.child(title).push(data)
+        else:
+            print("current btc error")
 
 
 def update_zebpay_price():
@@ -37,6 +67,8 @@ def update_zebpay_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("zebpay_price").push(data)
+    else:
+        print("zebpay error")
 
 
 def update_localbitcoins_price():
@@ -47,6 +79,8 @@ def update_localbitcoins_price():
             data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
             title = "localbitcoins_price_{}".format(currency)
             db.child(title).push(data)
+        else:
+            print("localbitcoins error")
 
 
 def update_coinsecure_price():
@@ -55,6 +89,8 @@ def update_coinsecure_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("coinsecure_price").push(data)
+    else:
+        print("coinsecure error")
 
 
 def update_pocketbits_price():
@@ -63,6 +99,8 @@ def update_pocketbits_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("pocketbits_price").push(data)
+    else:
+        print("pockebits error")
 
 
 def update_throughbit_price():
@@ -71,6 +109,8 @@ def update_throughbit_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("throughtbit_price").push(data)
+    else:
+        print("throughbit error")
 
 
 def update_koinex_price():
@@ -79,6 +119,8 @@ def update_koinex_price():
         buy_price, sell_price, day_volume = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
         db.child("koinex_price").push(data)
+    else:
+        print("koinex error")
 
 
 def update_coinbase_price():
@@ -87,6 +129,8 @@ def update_coinbase_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("coinbase_price").push(data)
+    else:
+        print("coinbase error")
 
 
 def update_kraken_price():
@@ -95,6 +139,8 @@ def update_kraken_price():
         buy_price, sell_price, day_volume = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
         db.child("kraken_price").push(data)
+    else:
+        print("kraken error")
 
 
 def update_poloniex_price():
@@ -104,7 +150,7 @@ def update_poloniex_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("poloniex_price").push(data)
     else:
-        print("error")
+        print("poloniex error")
 
 
 def update_gemini_price():
@@ -114,7 +160,7 @@ def update_gemini_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("gemini_price").push(data)
     else:
-        print("error")
+        print("gemini error")
 
 def update_bitfinex_price():
     prices = get_bitfinex_price()
@@ -123,7 +169,7 @@ def update_bitfinex_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("bitfinex_price").push(data)
     else:
-        print("error")
+        print("bitfinex error")
 
 def update_bitstamp_price():
     prices = get_bitstamp_price()
@@ -132,7 +178,7 @@ def update_bitstamp_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("bitstamp_price").push(data)
     else:
-        print("error")
+        print("bitstamp error")
 
 def update_bittrex_price():
     prices = get_bittrex_price()
@@ -141,7 +187,7 @@ def update_bittrex_price():
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
         db.child("bittrex_price").push(data)
     else:
-        print("error")
+        print("bittrex error")
 
 ###################################################
 
@@ -201,7 +247,7 @@ def get_coinsecure_price():
     return None
 
 def get_pocketbits_price():
-    url = "https://www.pocketbits.in/Index/getBalaanceRates"
+    url = "https://www.pocketbits.in/Index/getBalanceRates"
 
     r = requests.get(url)
     if r.status_code == 200:
@@ -216,11 +262,10 @@ def get_pocketbits_price():
 
 def get_throughbit_price():
     url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice/type/btc/inr"
-    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0'}
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0',
+               'cookie': 'visid_incap_1176184=43563B0yS265oyLWGgZmNHRoIVoAAAAAQkIPAAAAAACAeZKAAWdNAOaK1XaaEDa257oj3KMxGCxy; incap_ses_873_1176184=olb7HICRaAM5r3L69IQdDFxUIloAAAAAyEpHFyG4srGo6Xg1Vh/fDw==; io=PhOhELHW7WLVJGmVD9OO'}
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
-        # print(r.headers)
-        print(r.content)
         json = jsonmodule.loads(r.text)
         buy_price = json["data"]["price"][0]["buy_price"]
         sell_price = json["data"]["price"][0]["sell_price"]
@@ -349,18 +394,4 @@ def get_bittrex_price():
 
 ###################################################
 
-
-# update_current_bitcoin_price()
-# update_zebpay_price()
-# update_localbitcoins_price()
-# update_coinsecure_price()
-# update_pocketbits_price()
-# update_throughbit_price()
-# update_koinex_price()
-# update_coinbase_price()
-# update_kraken_price()
-# update_poloniex_price()
-# update_gemini_price()
-# update_bitfinex_price()
-# update_bitstamp_price()
-# update_bittrex_price()
+execute()
