@@ -20,6 +20,25 @@ currencies = ["INR", "USD"]
 
 ###################################################
 
+# NOTES
+
+# API update frequency and rate limit wherever applicable
+# - Coindesk:
+# - Zebpay: apparently updated every 5 minutes lol
+# - Localbitcoins:
+# - Koinex:
+# - Coinsecure:
+# - Throughbit
+# - Pocketbits:
+# - Kraken:
+# - Bitfinex:
+# - Bittrex:
+# - Gemini:
+# - Bitstamp:
+# - Coinbase:
+
+###################################################
+
 
 def execute():
     while True:
@@ -36,7 +55,7 @@ def update_exchanges():
     update_localbitcoins_price()
     update_coinsecure_price()
     update_pocketbits_price()
-    update_throughbit_price()
+    # update_throughbit_price()
     update_koinex_price()
     update_coinbase_price()
     update_kraken_price()
@@ -203,7 +222,7 @@ def get_current_bitcoin_price(currency):
 
 
 def get_zebpay_price():
-    url = "https://api.zebpay.com/api/v1/ticker?cutrencyCode=INR"
+    url = "https://api.zebpay.com/api/v1/ticker?currencyCode=INR"
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
@@ -229,6 +248,8 @@ def get_localbitcoins_price(currency):
             sell_price = json["data"]["ad_list"][0]["data"]["temp_price"]
 
             if buy_price is not None and sell_price is not None:
+                buy_price = float(buy_price)
+                sell_price = float(sell_price)
                 return buy_price, sell_price
     return None
 
@@ -281,9 +302,9 @@ def get_koinex_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["stats"]["BTC"]["highest_bid"]
-        sell_price = json["stats"]["BTC"]["lowest_ask"]
-        day_volume = json["stats"]["BTC"]["vol_24hrs"]
+        buy_price = float(json["stats"]["BTC"]["highest_bid"])
+        sell_price = float(json["stats"]["BTC"]["lowest_ask"])
+        day_volume = float(json["stats"]["BTC"]["vol_24hrs"])
 
         if buy_price is not None and sell_price is not None and day_volume is not None:
             return buy_price, sell_price, day_volume
