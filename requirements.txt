@@ -1,2 +1,2 @@
-requests
-pyrebase
+Pyrebase==3.0.27
+requests==2.18.4
