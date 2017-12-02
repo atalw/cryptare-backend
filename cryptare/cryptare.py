@@ -106,6 +106,43 @@ def update_poloniex_price():
     else:
         print("error")
 
+
+def update_gemini_price():
+    prices = get_gemini_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("gemini_price").push(data)
+    else:
+        print("error")
+
+def update_bitfinex_price():
+    prices = get_bitfinex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("bitfinex_price").push(data)
+    else:
+        print("error")
+
+def update_bitstamp_price():
+    prices = get_bitstamp_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("bitstamp_price").push(data)
+    else:
+        print("error")
+
+def update_bittrex_price():
+    prices = get_bittrex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
+        db.child("bittrex_price").push(data)
+    else:
+        print("error")
+
 ###################################################
 
 
@@ -243,14 +280,68 @@ def get_kraken_price():
 
 def get_poloniex_price():
     url = "https://poloniex.com/public?command=returnTicker"
+    # workaround - cookie expires on 1st Dec 2018
     headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0',
-                'cookie': '_cfduid=d8b5b9d7ee920012a5de62f760368aeb31512142306; cf_clearance=648be1c84d68bb01f29a3516bd12401348480efa-1512142329-1800; POLOSESSID=fsfqn9tseg0foclkll5sj14s20'}
+                'cookie': '__cfduid=d8b5b9d7ee920012a5de62f760368aeb31512142306; POLOSESSID=fsfqn9tseg0foclkll5sj14s20; cf_clearance=77cc2cdc7d2dc2ea346c639fb05d6f0e0d76485e-1512195307-1800'}
 
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
         json = r.json()
         buy_price = json["USDT_BTC"]["lowestAsk"]
         sell_price = json["USDT_BTC"]["highestBid"]
+
+        if buy_price is not None and sell_price is not None:
+            return buy_price, sell_price
+    return None
+
+def get_gemini_price():
+    url = "https://api.gemini.com/v1/pubticker/btcusd"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["bid"]
+        sell_price = json["ask"]
+
+        if buy_price is not None and sell_price is not None:
+            return buy_price, sell_price
+    return None
+
+def get_bitfinex_price():
+    url =  "https://api.bitfinex.com/v1/pubticker/btcusd"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        if r.headers['Content-Type'] == 'application/json; charset=utf-8':
+            json = r.json()
+            buy_price = json["bid"]
+            sell_price = json["ask"]
+
+            if buy_price is not None and sell_price is not None:
+                return buy_price, sell_price
+    return None
+
+def get_bitstamp_price():
+    url = "https://www.bitstamp.net/api/ticker/"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["bid"]
+        sell_price = json["ask"]
+
+        if buy_price is not None and sell_price is not None:
+            return buy_price, sell_price
+    return None
+
+def get_bittrex_price():
+    url = "https://bittrex.com/api/v1.1/public/getticker?market=USDT-BTC"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        buy_price = json["result"]["Bid"]
+        sell_price = json["result"]["Ask"]
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
@@ -268,4 +359,8 @@ def get_poloniex_price():
 # update_koinex_price()
 # update_coinbase_price()
 # update_kraken_price()
-update_poloniex_price()
+# update_poloniex_price()
+# update_gemini_price()
+# update_bitfinex_price()
+# update_bitstamp_price()
+# update_bittrex_price()
