@@ -4,22 +4,22 @@ import requests
 import pyrebase
 import time
 import json as jsonmodule
-import sys
 
 config = {
-  "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
-  "authDomain": "atalwcryptare.firebaseapp.com",
-  "databaseURL": "https://atalwcryptare.firebaseio.com/",
-  "storageBucket": "atalwcryptare.appspot.com"
+    "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
+    "authDomain": "atalwcryptare.firebaseapp.com",
+    "databaseURL": "https://atalwcryptare.firebaseio.com/",
+    "storageBucket": "atalwcryptare.appspot.com",
+    "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
 }
 
 firebase = pyrebase.initialize_app(config)
 
-# Get a reference to the auth service
-auth = firebase.auth()
-
-# Log the user in
-user = auth.sign_in_with_email_and_password(sys.argv[1], sys.argv[2])
+# # Get a reference to the auth service
+# auth = firebase.auth()
+#
+# # Log the user in
+# user = auth.sign_in_with_email_and_password(sys.argv[1], sys.argv[2])
 
 # Get a reference to the database service
 db = firebase.database()
@@ -83,7 +83,7 @@ def update_current_bitcoin_price():
             # store price and timestamp
             data = {"timestamp": time.time(), "price": price}
             title = "current_btc_price_{}".format(currency)
-            db.child(title).push(data, user['idToken'])
+            db.child(title).push(data)
         else:
             print("current btc error")
 
@@ -93,7 +93,7 @@ def update_zebpay_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("zebpay_price").push(data, user['idToken'])
+        db.child("zebpay_price").push(data)
     else:
         print("zebpay error")
 
@@ -105,7 +105,7 @@ def update_localbitcoins_price():
             buy_price, sell_price = prices
             data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
             title = "localbitcoins_price_{}".format(currency)
-            db.child(title).push(data, user['idToken'])
+            db.child(title).push(data)
         else:
             print("localbitcoins error")
 
@@ -115,7 +115,7 @@ def update_coinsecure_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("coinsecure_price").push(data, user['idToken'])
+        db.child("coinsecure_price").push(data)
     else:
         print("coinsecure error")
 
@@ -125,7 +125,7 @@ def update_pocketbits_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("pocketbits_price").push(data, user['idToken'])
+        db.child("pocketbits_price").push(data)
     else:
         print("pockebits error")
 
@@ -135,7 +135,7 @@ def update_throughbit_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("throughtbit_price").push(data, user['idToken'])
+        db.child("throughtbit_price").push(data)
     else:
         print("throughbit error")
 
@@ -145,7 +145,7 @@ def update_koinex_price():
     if prices is not None:
         buy_price, sell_price, day_volume = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
-        db.child("koinex_price").push(data, user['idToken'])
+        db.child("koinex_price").push(data)
     else:
         print("koinex error")
 
@@ -155,7 +155,7 @@ def update_coinbase_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("coinbase_price").push(data, user['idToken'])
+        db.child("coinbase_price").push(data)
     else:
         print("coinbase error")
 
@@ -165,7 +165,7 @@ def update_kraken_price():
     if prices is not None:
         buy_price, sell_price, day_volume = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
-        db.child("kraken_price").push(data, user['idToken'])
+        db.child("kraken_price").push(data)
     else:
         print("kraken error")
 
@@ -175,7 +175,7 @@ def update_poloniex_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("poloniex_price").push(data, user['idToken'])
+        db.child("poloniex_price").push(data)
     else:
         print("poloniex error")
 
@@ -185,7 +185,7 @@ def update_gemini_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("gemini_price").push(data, user['idToken'])
+        db.child("gemini_price").push(data)
     else:
         print("gemini error")
 
@@ -194,7 +194,7 @@ def update_bitfinex_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bitfinex_price").push(data, user['idToken'])
+        db.child("bitfinex_price").push(data)
     else:
         print("bitfinex error")
 
@@ -203,7 +203,7 @@ def update_bitstamp_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bitstamp_price").push(data, user['idToken'])
+        db.child("bitstamp_price").push(data)
     else:
         print("bitstamp error")
 
@@ -212,7 +212,7 @@ def update_bittrex_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bittrex_price").push(data, user['idToken'])
+        db.child("bittrex_price").push(data)
     else:
         print("bittrex error")
 
