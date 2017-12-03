@@ -270,8 +270,8 @@ def get_coinsecure_price():
         json = r.json()
         # does not return 404 if json not found
         if json["success"]:
-            buy_price_in_paisa = json["message"]["bid"]
-            sell_price_in_paisa = json["message"]["ask"]
+            buy_price_in_paisa = json["message"]["ask"]
+            sell_price_in_paisa = json["message"]["bid"]
             return buy_price_in_paisa/100, sell_price_in_paisa/100
     return None
 
@@ -310,8 +310,8 @@ def get_koinex_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = float(json["stats"]["BTC"]["highest_bid"])
-        sell_price = float(json["stats"]["BTC"]["lowest_ask"])
+        buy_price = float(json["stats"]["BTC"]["lowest_ask"])
+        sell_price = float(json["stats"]["BTC"]["highest_bid"])
         day_volume = float(json["stats"]["BTC"]["vol_24hrs"])
 
         if buy_price is not None and sell_price is not None and day_volume is not None:
@@ -374,8 +374,8 @@ def get_gemini_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["bid"]
-        sell_price = json["ask"]
+        buy_price = json["ask"]
+        sell_price = json["bid"]
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
@@ -388,8 +388,8 @@ def get_bitfinex_price():
     if r.status_code == 200:
         if r.headers['Content-Type'] == 'application/json; charset=utf-8':
             json = r.json()
-            buy_price = json["bid"]
-            sell_price = json["ask"]
+            buy_price = json["ask"]
+            sell_price = json["bid"]
 
             if buy_price is not None and sell_price is not None:
                 return buy_price, sell_price
@@ -401,8 +401,8 @@ def get_bitstamp_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["bid"]
-        sell_price = json["ask"]
+        buy_price = json["ask"]
+        sell_price = json["bid"]
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
@@ -414,8 +414,8 @@ def get_bittrex_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["result"]["Bid"]
-        sell_price = json["result"]["Ask"]
+        buy_price = json["result"]["Ask"]
+        sell_price = json["result"]["Bid"]
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
