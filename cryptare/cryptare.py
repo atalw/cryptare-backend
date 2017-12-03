@@ -24,6 +24,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "JPY", "CNY", "SGD", "EUR", "ZAR"]
 
 ###################################################
@@ -66,11 +67,11 @@ def update_exchanges():
     # update_throughbit_price()
     # update_koinex_price()
     # update_coinbase_price()
-    update_kraken_price()
+    # update_kraken_price()
     # # update_poloniex_price()
     # update_gemini_price()
     # update_bitfinex_price()
-    # update_bitstamp_price()
+    update_bitstamp_price()
     # update_bittrex_price()
 
 ###################################################
@@ -78,51 +79,8 @@ def update_exchanges():
 
 
 
-def update_poloniex_price():
-    prices = get_poloniex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("poloniex_price").push(data)
-    else:
-        print("poloniex error")
 
 
-def update_gemini_price():
-    prices = get_gemini_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("gemini_price").push(data)
-    else:
-        print("gemini error")
-
-def update_bitfinex_price():
-    prices = get_bitfinex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("bitfinex_price").push(data)
-    else:
-        print("bitfinex error")
-
-def update_bitstamp_price():
-    prices = get_bitstamp_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("bitstamp_price").push(data)
-    else:
-        print("bitstamp error")
-
-def update_bittrex_price():
-    prices = get_bittrex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("bittrex_price").push(data)
-    else:
-        print("bittrex error")
 
 ###################################################
 
@@ -182,7 +140,6 @@ def get_zebpay_price():
 
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
@@ -391,7 +348,7 @@ def get_coinbase_price(coin, currency):
             sell_price = json["data"]["amount"]
 
             if buy_price is not None and sell_price is not None:
-                return buy_price, sell_price
+                return float(buy_price), float(sell_price)
     return None
 
 
@@ -452,6 +409,15 @@ def get_kraken_price(coin, currency):
 
 ###################################################
 
+def update_poloniex_price():
+    prices = get_poloniex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("poloniex_price").push(data)
+    else:
+        print("poloniex error")
+
 def get_poloniex_price():
     url = "https://poloniex.com/public?command=returnTicker"
     # workaround - cookie expires on 1st Dec 2018
@@ -468,21 +434,57 @@ def get_poloniex_price():
             return buy_price, sell_price
     return None
 
-def get_gemini_price():
-    url = "https://api.gemini.com/v1/pubticker/btcusd"
+###################################################
+
+def update_gemini_price():
+    coins = ["BTC", "ETH"]
+    currencies = ["USD"]
+    for coin in coins:
+        for currency in currencies:
+            result = get_gemini_price(coin, currency)
+            if result is not None:
+                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
+                db.child("gemini_{0}_{1}".format(coin, currency)).push(data)
+            else:
+                print("gemini error")
+
+
+def get_gemini_price(coin, currency):
+    url = "https://api.gemini.com/v1/pubticker/{0}{1}".format(coin, currency)
 
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
         buy_price = json["ask"]
         sell_price = json["bid"]
+        fiat_volume_24hrs = json["volume"][currency]
+        coin_volume_24hrs = json["volume"][coin]
 
-        if buy_price is not None and sell_price is not None:
-            return buy_price, sell_price
+        if buy_price is not None and sell_price is not None and fiat_volume_24hrs is not None \
+                and coin_volume_24hrs is not None:
+            return float(buy_price), float(sell_price), float(fiat_volume_24hrs), float(coin_volume_24hrs)
     return None
 
-def get_bitfinex_price():
-    url =  "https://api.bitfinex.com/v1/pubticker/btcusd"
+###################################################
+
+def update_bitfinex_price():
+    for coin in coins:
+        if coin == "BTC":
+            currencies = ["USD", "EUR"]
+        else:
+            currencies = ["USD"]
+        for currency in currencies:
+            result = get_bitfinex_price(coin, currency)
+            if result is not None:
+                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
+                        "max_24hrs": result[2], "min_24hrs": result[3], "vol_24hrs": result[4]}
+                db.child("bitfinex_{0}_{1}".format(coin, currency)).push(data)
+            else:
+                print("bitfinex error")
+
+
+def get_bitfinex_price(coin, currency):
+    url =  "https://api.bitfinex.com/v1/pubticker/{0}{1}".format(coin, currency)
 
     r = requests.get(url)
     if r.status_code == 200:
@@ -490,23 +492,58 @@ def get_bitfinex_price():
             json = r.json()
             buy_price = json["ask"]
             sell_price = json["bid"]
+            max_24hrs = json["high"]
+            min_24hrs = json["low"]
+            vol_24hrs = json["volume"]
 
-            if buy_price is not None and sell_price is not None:
-                return buy_price, sell_price
+            if buy_price is not None and sell_price is not None and max_24hrs is not None \
+                    and min_24hrs is not None and vol_24hrs is not None:
+                return [float(buy_price), float(sell_price), float(max_24hrs), float(min_24hrs), float(vol_24hrs)]
     return None
 
-def get_bitstamp_price():
-    url = "https://www.bitstamp.net/api/ticker/"
+###################################################
+
+def update_bitstamp_price():
+    coins = ["BTC", "ETH", "LTC", "XRP"]
+    currencies = ["USD", "EUR"]
+    for coin in coins:
+        for currency in currencies:
+            result = get_bitstamp_price(coin, currency)
+            if result is not None:
+                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
+                        "max_24hrs": result[2], "min_24hrs": result[3], "vol_24hrs": result[4]}
+                db.child("bitstamp_{0}_{1}".format(coin, currency)).push(data)
+            else:
+                print("bitstamp error")
+
+def get_bitstamp_price(coin, currency):
+    url = "https://www.bitstamp.net/api/v2/ticker/{0}{1}".format(coin.lower(), currency.lower())
 
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
         buy_price = json["ask"]
         sell_price = json["bid"]
+        max_24hrs = json["high"]
+        min_24hrs = json["low"]
+        vol_24hrs = json["volume"]
 
-        if buy_price is not None and sell_price is not None:
-            return buy_price, sell_price
+        if buy_price is not None and sell_price is not None and max_24hrs is not None \
+                and min_24hrs is not None and vol_24hrs is not None:
+            return [float(buy_price), float(sell_price), float(max_24hrs), float(min_24hrs), float(vol_24hrs)]
     return None
+
+###################################################
+
+def update_bittrex_price():
+    prices = get_bittrex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("bittrex_price").push(data)
+    else:
+        print("bittrex error")
+
 
 def get_bittrex_price():
     url = "https://bittrex.com/api/v1.1/public/getticker?market=USDT-BTC"
