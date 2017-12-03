@@ -24,7 +24,7 @@ user = auth.sign_in_with_email_and_password(sys.argv[1], sys.argv[2])
 # Get a reference to the database service
 db = firebase.database()
 
-currencies = ["INR", "USD"]
+currencies = ["INR", "USD", "GBP", "JPY", "CNY", "SGD", "EUR", "ZAR"]
 
 ###################################################
 
