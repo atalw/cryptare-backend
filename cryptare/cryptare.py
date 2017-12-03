@@ -55,23 +55,24 @@ def execute():
         time.sleep(60)
 
 def update_all():
-    # update_current_bitcoin_price()
+    update_current_bitcoin_price()
     update_exchanges()
 
 
 def update_exchanges():
-    # update_zebpay_price()
-    # update_localbitcoins_price()
-    # update_coinsecure_price()
-    # update_pocketbits_price()
+    update_zebpay_price()
+    update_localbitcoins_price()
+    update_coinsecure_price()
+    update_pocketbits_price()
+    update_koinex_price()
     # update_throughbit_price()
-    # update_koinex_price()
+
     # update_coinbase_price()
     # update_kraken_price()
     # # update_poloniex_price()
     # update_gemini_price()
     # update_bitfinex_price()
-    update_bitstamp_price()
+    # update_bitstamp_price()
     # update_bittrex_price()
 
 ###################################################
