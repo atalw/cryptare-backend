@@ -54,27 +54,85 @@ def execute():
         time.sleep(60)
 
 def update_all():
-    update_current_bitcoin_price()
+    # update_current_bitcoin_price()
     update_exchanges()
 
 
 def update_exchanges():
-    update_zebpay_price()
-    update_localbitcoins_price()
+    # update_zebpay_price()
+    # update_localbitcoins_price()
     update_coinsecure_price()
-    update_pocketbits_price()
+    # update_pocketbits_price()
     # update_throughbit_price()
-    update_koinex_price()
-    update_coinbase_price()
-    update_kraken_price()
-    # update_poloniex_price()
-    update_gemini_price()
-    update_bitfinex_price()
-    update_bitstamp_price()
-    update_bittrex_price()
+    # update_koinex_price()
+    # update_coinbase_price()
+    # update_kraken_price()
+    # # update_poloniex_price()
+    # update_gemini_price()
+    # update_bitfinex_price()
+    # update_bitstamp_price()
+    # update_bittrex_price()
 
 ###################################################
 
+
+def update_kraken_price():
+    prices = get_kraken_price()
+    if prices is not None:
+        buy_price, sell_price, day_volume = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "24hVolume": day_volume}
+        db.child("kraken_price").push(data)
+    else:
+        print("kraken error")
+
+
+def update_poloniex_price():
+    prices = get_poloniex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("poloniex_price").push(data)
+    else:
+        print("poloniex error")
+
+
+def update_gemini_price():
+    prices = get_gemini_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("gemini_price").push(data)
+    else:
+        print("gemini error")
+
+def update_bitfinex_price():
+    prices = get_bitfinex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("bitfinex_price").push(data)
+    else:
+        print("bitfinex error")
+
+def update_bitstamp_price():
+    prices = get_bitstamp_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("bitstamp_price").push(data)
+    else:
+        print("bitstamp error")
+
+def update_bittrex_price():
+    prices = get_bittrex_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("bittrex_price").push(data)
+    else:
+        print("bittrex error")
+
+###################################################
 
 def update_current_bitcoin_price():
     for currency in currencies:
@@ -88,136 +146,6 @@ def update_current_bitcoin_price():
             print("current btc error")
 
 
-def update_zebpay_price():
-    prices = get_zebpay_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("zebpay_price").push(data)
-    else:
-        print("zebpay error")
-
-
-def update_localbitcoins_price():
-    for currency in currencies:
-        prices = get_localbitcoins_price(currency)
-        if prices is not None:
-            buy_price, sell_price = prices
-            data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-            title = "localbitcoins_price_{}".format(currency)
-            db.child(title).push(data)
-        else:
-            print("localbitcoins error")
-
-
-def update_coinsecure_price():
-    prices = get_coinsecure_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("coinsecure_price").push(data)
-    else:
-        print("coinsecure error")
-
-
-def update_pocketbits_price():
-    prices = get_pocketbits_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("pocketbits_price").push(data)
-    else:
-        print("pockebits error")
-
-
-def update_throughbit_price():
-    prices = get_throughbit_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("throughtbit_price").push(data)
-    else:
-        print("throughbit error")
-
-
-def update_koinex_price():
-    prices = get_koinex_price()
-    if prices is not None:
-        buy_price, sell_price, day_volume = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
-        db.child("koinex_price").push(data)
-    else:
-        print("koinex error")
-
-
-def update_coinbase_price():
-    prices = get_coinbase_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("coinbase_price").push(data)
-    else:
-        print("coinbase error")
-
-
-def update_kraken_price():
-    prices = get_kraken_price()
-    if prices is not None:
-        buy_price, sell_price, day_volume = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price, "24hVolume": day_volume}
-        db.child("kraken_price").push(data)
-    else:
-        print("kraken error")
-
-
-def update_poloniex_price():
-    prices = get_poloniex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("poloniex_price").push(data)
-    else:
-        print("poloniex error")
-
-
-def update_gemini_price():
-    prices = get_gemini_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("gemini_price").push(data)
-    else:
-        print("gemini error")
-
-def update_bitfinex_price():
-    prices = get_bitfinex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bitfinex_price").push(data)
-    else:
-        print("bitfinex error")
-
-def update_bitstamp_price():
-    prices = get_bitstamp_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bitstamp_price").push(data)
-    else:
-        print("bitstamp error")
-
-def update_bittrex_price():
-    prices = get_bittrex_price()
-    if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buyPrice": buy_price, "sellPrice": sell_price}
-        db.child("bittrex_price").push(data)
-    else:
-        print("bittrex error")
-
-###################################################
-
 
 def get_current_bitcoin_price(currency):
     url = "https://api.coindesk.com/v1/bpi/currentprice/{}.json".format(currency)
@@ -229,6 +157,20 @@ def get_current_bitcoin_price(currency):
     return None
 
 
+###################################################
+
+###################################################
+
+def update_zebpay_price():
+    prices = get_zebpay_price()
+    if prices is not None:
+        buy_price, sell_price, vol_24hrs = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
+        db.child("zebpay").push(data)
+    else:
+        print("zebpay error")
+
+
 def get_zebpay_price():
     url = "https://api.zebpay.com/api/v1/ticker?currencyCode=INR"
     r = requests.get(url)
@@ -236,10 +178,62 @@ def get_zebpay_price():
         json = r.json()
         buy_price = json["buy"]
         sell_price = json["sell"]
-        if buy_price is not None and sell_price is not None:
-            return buy_price, sell_price
+        vol_24hrs = json["volume"]
+
+        if buy_price is not None and sell_price is not None and vol_24hrs is not None:
+            return buy_price, sell_price, vol_24hrs
     return None
 
+###################################################
+
+###################################################
+
+
+def update_koinex_price():
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
+    # make only 1 API call to koinex
+    result = get_koinex_price(coins)
+    if result is not None:
+        for coin in coins:
+            data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
+                "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
+            db.child("koinex_{}".format(coin)).push(data)
+    else:
+        print("koinex error")
+
+def get_koinex_price(coins):
+    url = "https://koinex.in/api/ticker"
+    data = {}
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+
+        for coin in coins:
+            data[coin] = {}
+            data[coin]['buy_price'] = float(json["stats"][coin]["lowest_ask"])
+            data[coin]['sell_price'] = float(json["stats"][coin]["highest_bid"])
+            data[coin]['vol_24hrs'] = float(json["stats"][coin]["vol_24hrs"])
+            data[coin]['max_24hrs'] = float(json["stats"][coin]["max_24hrs"])
+            data[coin]['min_24hrs'] = float(json["stats"][coin]["min_24hrs"])
+
+        if data is not None:
+            return data
+    return None
+
+
+###################################################
+
+
+def update_localbitcoins_price():
+    for currency in currencies:
+        prices = get_localbitcoins_price(currency)
+        if prices is not None:
+            buy_price, sell_price = prices
+            data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+            title = "localbitcoins_price_{}".format(currency)
+            db.child(title).push(data)
+        else:
+            print("localbitcoins error")
 
 def get_localbitcoins_price(currency):
     buy_url = "https://localbitcoins.com/buy-bitcoins-online/{}/.json".format(currency)
@@ -261,6 +255,16 @@ def get_localbitcoins_price(currency):
                 return buy_price, sell_price
     return None
 
+###################################################
+
+def update_coinsecure_price():
+    result = get_coinsecure_price()
+    if result is not None:
+        data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "max_24hrs": result[2],
+                "min_24hrs": result[3], "fiat_volume_24hrs": result[4], "coin_volume_24hrs": result[5]}
+        db.child("coinsecure").push(data)
+    else:
+        print("coinsecure error")
 
 def get_coinsecure_price():
     url = "https://api.coinsecure.in/v1/exchange/ticker"
@@ -271,9 +275,40 @@ def get_coinsecure_price():
         # does not return 404 if json not found
         if json["success"]:
             buy_price_in_paisa = json["message"]["ask"]
+            buy_price = buy_price_in_paisa/100
+
             sell_price_in_paisa = json["message"]["bid"]
-            return buy_price_in_paisa/100, sell_price_in_paisa/100
+            sell_price = sell_price_in_paisa/100
+
+            max_24hrs_in_paisa = json["message"]["high"]
+            max_24hrs = max_24hrs_in_paisa/100
+
+            min_24hrs_in_paisa = json["message"]["low"]
+            min_24hrs = min_24hrs_in_paisa/100
+
+            fiat_volume_in_paisa = json["message"]["fiatvolume"]
+            fiat_volume_24hrs = fiat_volume_in_paisa/100
+
+            coin_volume = json["message"]["coinvolume"]
+            coin_volume_24hrs = coin_volume/100000000
+
+            if buy_price is not None and sell_price is not None and max_24hrs is not None \
+                    and min_24hrs is not None and fiat_volume_24hrs is not None and coin_volume_24hrs is not None:
+                return [buy_price, sell_price, max_24hrs, min_24hrs, fiat_volume_24hrs, coin_volume_24hrs]
     return None
+
+###################################################
+
+
+def update_pocketbits_price():
+    prices = get_pocketbits_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("pocketbits_price").push(data)
+    else:
+        print("pockebits error")
+
 
 def get_pocketbits_price():
     url = "https://www.pocketbits.in/Index/getBalanceRates"
@@ -288,6 +323,19 @@ def get_pocketbits_price():
             if buy_price is not None and sell_price is not None:
                 return buy_price, sell_price
     return None
+
+
+###################################################
+
+
+def update_throughbit_price():
+    prices = get_throughbit_price()
+    if prices is not None:
+        buy_price, sell_price = prices
+        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+        db.child("throughtbit_price").push(data)
+    else:
+        print("throughbit error")
 
 def get_throughbit_price():
     url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice/type/btc/inr"
@@ -304,23 +352,26 @@ def get_throughbit_price():
     return None
 
 
-def get_koinex_price():
-    url = "https://koinex.in/api/ticker"
+###################################################
 
-    r = requests.get(url)
-    if r.status_code == 200:
-        json = r.json()
-        buy_price = float(json["stats"]["BTC"]["lowest_ask"])
-        sell_price = float(json["stats"]["BTC"]["highest_bid"])
-        day_volume = float(json["stats"]["BTC"]["vol_24hrs"])
 
-        if buy_price is not None and sell_price is not None and day_volume is not None:
-            return buy_price, sell_price, day_volume
-    return None
+def update_coinbase_price():
+    coins = ["BTC", "ETH", "LTC"]
 
-def get_coinbase_price():
-    buy_url = "https://api.coinbase.com/v2/prices/BTC-USD/buy"
-    sell_url = "https://api.coinbase.com/v2/prices/BTC-USD/sell"
+    for coin in coins:
+        for currency in currencies:
+            prices = get_coinbase_price(coin, currency)
+            if prices is not None:
+                buy_price, sell_price = prices
+                data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
+                db.child("coinbase_{0}_{1}".format(coin, currency)).push(data)
+            else:
+                print("coinbase error")
+
+
+def get_coinbase_price(coin, currency):
+    buy_url = "https://api.coinbase.com/v2/prices/{0}-{1}/buy".format(coin, currency)
+    sell_url = "https://api.coinbase.com/v2/prices/{0}-{1}/sell".format(coin, currency)
 
     buy_request = requests.get(buy_url)
     if buy_request.status_code == 200:
@@ -335,6 +386,8 @@ def get_coinbase_price():
             if buy_price is not None and sell_price is not None:
                 return buy_price, sell_price
     return None
+
+###################################################
 
 
 def get_kraken_price():
