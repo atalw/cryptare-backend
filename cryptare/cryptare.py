@@ -178,11 +178,12 @@ def update_localbitcoins_price():
     # JPY currency not available
     currencies = ["INR", "USD", "GBP", "CNY", "SGD", "EUR", "ZAR"]
 
+    volume_data = get_localbitcoins_volume(currencies)
     for currency in currencies:
         prices = get_localbitcoins_price(currency)
-        if prices is not None:
-            buy_price, sell_price, vol_24hrs = prices
-            data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
+        if prices is not None and volume_data is not None:
+            buy_price, sell_price = prices
+            data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": volume_data[currency]}
             title = "localbitcoins_BTC_{}".format(currency)
             db.child(title).push(data)
         else:
@@ -191,7 +192,6 @@ def update_localbitcoins_price():
 def get_localbitcoins_price(currency):
     buy_url = "https://localbitcoins.com/buy-bitcoins-online/{}/.json".format(currency)
     sell_url = "https://localbitcoins.com/sell-bitcoins-online/{}/c/bank-transfers/.json".format(currency)
-    volume_url = "https://localbitcoins.com/bitcoinaverage/ticker-all-currencies/"
 
     buy_request = requests.get(buy_url)
     if buy_request.status_code == 200:
@@ -203,17 +203,24 @@ def get_localbitcoins_price(currency):
             json = sell_request.json()
             sell_price = json["data"]["ad_list"][0]["data"]["temp_price"]
 
-            volume_request = requests.get(volume_url)
-            json = volume_request.json()
-            vol_24hrs = json[currency]["volume_btc"]
-
-            if buy_price is not None and sell_price is not None and vol_24hrs is not None:
+            if buy_price is not None and sell_price is not None:
                 buy_price = float(buy_price)
                 sell_price = float(sell_price)
-                vol_24hrs = float(vol_24hrs)
-                return buy_price, sell_price, vol_24hrs
+                return buy_price, sell_price
     return None
 
+def get_localbitcoins_volume(currencies):
+    volume_url = "https://localbitcoins.com/bitcoinaverage/ticker-all-currencies/"
+    data = {}
+    volume_request = requests.get(volume_url)
+    if volume_request.status_code == 200:
+        json = volume_request.json()
+        for currency in currencies:
+            vol_24hrs = json[currency]["volume_btc"]
+            if vol_24hrs is not None:
+                data[currency] = float(vol_24hrs)
+        return data
+    return None
 
 ###################################################
 
