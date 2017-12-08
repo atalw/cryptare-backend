@@ -298,9 +298,9 @@ def update_throughbit_price():
     prices = get_throughbit_price()
     if prices is not None:
         data = {"timestamp": time.time(), "buy_price": prices[0], "sell_price": prices[1]}
-        db.child("throughtbit_BTC_INR").push(data)
+        db.child("throughbit_BTC_INR").push(data)
         data = {"timestamp": time.time(), "buy_price": prices[2], "sell_price": prices[3]}
-        db.child("throughtbit_ETH_INR").push(data)
+        db.child("throughbit_ETH_INR").push(data)
     else:
         print("throughbit error")
 
