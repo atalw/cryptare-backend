@@ -305,7 +305,7 @@ def update_throughbit_price():
         print("throughbit error")
 
 def get_throughbit_price():
-    url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice/type/btc/inr"
+    url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice"
 
     r = requests.get(url)
     if r.status_code == 200:
