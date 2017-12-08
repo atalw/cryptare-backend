@@ -67,12 +67,12 @@ def update_exchanges():
     update_koinex_price()
     # update_throughbit_price()
 
-    # update_coinbase_price()
-    # update_kraken_price()
-    # # update_poloniex_price()
-    # update_gemini_price()
-    # update_bitfinex_price()
-    # update_bitstamp_price()
+    update_coinbase_price()
+    update_kraken_price()
+    # update_poloniex_price()
+    update_gemini_price()
+    update_bitfinex_price()
+    update_bitstamp_price()
     # update_bittrex_price()
 
 ###################################################
@@ -235,9 +235,8 @@ def update_coinsecure_price():
 
 def get_coinsecure_price():
     url = "https://api.coinsecure.in/v1/exchange/ticker"
-
     r = requests.get(url)
-    if r.status_code == 200:
+    if r.status_code == 200 or r.status_code == 400: # accepting 400 temporarily because of coinsecure backend error
         json = r.json()
         # does not return 404 if json not found
         if json["success"]:
@@ -298,24 +297,27 @@ def get_pocketbits_price():
 def update_throughbit_price():
     prices = get_throughbit_price()
     if prices is not None:
-        buy_price, sell_price = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("throughtbit_price").push(data)
+        data = {"timestamp": time.time(), "buy_price": prices[0], "sell_price": prices[1]}
+        db.child("throughtbit_BTC_INR").push(data)
+        data = {"timestamp": time.time(), "buy_price": prices[2], "sell_price": prices[3]}
+        db.child("throughtbit_ETH_INR").push(data)
     else:
         print("throughbit error")
 
 def get_throughbit_price():
     url = "https://www.throughbit.com/tbit_ci/index.php/cryptoprice/type/btc/inr"
-    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0',
-               'cookie': 'visid_incap_1176184=43563B0yS265oyLWGgZmNHRoIVoAAAAAQkIPAAAAAACAeZKAAWdNAOaK1XaaEDa257oj3KMxGCxy; incap_ses_873_1176184=olb7HICRaAM5r3L69IQdDFxUIloAAAAAyEpHFyG4srGo6Xg1Vh/fDw==; io=PhOhELHW7WLVJGmVD9OO'}
-    r = requests.get(url, headers=headers)
+
+    r = requests.get(url)
     if r.status_code == 200:
         json = jsonmodule.loads(r.text)
-        buy_price = json["data"]["price"][0]["buy_price"]
-        sell_price = json["data"]["price"][0]["sell_price"]
+        btc_buy_price = json["data"][0]["buy_price"]
+        btc_sell_price = json["data"][0]["sell_price"]
+        eth_buy_price = json["data"][1]["buy_price"]
+        eth_sell_price = json["data"][1]["sell_price"]
 
-        if buy_price is not None and sell_price is not None:
-            return buy_price, sell_price
+        if btc_buy_price is not None and btc_sell_price is not None \
+                and eth_buy_price is not None and eth_sell_price is not None:
+            return [float(btc_buy_price), float(btc_sell_price), float(eth_buy_price), float(eth_sell_price)]
     return None
 
 
@@ -378,7 +380,7 @@ def get_gdax_market_stats(coin, currency):
 
 
 def update_kraken_price():
-    coins = ["BTC", "LTC", "ETH"]
+    coins = ["BTC", "ETH", "LTC"]
     for coin in coins:
         if coin == "LTC":
             currencies = ["USD", "EUR"]
@@ -411,7 +413,7 @@ def get_kraken_price(coin, currency):
 
         if buy_price is not None and sell_price is not None and vol_24hrs is not None and \
                         max_24hrs is not None and min_24hrs is not None:
-            return [buy_price, sell_price, vol_24hrs, max_24hrs, min_24hrs]
+            return [float(buy_price), float(sell_price), float(vol_24hrs), float(max_24hrs), float(min_24hrs)]
     return None
 
 
@@ -451,7 +453,8 @@ def update_gemini_price():
         for currency in currencies:
             result = get_gemini_price(coin, currency)
             if result is not None:
-                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
+                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
+                        "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
                 db.child("gemini_{0}_{1}".format(coin, currency)).push(data)
             else:
                 print("gemini error")
