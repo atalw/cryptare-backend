@@ -65,7 +65,7 @@ def update_exchanges():
     update_coinsecure_price()
     update_pocketbits_price()
     update_koinex_price()
-    # update_throughbit_price()
+    update_throughbit_price()
 
     update_coinbase_price()
     update_kraken_price()
