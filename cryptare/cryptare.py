@@ -11,7 +11,7 @@ config = {
     "authDomain": "atalwcryptare.firebaseapp.com",
     "databaseURL": "https://atalwcryptare.firebaseio.com/",
     "storageBucket": "atalwcryptare.appspot.com",
-    "serviceAccount": "/home/ubuntu/cryptare-backend/service_account_info/Cryptare-9d04b184ba96.json"
+    "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -52,12 +52,6 @@ currencies = ["INR", "USD", "GBP", "JPY", "CNY", "SGD", "EUR", "ZAR"]
 
 def execute():
     print("started")
-    # while True:
-    update_all()
-    # time.sleep(60)
-
-def update_all():
-    update_current_bitcoin_price()
     update_exchanges()
 
 
@@ -77,42 +71,9 @@ def update_exchanges():
     update_bitstamp_price()
     # update_bittrex_price()
 
-###################################################
-
-
-
-
-
-
 
 ###################################################
 
-def update_current_bitcoin_price():
-    for currency in currencies:
-        price = get_current_bitcoin_price(currency)
-        if price is not None:
-            # store price and timestamp
-            data = {"timestamp": time.time(), "price": price}
-            title = "current_btc_price_{}".format(currency)
-            db.child(title).push(data)
-        else:
-            print("current btc error")
-
-
-
-def get_current_bitcoin_price(currency):
-    url = "https://api.coindesk.com/v1/bpi/currentprice/{}.json".format(currency)
-    r = requests.get(url)
-    if r.status_code == 200:
-        json = r.json()
-        price = json["bpi"][currency]["rate_float"]
-        return price
-    return None
-
-
-###################################################
-
-###################################################
 
 def update_zebpay_price():
     prices = get_zebpay_price()
