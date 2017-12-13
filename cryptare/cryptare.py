@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python3
 
 import requests
 import pyrebase
@@ -10,7 +11,7 @@ config = {
     "authDomain": "atalwcryptare.firebaseapp.com",
     "databaseURL": "https://atalwcryptare.firebaseio.com/",
     "storageBucket": "atalwcryptare.appspot.com",
-    "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
+    "serviceAccount": "/home/ubuntu/cryptare-backend/service_account_info/Cryptare-9d04b184ba96.json"
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -50,9 +51,10 @@ currencies = ["INR", "USD", "GBP", "JPY", "CNY", "SGD", "EUR", "ZAR"]
 
 
 def execute():
-    while True:
-        update_all()
-        time.sleep(60)
+    print("started")
+    # while True:
+    update_all()
+    # time.sleep(60)
 
 def update_all():
     update_current_bitcoin_price()
@@ -123,7 +125,7 @@ def update_zebpay_price():
 
 
 def get_zebpay_price():
-    url = "https://api.zebpay.com/api/v1/ticker?currencyCode=INR"
+    url = "https://www.zebapi.com/api/v1/market/ticker/btc/inr"
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
