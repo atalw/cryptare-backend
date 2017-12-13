@@ -24,6 +24,8 @@ db = firebase.database()
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "JPY", "CNY", "SGD", "EUR", "ZAR"]
 
+update_current_bitcoin_price()
+
 def update_current_bitcoin_price():
     for currency in currencies:
         price = get_current_bitcoin_price(currency)
