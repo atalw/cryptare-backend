@@ -39,8 +39,8 @@ def update_current_bitcoin_price():
                         "total_supply": dict[coin]["total_supply"],
                         "max_supply": dict[coin]["max_supply"],
                         "percentage_change_1h": dict[coin]["percentage_change_1h"],
-                        "percentage_change_24h": dict[coin]["percentage_change_1h"],
-                        "percentage_change_7d": dict[coin]["percentage_change_1h"],
+                        "percentage_change_24h": dict[coin]["percentage_change_24h"],
+                        "percentage_change_7d": dict[coin]["percentage_change_7d"],
                         "vol_24hrs_{}".format(currency): dict[coin]["vol_24hrs_{}".format(currency)],
                         "market_cap_{}".format(currency): dict[coin]["market_cap_{}".format(currency)]
                         }
@@ -52,7 +52,7 @@ def update_current_bitcoin_price():
 
 
 def get_current_bitcoin_price(currency):
-    url = "https://api.coinmarketcap.com/v1/ticker/?convert={}&limit=5".format(currency)
+    url = "https://api.coinmarketcap.com/v1/ticker/?convert={}&limit=10".format(currency)
     r = requests.get(url)
     dict = {}
     if r.status_code == 200:
