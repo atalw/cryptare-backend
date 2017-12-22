@@ -40,7 +40,7 @@ def get_current_crypto_price():
             for crypto in crypto_list:
                 for currency in currencies:
                     dict[crypto][currency] = {}
-                    if crypto != "MIOTA":
+                    if crypto != "MIOTA" and crypto != "VET":
                         dict[crypto][currency]["price"] = data[crypto][currency]["PRICE"]
                         dict[crypto][currency]["timestamp"] = data[crypto][currency]["LASTUPDATE"]
                         dict[crypto][currency]["change_24hrs_fiat"] = data[crypto][currency]["CHANGE24HOUR"]
@@ -55,10 +55,9 @@ def get_current_crypto_price():
                         dict[crypto][currency]["marketcap"] = data[crypto][currency]["MKTCAP"]
 
             for coin in dict.keys():
-                data = dict[coin]
+                data = {"Data": dict[coin]}
                 title = coin
-                db.child(title).push(data)
-
+                db.child(title).update(data)
 
 def get_list_of_coins_with_rank():
     all_data = db.child("coins").order_by_key().limit_to_last(1).get()
