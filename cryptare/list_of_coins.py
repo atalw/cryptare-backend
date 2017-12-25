@@ -23,6 +23,7 @@ def update_list_of_coins_with_rank():
             symbol = json[index]["symbol"]
             dict[symbol] = {}
             dict[symbol]["rank"] = float(json[index]["rank"])
+            dict[symbol]["name"] = json[index]["name"]
 
         title = "coins"
         db.child(title).push(dict)
