@@ -40,7 +40,7 @@ def get_current_crypto_price():
             for crypto in crypto_list:
                 for currency in currencies:
                     dict[crypto][currency] = {}
-                    if crypto != "MIOTA" and crypto != "VET":
+                    if crypto in data:
                         dict[crypto][currency]["price"] = data[crypto][currency]["PRICE"]
                         dict[crypto][currency]["timestamp"] = data[crypto][currency]["LASTUPDATE"]
                         dict[crypto][currency]["change_24hrs_fiat"] = data[crypto][currency]["CHANGE24HOUR"]
