@@ -21,6 +21,8 @@ def update_list_of_coins_with_rank():
         json = r.json()
         for index in range(len(json)):
             symbol = json[index]["symbol"]
+            if symbol == "MIOTA":
+                symbol = "IOT"
             dict[symbol] = {}
             dict[symbol]["rank"] = float(json[index]["rank"])
             dict[symbol]["name"] = json[index]["name"]
