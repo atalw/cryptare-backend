@@ -22,7 +22,14 @@ db = firebase.database()
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR"]
+btc_markets = {"INR": {"Zebpay": "zebpay", "LocalBitcoins": "localbitcoins_BTC_INR", "Coinsecure": "coinsecure",
+                "PocketBits": "pocketbits", "Koinex": "koinex_BTC_INR", "Throughbit": "throughbit_BTC_INR"},
+                "USD": {"Coinbase": "coinbase_BTC_USD", "Kraken": "kraken_BTC_USD", "Gemini": "gemini_BTC_USD",
+                "LocalBitcoins": "localbitcoins_BTC_USD", "Bitfinex": "bitfinex_BTC_USD", "Bitstamp": "bitstamp_BTC_USD"},
+               "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
+eth_markets = {"INR": {"Koinex": "koinex_ETH_INR"},
+                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -41,7 +48,8 @@ def get_current_crypto_price():
                 for currency in currencies:
                     dict[crypto][currency] = {}
                     if crypto in data:
-                        dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
+                        if currency != "INR":
+                            dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                         dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
                         dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
                         dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
@@ -53,6 +61,12 @@ def get_current_crypto_price():
                         dict[crypto][currency]["last_trade_market"] = data[crypto][currency]["LASTMARKET"]
                         dict[crypto][currency]["supply"] = float(data[crypto][currency]["SUPPLY"])
                         dict[crypto][currency]["marketcap"] = float(data[crypto][currency]["MKTCAP"])
+                        if crypto == "BTC":
+                            dict[crypto][currency]["markets"] = btc_markets[currency]
+                        elif crypto == "ETH":
+                            dict[crypto][currency]["markets"] = eth_markets[currency]
+                        else:
+                            dict[crypto][currency]["markets"] = {}
 
             for coin in dict.keys():
                 data = {"Data": dict[coin]}
