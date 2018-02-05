@@ -31,6 +31,8 @@ btc_markets = {"INR": {"Zebpay": "zebpay", "LocalBitcoins": "localbitcoins_BTC_I
 eth_markets = {"INR": {"Koinex": "koinex_ETH_INR"},
                 "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
+indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
+
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
     if dict is not None:
@@ -48,7 +50,7 @@ def get_current_crypto_price():
                 for currency in currencies:
                     dict[crypto][currency] = {}
                     if crypto in data:
-                        if currency != "INR" and (crypto != "BTC" and crypto != "ETH" and crypto != "LTC" and crypto != "XRP" and crypto != "BCH"):
+                        if currency != "INR" and (crypto not in indian_crypto_list):
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
                         else:
