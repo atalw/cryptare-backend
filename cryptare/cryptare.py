@@ -91,7 +91,7 @@ def update_average_price():
             if len(all_exchange_prices[coin][currency]) > 0:
                 average = total_sum/len(all_exchange_prices[coin][currency])
                 average_prices[coin][currency] = average
-                db.child(coin).child("Data").child(currency).update({"price": average})
+                db.child(coin).child("Data").child(currency).update({"price": average, "timestamp": time.time()})
             else:
                 average_prices[coin][currency] = 0
 
