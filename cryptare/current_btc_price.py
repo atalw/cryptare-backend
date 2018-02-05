@@ -50,6 +50,8 @@ def get_current_crypto_price():
                     if crypto in data:
                         if currency != "INR":
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
+                        else:
+                            dict[crypto][currency]["price"] = float(db.child(crypto).child("Data").child(currency).child("price").get().val())
                         dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
                         dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
                         dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
