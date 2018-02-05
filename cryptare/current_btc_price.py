@@ -48,7 +48,7 @@ def get_current_crypto_price():
                 for currency in currencies:
                     dict[crypto][currency] = {}
                     if crypto in data:
-                        if currency != "INR":
+                        if currency != "INR" and (crypto != "BTC" and crypto != "ETH" and crypto != "LTC" and crypto != "XRP" and crypto != "BCH"):
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                         else:
                             dict[crypto][currency]["price"] = float(db.child(crypto).child("Data").child(currency).child("price").get().val())
