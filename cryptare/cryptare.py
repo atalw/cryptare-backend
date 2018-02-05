@@ -105,7 +105,7 @@ def update_zebpay_price():
         buy_price, sell_price, vol_24hrs = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
         db.child("zebpay").push(data)
-        all_exchange_prices["BTC"]["INR"].append(buy_price)
+        # all_exchange_prices["BTC"]["INR"].append(buy_price)
     else:
         print("zebpay error")
 
