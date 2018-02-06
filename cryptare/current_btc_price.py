@@ -28,7 +28,8 @@ btc_markets = {"INR": {
                     "Coinsecure": "coinsecure",
                     "PocketBits": "pocketbits",
                     "Koinex": "koinex_BTC_INR",
-                    "Throughbit": "throughbit_BTC_INR"
+                    "Throughbit": "throughbit_BTC_INR",
+                    "Bitbns": "bitbns_BTC_INR"
                 }, "USD": {
                     "Coinbase": "coinbase_BTC_USD",
                     "Kraken": "kraken_BTC_USD",
@@ -56,7 +57,8 @@ btc_markets = {"INR": {
 
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
-                    "Throughbit": "throughbit_ETH_INR"
+                    "Throughbit": "throughbit_ETH_INR",
+                    "Bitbns": "bitbns_ETH_INR"
                 }, "USD": {
                     "Coinbase": "coinbase_ETH_USD",
                     "Kraken": "kraken_ETH_USD",
@@ -90,7 +92,8 @@ ltc_markets = {"INR": {
                 "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 xrp_markets = {"INR": {
-                    "Koinex": "koinex_XRP_INR"
+                    "Koinex": "koinex_XRP_INR",
+                    "Bitbns": "bitbns_XRP_INR"
                 },  "USD": {
                     "Bitfinex": "bitfinex_XRP_USD",
                     "Bitstamp": "bitstamp_XRP_USD"

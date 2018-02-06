@@ -25,7 +25,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
-coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -52,14 +52,12 @@ all_exchange_prices = {}
 
 
 def execute():
-    print("started")
     for coin in coins:
         all_exchange_prices[coin] = {}
         for currency in currencies:
             all_exchange_prices[coin][currency] = []
     update_exchanges()
     update_average_price()
-    print("done")
 
 
 def update_exchanges():
@@ -69,6 +67,7 @@ def update_exchanges():
     update_pocketbits_price()
     update_koinex_price()
     update_throughbit_price()
+    update_bitbns_price()
 
     update_coinbase_price()
     update_kraken_price()
@@ -129,6 +128,7 @@ def get_zebpay_price():
 
 
 def update_koinex_price():
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
@@ -319,6 +319,38 @@ def get_throughbit_price():
 ###################################################
 
 
+def update_bitbns_price():
+    coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM"]
+    result = get_bitbns_price(coins)
+    if result is not None:
+        for coin in coins:
+            data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
+                    "sell_price": result[coin]['sell_price']}
+            db.child("bitbns_{}_INR".format(coin)).push(data)
+            all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
+    else:
+        print("bitbns error")
+
+def get_bitbns_price(coins):
+    url = "https://bitbns.com/order/getTickerAll"
+    data = {}
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        new_dict = dict([(key, d[key]) for d in json for key in d])
+        for coin in coins:
+            data[coin] = {}
+            data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
+            data[coin]["sell_price"] = float(new_dict[coin]["sellPrice"])
+
+        if data is not None:
+            return data
+    return None
+
+
+###################################################
+
+
 def update_coinbase_price():
     coins = ["BTC", "ETH", "LTC"]
     for coin in coins:
@@ -478,6 +510,7 @@ def get_gemini_price(coin, currency):
 ###################################################
 
 def update_bitfinex_price():
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
     for coin in coins:
         if coin == "BTC":
             currencies = ["USD", "EUR"]
