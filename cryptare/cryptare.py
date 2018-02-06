@@ -25,7 +25,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
-coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM"]
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -68,6 +68,7 @@ def update_exchanges():
     update_koinex_price()
     update_throughbit_price()
     update_bitbns_price()
+    update_coinome_price()
 
     update_coinbase_price()
     update_kraken_price()
@@ -320,7 +321,6 @@ def get_throughbit_price():
 
 ###################################################
 
-
 def update_bitbns_price():
     coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM"]
     result = get_bitbns_price(coins)
@@ -344,6 +344,37 @@ def get_bitbns_price(coins):
             data[coin] = {}
             data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
             data[coin]["sell_price"] = float(new_dict[coin]["sellPrice"])
+
+        if data is not None:
+            return data
+    return None
+
+###################################################
+
+
+def update_coinome_price():
+    coins = ["BTC", "BCH", "LTC", "DASH"]
+    result = get_coinome_price(coins)
+    if result is not None:
+        for coin in coins:
+            data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
+                    "sell_price": result[coin]['sell_price']}
+            db.child("coinome_{}_INR".format(coin)).push(data)
+            all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
+    else:
+        print("bitbns error")
+
+def get_coinome_price(coins):
+    url = "https://www.coinome.com/api/v1/ticker.json"
+    data = {}
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        for coin in coins:
+            data[coin] = {}
+            trade_pair = "{}-INR".format(coin)
+            data[coin]["buy_price"] = float(json[trade_pair]["lowest_ask"])
+            data[coin]["sell_price"] = float(json[trade_pair]["highest_bid"])
 
         if data is not None:
             return data
