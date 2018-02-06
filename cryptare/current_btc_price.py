@@ -28,7 +28,16 @@ btc_markets = {"INR": {"Zebpay": "zebpay", "LocalBitcoins": "localbitcoins_BTC_I
                 "LocalBitcoins": "localbitcoins_BTC_USD", "Bitfinex": "bitfinex_BTC_USD", "Bitstamp": "bitstamp_BTC_USD"},
                "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
-eth_markets = {"INR": {"Koinex": "koinex_ETH_INR"},
+eth_markets = {"INR": {"Koinex": "koinex_ETH_INR", "Throughbit": "throughbit_ETH_INR"},
+                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+
+ltc_markets = {"INR": {"Koinex": "koinex_LTC_INR"},
+                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+
+xrp_markets = {"INR": {"Koinex": "koinex_XRP_INR"},
+                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+
+bch_markets = {"INR": {"Koinex": "koinex_BCH_INR"},
                 "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
@@ -72,6 +81,12 @@ def get_current_crypto_price():
                             dict[crypto][currency]["markets"] = btc_markets[currency]
                         elif crypto == "ETH":
                             dict[crypto][currency]["markets"] = eth_markets[currency]
+                        elif crypto == "LTC":
+                            dict[crypto][currency]["markets"] = ltc_markets[currency]
+                        elif crypto == "XRP":
+                            dict[crypto][currency]["markets"] = xrp_markets[currency]
+                        elif crypto == "BCH":
+                            dict[crypto][currency]["markets"] = bch_markets[currency]
                         else:
                             dict[crypto][currency]["markets"] = {}
 
