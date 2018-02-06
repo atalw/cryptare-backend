@@ -104,7 +104,7 @@ def update_zebpay_price():
         buy_price, sell_price, vol_24hrs = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
         db.child("zebpay").push(data)
-        # all_exchange_prices["BTC"]["INR"].append(buy_price)
+        all_exchange_prices["BTC"]["INR"].append(buy_price)
     else:
         print("zebpay error")
 
@@ -114,7 +114,9 @@ def get_zebpay_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["buy"]
+        # buy_price = json["buy"]
+        # because of zebpay api bug
+        buy_price = json["sell"]
         sell_price = json["sell"]
         vol_24hrs = json["volume"]
 
