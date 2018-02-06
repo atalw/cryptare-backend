@@ -29,7 +29,8 @@ btc_markets = {"INR": {
                     "PocketBits": "pocketbits",
                     "Koinex": "koinex_BTC_INR",
                     "Throughbit": "throughbit_BTC_INR",
-                    "Bitbns": "bitbns_BTC_INR"
+                    "Bitbns": "bitbns_BTC_INR",
+                    "Coinome": "coinome_BTC_INR"
                 }, "USD": {
                     "Coinbase": "coinbase_BTC_USD",
                     "Kraken": "kraken_BTC_USD",
@@ -76,14 +77,14 @@ eth_markets = {"INR": {
                 }, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 ltc_markets = {"INR": {
-                    "Koinex": "koinex_LTC_INR"},
-                "USD": {
+                    "Koinex": "koinex_LTC_INR",
+                    "Coinome": "coinome_LTC_INR"
+                }, "USD": {
                     "Coinbase": "coinbase_LTC_USD",
                     "Kraken": "kraken_LTC_USD",
                     "Bitfinex": "bitfinex_LTC_USD",
                     "Bitstamp": "bitstamp_LTC_USD"
-              },
-                "GBP": {},
+                }, "GBP": {},
                 "EUR": {
                     "Coinbase": "coinbase_LTC_EUR",
                     "Bitstamp": "bitstamp_LTC_EUR",
@@ -104,7 +105,8 @@ xrp_markets = {"INR": {
                 },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 bch_markets = {"INR": {
-                    "Koinex": "koinex_BCH_INR"
+                    "Koinex": "koinex_BCH_INR",
+                    "Coinome": "coinome_BCH_INR"
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
