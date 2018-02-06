@@ -22,23 +22,64 @@ db = firebase.database()
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR"]
-btc_markets = {"INR": {"Zebpay": "zebpay", "LocalBitcoins": "localbitcoins_BTC_INR", "Coinsecure": "coinsecure",
-                "PocketBits": "pocketbits", "Koinex": "koinex_BTC_INR", "Throughbit": "throughbit_BTC_INR"},
-                "USD": {"Coinbase": "coinbase_BTC_USD", "Kraken": "kraken_BTC_USD", "Gemini": "gemini_BTC_USD",
-                "LocalBitcoins": "localbitcoins_BTC_USD", "Bitfinex": "bitfinex_BTC_USD", "Bitstamp": "bitstamp_BTC_USD"},
-               "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+btc_markets = {"INR": {
+                    "Zebpay": "zebpay",
+                    "LocalBitcoins": "localbitcoins_BTC_INR",
+                    "Coinsecure": "coinsecure",
+                    "PocketBits": "pocketbits",
+                    "Koinex": "koinex_BTC_INR",
+                    "Throughbit": "throughbit_BTC_INR"},
+                "USD": {
+                    "Coinbase": "coinbase_BTC_USD",
+                    "Kraken": "kraken_BTC_USD",
+                    "Gemini": "gemini_BTC_USD",
+                    "LocalBitcoins": "localbitcoins_BTC_USD",
+                    "Bitfinex": "bitfinex_BTC_USD",
+                    "Bitstamp": "bitstamp_BTC_USD"},
+               "GBP": {},
+               "EUR": {
+                   "Coinbase": "coinbase_BTC_EUR",
+                   "LocalBitcoins": "localbitcoins_BTC_EUR",
+                   "Kraken": "kraken_BTC_EUR"
+               }, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
-eth_markets = {"INR": {"Koinex": "koinex_ETH_INR", "Throughbit": "throughbit_ETH_INR"},
-                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+eth_markets = {"INR": {
+                    "Koinex": "koinex_ETH_INR",
+                    "Throughbit": "throughbit_ETH_INR"},
+                "USD": {
+                    "Coinbase": "coinbase_ETH_USD",
+                    "Kraken": "kraken_ETH_USD",
+                    "Gemini": "gemini_ETH_USD",
+                    "Bitfinex": "bitfinex_ETH_USD",
+                    "Bitstamp": "bitstamp_ETH_USD"},
+                "GBP": {},
+                "EUR": {},
+                "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
-ltc_markets = {"INR": {"Koinex": "koinex_LTC_INR"},
-                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+ltc_markets = {"INR": {
+                    "Koinex": "koinex_LTC_INR"},
+                "USD": {
+                    "Coinbase": "coinbase_LTC_USD",
+                    "Kraken": "kraken_LTC_USD",
+                    "Bitfinex": "bitfinex_LTC_USD",
+                    "Bitstamp": "bitstamp_LTC_USD"
+              },
+                "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
-xrp_markets = {"INR": {"Koinex": "koinex_XRP_INR"},
-                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+xrp_markets = {"INR": {
+                    "Koinex": "koinex_XRP_INR"},
+                "USD": {
+                    "Bitfinex": "bitfinex_XRP_USD",
+                    "Bitstamp": "bitstamp_XRP_USD"
+                },
+                "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
-bch_markets = {"INR": {"Koinex": "koinex_BCH_INR"},
-                "USD": {}, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+bch_markets = {"INR": {
+                    "Koinex": "koinex_BCH_INR"},
+                "USD": {
+                    "Bitfinex": "bitfinex_BCH_USD",
+                },
+                "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
 
 indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
 
