@@ -362,7 +362,7 @@ def update_coinome_price():
             db.child("coinome_{}_INR".format(coin)).push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
     else:
-        print("bitbns error")
+        print("coinome error")
 
 def get_coinome_price(coins):
     url = "https://www.coinome.com/api/v1/ticker.json"
@@ -372,9 +372,13 @@ def get_coinome_price(coins):
         json = r.json()
         for coin in coins:
             data[coin] = {}
-            trade_pair = "{}-INR".format(coin)
-            data[coin]["buy_price"] = float(json[trade_pair]["lowest_ask"])
-            data[coin]["sell_price"] = float(json[trade_pair]["highest_bid"])
+            trade_pair = "{}-inr".format(coin.lower())
+            try:
+                data[coin]["buy_price"] = float(json[trade_pair]["lowest_ask"])
+                data[coin]["sell_price"] = float(json[trade_pair]["highest_bid"])
+            except:
+                print("coinome trade pair error for ", trade_pair)
+                return None
 
         if data is not None:
             return data
