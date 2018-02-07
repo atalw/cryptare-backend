@@ -95,6 +95,13 @@ def update_average_price():
             else:
                 average_prices[coin][currency] = 0
 
+def update_24hr_change(current_price, min_24hr_price, coin):
+    change = current_price - min_24hr_price
+    percent = change / min_24hr_price * 100
+    rounded_percentage = round(percent, 2)
+    db.child(coin).child("Data").child("INR").update({"change_24hrs_percent": rounded_percentage, "change_24hrs_fiat": change})
+
+
 ###################################################
 
 
@@ -143,6 +150,7 @@ def update_koinex_price():
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
             db.child("koinex_{}_INR".format(coin)).push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
+            update_24hr_change(result[coin]['buy_price'], result[coin]['min_24hrs'], coin)
     else:
         print("koinex error")
 
