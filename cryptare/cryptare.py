@@ -115,11 +115,14 @@ def get_zebpay_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        # buy_price = json["buy"]
-        # because of zebpay api bug
-        buy_price = json["sell"]
-        sell_price = json["sell"]
-        vol_24hrs = json["volume"]
+        try:
+            # buy_price = json["buy"]
+            # because of zebpay api bug
+            buy_price = json["sell"]
+            sell_price = json["sell"]
+            vol_24hrs = json["volume"]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None and vol_24hrs is not None:
             return buy_price, sell_price, vol_24hrs
@@ -152,11 +155,14 @@ def get_koinex_price(coins):
 
         for coin in coins:
             data[coin] = {}
-            data[coin]['buy_price'] = float(json["stats"][coin]["lowest_ask"])
-            data[coin]['sell_price'] = float(json["stats"][coin]["highest_bid"])
-            data[coin]['vol_24hrs'] = float(json["stats"][coin]["vol_24hrs"])
-            data[coin]['max_24hrs'] = float(json["stats"][coin]["max_24hrs"])
-            data[coin]['min_24hrs'] = float(json["stats"][coin]["min_24hrs"])
+            try:
+                data[coin]['buy_price'] = float(json["stats"][coin]["lowest_ask"])
+                data[coin]['sell_price'] = float(json["stats"][coin]["highest_bid"])
+                data[coin]['vol_24hrs'] = float(json["stats"][coin]["vol_24hrs"])
+                data[coin]['max_24hrs'] = float(json["stats"][coin]["max_24hrs"])
+                data[coin]['min_24hrs'] = float(json["stats"][coin]["min_24hrs"])
+            except:
+                return None
 
         if data is not None:
             return data
@@ -209,7 +215,11 @@ def get_localbitcoins_volume(currencies):
     if volume_request.status_code == 200:
         json = volume_request.json()
         for currency in currencies:
-            vol_24hrs = json[currency]["volume_btc"]
+            try:
+                vol_24hrs = json[currency]["volume_btc"]
+            except:
+                return None
+
             if vol_24hrs is not None:
                 data[currency] = float(vol_24hrs)
         return data
@@ -234,23 +244,26 @@ def get_coinsecure_price():
         json = r.json()
         # does not return 404 if json not found
         if json["success"]:
-            buy_price_in_paisa = json["message"]["ask"]
-            buy_price = buy_price_in_paisa/100
+            try:
+                buy_price_in_paisa = json["message"]["ask"]
+                buy_price = buy_price_in_paisa/100
 
-            sell_price_in_paisa = json["message"]["bid"]
-            sell_price = sell_price_in_paisa/100
+                sell_price_in_paisa = json["message"]["bid"]
+                sell_price = sell_price_in_paisa/100
 
-            max_24hrs_in_paisa = json["message"]["high"]
-            max_24hrs = max_24hrs_in_paisa/100
+                max_24hrs_in_paisa = json["message"]["high"]
+                max_24hrs = max_24hrs_in_paisa/100
 
-            min_24hrs_in_paisa = json["message"]["low"]
-            min_24hrs = min_24hrs_in_paisa/100
+                min_24hrs_in_paisa = json["message"]["low"]
+                min_24hrs = min_24hrs_in_paisa/100
 
-            fiat_volume_in_paisa = json["message"]["fiatvolume"]
-            fiat_volume_24hrs = fiat_volume_in_paisa/100
+                fiat_volume_in_paisa = json["message"]["fiatvolume"]
+                fiat_volume_24hrs = fiat_volume_in_paisa/100
 
-            coin_volume = json["message"]["coinvolume"]
-            coin_volume_24hrs = coin_volume/100000000
+                coin_volume = json["message"]["coinvolume"]
+                coin_volume_24hrs = coin_volume/100000000
+            except:
+                return None
 
             if buy_price is not None and sell_price is not None and max_24hrs is not None \
                     and min_24hrs is not None and fiat_volume_24hrs is not None and coin_volume_24hrs is not None:
@@ -278,8 +291,11 @@ def get_pocketbits_price():
     if r.status_code == 200:
         if r.headers["Content-Type"] == "application/json; charset=utf-8":
             json = r.json()
-            buy_price = json["rates"]["BTC_BuyingRate"]
-            sell_price = json["rates"]["BTC_SellingRate"]
+            try:
+                buy_price = json["rates"]["BTC_BuyingRate"]
+                sell_price = json["rates"]["BTC_SellingRate"]
+            except:
+                return None
 
             if buy_price is not None and sell_price is not None:
                 return buy_price, sell_price
@@ -308,10 +324,13 @@ def get_throughbit_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = jsonmodule.loads(r.text)
-        btc_buy_price = json["data"][0]["buy_price"]
-        btc_sell_price = json["data"][0]["sell_price"]
-        eth_buy_price = json["data"][1]["buy_price"]
-        eth_sell_price = json["data"][1]["sell_price"]
+        try:
+            btc_buy_price = json["data"][0]["buy_price"]
+            btc_sell_price = json["data"][0]["sell_price"]
+            eth_buy_price = json["data"][1]["buy_price"]
+            eth_sell_price = json["data"][1]["sell_price"]
+        except:
+            return None
 
         if btc_buy_price is not None and btc_sell_price is not None \
                 and eth_buy_price is not None and eth_sell_price is not None:
@@ -342,8 +361,11 @@ def get_bitbns_price(coins):
         new_dict = dict([(key, d[key]) for d in json for key in d])
         for coin in coins:
             data[coin] = {}
-            data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
-            data[coin]["sell_price"] = float(new_dict[coin]["sellPrice"])
+            try:
+                data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
+                data[coin]["sell_price"] = float(new_dict[coin]["sellPrice"])
+            except:
+                return None
 
         if data is not None:
             return data
@@ -415,12 +437,18 @@ def get_coinbase_price(coin, currency):
     buy_request = requests.get(buy_url)
     if buy_request.status_code == 200:
         json = buy_request.json()
-        buy_price = json["data"]["amount"]
+        try:
+            buy_price = json["data"]["amount"]
+        except:
+            return None
 
         sell_request = requests.get(sell_url)
         if sell_request.status_code == 200:
             json = sell_request.json()
-            sell_price = json["data"]["amount"]
+            try:
+                sell_price = json["data"]["amount"]
+            except:
+                return None
 
             if buy_price is not None and sell_price is not None:
                 return float(buy_price), float(sell_price)
@@ -433,10 +461,13 @@ def get_gdax_market_stats(coin, currency):
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        max_24hrs = json["high"]
-        min_24hrs = json["low"]
-        vol_24hrs = json["volume"]
-        vol_30days = json["volume_30day"]
+        try:
+            max_24hrs = json["high"]
+            min_24hrs = json["low"]
+            vol_24hrs = json["volume"]
+            vol_30days = json["volume_30day"]
+        except:
+            return None
 
         if max_24hrs is not None and min_24hrs is not None and vol_24hrs is not None and vol_30days is not None:
             return [float(max_24hrs), float(min_24hrs), float(vol_24hrs), float(vol_30days)]
@@ -471,11 +502,14 @@ def get_kraken_price(coin, currency):
     if r.status_code == 200:
         json = r.json()
         coin_currency_pair = "X{0}Z{1}".format(coin, currency)
-        buy_price = json["result"][coin_currency_pair]["a"][0]
-        sell_price = json["result"][coin_currency_pair]["b"][0]
-        vol_24hrs = json["result"][coin_currency_pair]["v"][1]
-        max_24hrs = json["result"][coin_currency_pair]["h"][1]
-        min_24hrs = json["result"][coin_currency_pair]["l"][1]
+        try:
+            buy_price = json["result"][coin_currency_pair]["a"][0]
+            sell_price = json["result"][coin_currency_pair]["b"][0]
+            vol_24hrs = json["result"][coin_currency_pair]["v"][1]
+            max_24hrs = json["result"][coin_currency_pair]["h"][1]
+            min_24hrs = json["result"][coin_currency_pair]["l"][1]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None and vol_24hrs is not None and \
                         max_24hrs is not None and min_24hrs is not None:
@@ -504,8 +538,11 @@ def get_poloniex_price():
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["USDT_BTC"]["lowestAsk"]
-        sell_price = json["USDT_BTC"]["highestBid"]
+        try:
+            buy_price = json["USDT_BTC"]["lowestAsk"]
+            sell_price = json["USDT_BTC"]["highestBid"]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
@@ -534,10 +571,13 @@ def get_gemini_price(coin, currency):
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["ask"]
-        sell_price = json["bid"]
-        fiat_volume_24hrs = json["volume"][currency]
-        coin_volume_24hrs = json["volume"][coin]
+        try:
+            buy_price = json["ask"]
+            sell_price = json["bid"]
+            fiat_volume_24hrs = json["volume"][currency]
+            coin_volume_24hrs = json["volume"][coin]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None and fiat_volume_24hrs is not None \
                 and coin_volume_24hrs is not None:
@@ -571,11 +611,14 @@ def get_bitfinex_price(coin, currency):
     if r.status_code == 200:
         if r.headers['Content-Type'] == 'application/json; charset=utf-8':
             json = r.json()
-            buy_price = json["ask"]
-            sell_price = json["bid"]
-            max_24hrs = json["high"]
-            min_24hrs = json["low"]
-            vol_24hrs = json["volume"]
+            try:
+                buy_price = json["ask"]
+                sell_price = json["bid"]
+                max_24hrs = json["high"]
+                min_24hrs = json["low"]
+                vol_24hrs = json["volume"]
+            except:
+                return None
 
             if buy_price is not None and sell_price is not None and max_24hrs is not None \
                     and min_24hrs is not None and vol_24hrs is not None:
@@ -604,11 +647,14 @@ def get_bitstamp_price(coin, currency):
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["ask"]
-        sell_price = json["bid"]
-        max_24hrs = json["high"]
-        min_24hrs = json["low"]
-        vol_24hrs = json["volume"]
+        try:
+            buy_price = json["ask"]
+            sell_price = json["bid"]
+            max_24hrs = json["high"]
+            min_24hrs = json["low"]
+            vol_24hrs = json["volume"]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None and max_24hrs is not None \
                 and min_24hrs is not None and vol_24hrs is not None:
@@ -634,8 +680,11 @@ def get_bittrex_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        buy_price = json["result"]["Ask"]
-        sell_price = json["result"]["Bid"]
+        try:
+            buy_price = json["result"]["Ask"]
+            sell_price = json["result"]["Bid"]
+        except:
+            return None
 
         if buy_price is not None and sell_price is not None:
             return buy_price, sell_price
