@@ -135,8 +135,8 @@ def get_current_crypto_price():
                                 db.child(crypto).child("Data").child(currency).child("price").get().val())
                             dict[crypto][currency]["timestamp"] = float(
                                 db.child(crypto).child("Data").child(currency).child("timestamp").get().val())
-                            dict[crypto][currency]["change_24hrs_fiat"] = float(db.child(crypto).child("Data").child(currency).child("CHANGE24HOUR").get().val())
-                            dict[crypto][currency]["change_24hrs_percent"] = float(db.child(crypto).child("Data").child(currency).child("CHANGEPCT24HOUR").get().val())
+                            dict[crypto][currency]["change_24hrs_fiat"] = float(db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val())
+                            dict[crypto][currency]["change_24hrs_percent"] = float(db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val())
                         else:
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
