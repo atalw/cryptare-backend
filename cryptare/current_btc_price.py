@@ -21,7 +21,7 @@ firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
-currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR"]
+currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC"]
 btc_markets = {"INR": {
                     "Zebpay": "zebpay",
                     "LocalBitcoins": "localbitcoins_BTC_INR",
@@ -37,7 +37,8 @@ btc_markets = {"INR": {
                     "Gemini": "gemini_BTC_USD",
                     "LocalBitcoins": "localbitcoins_BTC_USD",
                     "Bitfinex": "bitfinex_BTC_USD",
-                    "Bitstamp": "bitstamp_BTC_USD"
+                    "Bitstamp": "bitstamp_BTC_USD",
+                    "Kucoin": "kucoin_BTC/USDT"
                 }, "GBP": {
                     "Coinbase": "coinbase_BTC_GBP",
                     "Kraken": "kraken_BTC_GBP",
@@ -54,7 +55,7 @@ btc_markets = {"INR": {
                     "LocalBitcoins": "localbitcoins_BTC_SGD"
                 }, "ZAR": {
                     "LocalBitcoins": "localbitcoins_BTC_ZAR"
-                }}
+                }, "BTC": {}}
 
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
@@ -65,7 +66,8 @@ eth_markets = {"INR": {
                     "Kraken": "kraken_ETH_USD",
                     "Gemini": "gemini_ETH_USD",
                     "Bitfinex": "bitfinex_ETH_USD",
-                    "Bitstamp": "bitstamp_ETH_USD"
+                    "Bitstamp": "bitstamp_ETH_USD",
+                    "Kucoin": "kucoin_ETH/USDT"
                 },  "GBP": {
                     "Kraken": "kraken_ETH_GBP"
                 }, "EUR": {
@@ -74,7 +76,11 @@ eth_markets = {"INR": {
                     "Kraken": "kraken_ETH_EUR"
                 },  "JPY": {
                     "Kraken": "kraken_ETH_JPY"
-                }, "CNY": {}, "SGD": {}, "ZAR": {}}
+                }, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin_ETH/BTC"
+                }
+                }
 
 ltc_markets = {"INR": {
                     "Koinex": "koinex_LTC_INR",
@@ -83,14 +89,18 @@ ltc_markets = {"INR": {
                     "Coinbase": "coinbase_LTC_USD",
                     "Kraken": "kraken_LTC_USD",
                     "Bitfinex": "bitfinex_LTC_USD",
-                    "Bitstamp": "bitstamp_LTC_USD"
+                    "Bitstamp": "bitstamp_LTC_USD",
+                    "Kucoin": "kucoin_LTC/USDT"
                 }, "GBP": {},
                 "EUR": {
                     "Coinbase": "coinbase_LTC_EUR",
                     "Bitstamp": "bitstamp_LTC_EUR",
                     "Kraken": "kraken_LTC_EUR"
                 },
-                "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+                "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin_LTC/BTC",
+                }}
 
 xrp_markets = {"INR": {
                     "Koinex": "koinex_XRP_INR",
@@ -102,14 +112,14 @@ xrp_markets = {"INR": {
 
                 }, "EUR": {
                     "Bitstamp": "bitstamp_XRP_EUR",
-                },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+                },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
 
 bch_markets = {"INR": {
                     "Koinex": "koinex_BCH_INR",
                     "Coinome": "coinome_BCH_INR"
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
-                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}}
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
 
 indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
 
