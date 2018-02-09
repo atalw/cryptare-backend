@@ -23,7 +23,7 @@ db = firebase.database()
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC"]
 btc_markets = {"INR": {
-                    "Zebpay": "zebpay",
+                    "Zebpay": "zebpay/BTC",
                     "LocalBitcoins": "localbitcoins_BTC_INR",
                     "Coinsecure": "coinsecure",
                     "PocketBits": "pocketbits",
@@ -58,6 +58,7 @@ btc_markets = {"INR": {
                 }, "BTC": {}}
 
 eth_markets = {"INR": {
+                    "Zebpay": "zebpay/ETH",
                     "Koinex": "koinex_ETH_INR",
                     "Throughbit": "throughbit_ETH_INR",
                     "Bitbns": "bitbns_ETH_INR"
@@ -83,6 +84,7 @@ eth_markets = {"INR": {
                 }
 
 ltc_markets = {"INR": {
+                    "Zebpay": "zebpay/LTC",
                     "Koinex": "koinex_LTC_INR",
                     "Coinome": "coinome_LTC_INR"
                 }, "USD": {
@@ -103,6 +105,7 @@ ltc_markets = {"INR": {
                 }}
 
 xrp_markets = {"INR": {
+                    "Zebpay": "zebpay/XRP",
                     "Koinex": "koinex_XRP_INR",
                     "Bitbns": "bitbns_XRP_INR"
                 },  "USD": {
@@ -115,6 +118,7 @@ xrp_markets = {"INR": {
                 },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
 
 bch_markets = {"INR": {
+                    "Zebpay": "zebpay/BCH",
                     "Koinex": "koinex_BCH_INR",
                     "Coinome": "coinome_BCH_INR"
                 }, "USD": {
