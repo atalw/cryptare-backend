@@ -25,7 +25,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
-coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH"]
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG", "QTUM"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -69,6 +69,7 @@ def update_exchanges():
     update_throughbit_price()
     update_bitbns_price()
     update_coinome_price()
+    update_coindelta_price()
 
     update_coinbase_price()
     update_kraken_price()
@@ -426,6 +427,49 @@ def get_coinome_price(coins):
 
 ###################################################
 
+
+def update_coindelta_price():
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM"]
+    result = get_coindelta_price(coins)
+    if result is not None:
+        for coin, pair_data in result.items():
+            for coin_pair, details in pair_data.items():
+                db.child("coindelta").child(coin).child(coin_pair).update(details)
+                if coin_pair == "INR":
+                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+    else:
+        print("coindelta error")
+
+
+def get_coindelta_price(coins):
+    data = {}
+    for coin in coins:
+        data[coin] = {}
+
+    url = "https://coindelta.com/api/v1/public/getticker/"
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        for entry in json:
+            print(entry)
+            try:
+                market_name = entry["MarketName"]
+                coins = market_name.split('-')
+                coin = coins[0].upper()
+                base_coin = coins[1].upper()
+                data[coin][base_coin] = {}
+                data[coin][base_coin]["last_price"] = entry["Last"]
+                data[coin][base_coin]["buy_price"]= entry["Ask"]
+                data[coin][base_coin]["sell_price"] = entry["Bid"]
+            except:
+                return None
+
+    if data is not None:
+        return data
+    return None
+
+
+###################################################
 
 def update_coinbase_price():
     coins = ["BTC", "ETH", "LTC"]

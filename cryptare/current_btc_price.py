@@ -30,7 +30,8 @@ btc_markets = {"INR": {
                     "Koinex": "koinex_BTC_INR",
                     "Throughbit": "throughbit_BTC_INR",
                     "Bitbns": "bitbns_BTC_INR",
-                    "Coinome": "coinome_BTC_INR"
+                    "Coinome": "coinome_BTC_INR",
+                    "Coindelta": "coindelta/BTC/INR"
                 }, "USD": {
                     "Coinbase": "coinbase_BTC_USD",
                     "Kraken": "kraken_BTC_USD",
@@ -60,7 +61,8 @@ btc_markets = {"INR": {
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
                     "Throughbit": "throughbit_ETH_INR",
-                    "Bitbns": "bitbns_ETH_INR"
+                    "Bitbns": "bitbns_ETH_INR",
+                    "Coindelta": "coindelta/ETH/INR"
                 }, "USD": {
                     "Coinbase": "coinbase_ETH_USD",
                     "Kraken": "kraken_ETH_USD",
@@ -78,14 +80,16 @@ eth_markets = {"INR": {
                     "Kraken": "kraken_ETH_JPY"
                 }, "CNY": {}, "SGD": {}, "ZAR": {},
                 "BTC": {
-                    "Kucoin": "kucoin/ETH/BTC"
+                    "Kucoin": "kucoin/ETH/BTC",
+                    "Coindelta": "coindelta/ETH/BTC"
                 }
                 }
 
 ltc_markets = {"INR": {
                     "Zebpay": "zebpay_new/LTC",
                     "Koinex": "koinex_LTC_INR",
-                    "Coinome": "coinome_LTC_INR"
+                    "Coinome": "coinome_LTC_INR",
+                    "Coindelta": "coindelta/BTC/INR"
                 }, "USD": {
                     "Coinbase": "coinbase_LTC_USD",
                     "Kraken": "kraken_LTC_USD",
@@ -101,12 +105,14 @@ ltc_markets = {"INR": {
                 "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
                 "BTC": {
                     "Kucoin": "kucoin/LTC/BTC",
+                    "Coindelta": "coindelta/LTC/BTC"
                 }}
 
 xrp_markets = {"INR": {
                     "Zebpay": "zebpay_new/XRP",
                     "Koinex": "koinex_XRP_INR",
-                    "Bitbns": "bitbns_XRP_INR"
+                    "Bitbns": "bitbns_XRP_INR",
+                    "Coindelta": "coindelta/XRP/INR"
                 },  "USD": {
                     "Bitfinex": "bitfinex_XRP_USD",
                     "Bitstamp": "bitstamp_XRP_USD"
@@ -114,12 +120,16 @@ xrp_markets = {"INR": {
 
                 }, "EUR": {
                     "Bitstamp": "bitstamp_XRP_EUR",
-                },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
+                },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Coindelta": "coindelta/XRP/BTC"
+                }}
 
 bch_markets = {"INR": {
                     "Zebpay": "zebpay_new/BCH",
                     "Koinex": "koinex_BCH_INR",
-                    "Coinome": "coinome_BCH_INR"
+                    "Coinome": "coinome_BCH_INR",
+                    "Coindelta": "coindelta/BCH/INR"
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
