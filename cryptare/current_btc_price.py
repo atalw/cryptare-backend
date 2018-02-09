@@ -23,7 +23,7 @@ db = firebase.database()
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC"]
 btc_markets = {"INR": {
-                    "Zebpay": "zebpay/BTC",
+                    "Zebpay": "zebpay_new/BTC",
                     "LocalBitcoins": "localbitcoins_BTC_INR",
                     "Coinsecure": "coinsecure",
                     "PocketBits": "pocketbits",
@@ -58,7 +58,7 @@ btc_markets = {"INR": {
                 }, "BTC": {}}
 
 eth_markets = {"INR": {
-                    "Zebpay": "zebpay/ETH",
+                    "Zebpay": "zebpay_new/ETH",
                     "Koinex": "koinex_ETH_INR",
                     "Throughbit": "throughbit_ETH_INR",
                     "Bitbns": "bitbns_ETH_INR"
@@ -84,7 +84,7 @@ eth_markets = {"INR": {
                 }
 
 ltc_markets = {"INR": {
-                    "Zebpay": "zebpay/LTC",
+                    "Zebpay": "zebpay_new/LTC",
                     "Koinex": "koinex_LTC_INR",
                     "Coinome": "coinome_LTC_INR"
                 }, "USD": {
@@ -105,7 +105,7 @@ ltc_markets = {"INR": {
                 }}
 
 xrp_markets = {"INR": {
-                    "Zebpay": "zebpay/XRP",
+                    "Zebpay": "zebpay_new/XRP",
                     "Koinex": "koinex_XRP_INR",
                     "Bitbns": "bitbns_XRP_INR"
                 },  "USD": {
@@ -156,14 +156,6 @@ def get_current_crypto_price():
                                 db.child(crypto).child("Data").child(currency).child("price").get().val())
                             dict[crypto][currency]["timestamp"] = float(
                                 db.child(crypto).child("Data").child(currency).child("timestamp").get().val())
-                            # change_fiat = db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val()
-                            # change_percent = db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val()
-                            # if change_fiat is not None and change_percent is not None:
-                            #     dict[crypto][currency]["change_24hrs_fiat"] = float(change_fiat)
-                            #     dict[crypto][currency]["change_24hrs_percent"] = float(change_percent)
-                            # else:
-                            #     dict[crypto][currency]["change_24hrs_fiat"] = 0
-                            #     dict[crypto][currency]["change_24hrs_percent"] = 0
                         else:
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
