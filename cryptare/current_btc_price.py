@@ -38,7 +38,7 @@ btc_markets = {"INR": {
                     "LocalBitcoins": "localbitcoins_BTC_USD",
                     "Bitfinex": "bitfinex_BTC_USD",
                     "Bitstamp": "bitstamp_BTC_USD",
-                    "Kucoin": "kucoin_BTC/USDT"
+                    "Kucoin": "kucoin/BTC/USDT"
                 }, "GBP": {
                     "Coinbase": "coinbase_BTC_GBP",
                     "Kraken": "kraken_BTC_GBP",
@@ -67,7 +67,7 @@ eth_markets = {"INR": {
                     "Gemini": "gemini_ETH_USD",
                     "Bitfinex": "bitfinex_ETH_USD",
                     "Bitstamp": "bitstamp_ETH_USD",
-                    "Kucoin": "kucoin_ETH/USDT"
+                    "Kucoin": "kucoin/ETH/USDT"
                 },  "GBP": {
                     "Kraken": "kraken_ETH_GBP"
                 }, "EUR": {
@@ -78,7 +78,7 @@ eth_markets = {"INR": {
                     "Kraken": "kraken_ETH_JPY"
                 }, "CNY": {}, "SGD": {}, "ZAR": {},
                 "BTC": {
-                    "Kucoin": "kucoin_ETH/BTC"
+                    "Kucoin": "kucoin/ETH/BTC"
                 }
                 }
 
@@ -90,7 +90,7 @@ ltc_markets = {"INR": {
                     "Kraken": "kraken_LTC_USD",
                     "Bitfinex": "bitfinex_LTC_USD",
                     "Bitstamp": "bitstamp_LTC_USD",
-                    "Kucoin": "kucoin_LTC/USDT"
+                    "Kucoin": "kucoin/LTC/USDT"
                 }, "GBP": {},
                 "EUR": {
                     "Coinbase": "coinbase_LTC_EUR",
@@ -99,7 +99,7 @@ ltc_markets = {"INR": {
                 },
                 "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
                 "BTC": {
-                    "Kucoin": "kucoin_LTC/BTC",
+                    "Kucoin": "kucoin/LTC/BTC",
                 }}
 
 xrp_markets = {"INR": {
@@ -145,8 +145,14 @@ def get_current_crypto_price():
                                 db.child(crypto).child("Data").child(currency).child("price").get().val())
                             dict[crypto][currency]["timestamp"] = float(
                                 db.child(crypto).child("Data").child(currency).child("timestamp").get().val())
-                            dict[crypto][currency]["change_24hrs_fiat"] = float(db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val())
-                            dict[crypto][currency]["change_24hrs_percent"] = float(db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val())
+                            change_fiat = db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val()
+                            change_percent = db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val()
+                            if change_fiat is not None and change_percent is not None:
+                                dict[crypto][currency]["change_24hrs_fiat"] = float(change_fiat)
+                                dict[crypto][currency]["change_24hrs_percent"] = float(change_percent)
+                            else:
+                                dict[crypto][currency]["change_24hrs_fiat"] = 0
+                                dict[crypto][currency]["change_24hrs_percent"] = 0
                         else:
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])

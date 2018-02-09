@@ -711,7 +711,7 @@ def update_kucoin_price():
             print(coin)
             for coin_pair, details in pair_data.items():
                 # print(" ", details)
-                db.child("kucoin_{}".format(coin)).child(coin_pair).push(details)
+                db.child("kucoin").child(coin).child(coin_pair).push(details)
     else:
         print("kucoin error")
 
