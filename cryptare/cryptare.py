@@ -109,31 +109,36 @@ def update_24hr_change(current_price, min_24hr_price, coin):
 
 
 def update_zebpay_price():
-    prices = get_zebpay_price()
-    if prices is not None:
-        last_price, buy_price, sell_price, vol_24hrs = prices
-        data = {"timestamp": time.time(), "last_price": last_price ,"buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
-        db.child("zebpay").push(data)
-        all_exchange_prices["BTC"]["INR"].append(last_price)
+    coins = ["BTC", "LTC", "BCH", "XRP"]
+    result = get_zebpay_price(coins)
+    if result is not None:
+        for coin in coins:
+            data = {"timestamp": time.time(), "last_price": result[coin]["last_price"] ,"buy_price": result[coin]["buy_price"],
+                    "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
+            db.child("zebpay").child(coin).push(data)
+            all_exchange_prices[coin]["INR"].append(result[coin]["last_price"])
     else:
         print("zebpay error")
 
 
-def get_zebpay_price():
-    url = "https://www.zebapi.com/api/v1/market/ticker-new/btc/inr"
-    r = requests.get(url)
-    if r.status_code == 200:
-        json = r.json()
-        try:
-            last_price = json["market"]
-            buy_price = json["buy"]
-            sell_price = json["sell"]
-            vol_24hrs = json["volume"]
-        except:
-            return None
+def get_zebpay_price(coins):
+    data = {}
+    for coin in coins:
+        url = "https://www.zebapi.com/api/v1/market/ticker-new/{}/inr".format(coin.lower())
+        r = requests.get(url)
+        if r.status_code == 200:
+            json = r.json()
+            data[coin] = {}
+            try:
+                data[coin]["last_price"] = json["market"]
+                data[coin]["buy_price"]= json["buy"]
+                data[coin]["sell_price"] = json["sell"]
+                data[coin]["vol_24hrs"] = json["volume"]
+            except:
+                return None
 
-        if last_price is not None and buy_price is not None and sell_price is not None and vol_24hrs is not None:
-            return last_price, buy_price, sell_price, vol_24hrs
+    if data is not None:
+        return data
     return None
 
 ###################################################
