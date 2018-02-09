@@ -147,11 +147,11 @@ def update_koinex_price():
     result = get_koinex_price(coins)
     if result is not None:
         for coin in coins:
-            data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
+            data = {"timestamp": time.time(), "last_price": result[coin]['last_price'], "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
             db.child("koinex_{}_INR".format(coin)).push(data)
-            all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
-            update_24hr_change(result[coin]['buy_price'], result[coin]['min_24hrs'], coin)
+            all_exchange_prices[coin]["INR"].append(result[coin]['last_price'])
+            update_24hr_change(result[coin]['last_price'], result[coin]['min_24hrs'], coin)
     else:
         print("koinex error")
 
@@ -165,6 +165,7 @@ def get_koinex_price(coins):
         for coin in coins:
             data[coin] = {}
             try:
+                data[coin]['last_price'] = float(json["stats"][coin]["last_traded_price"])
                 data[coin]['buy_price'] = float(json["stats"][coin]["lowest_ask"])
                 data[coin]['sell_price'] = float(json["stats"][coin]["highest_bid"])
                 data[coin]['vol_24hrs'] = float(json["stats"][coin]["vol_24hrs"])
