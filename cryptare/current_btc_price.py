@@ -135,6 +135,13 @@ def get_current_crypto_price():
             crypto_list.append(i)
         crypto_list_string = ",".join(crypto_list)
         currency_list_string = ",".join(currencies)
+
+        exchange_rate_url = "https://api.fixer.io/latest?symbols=INR&base=USD"
+        r = requests.get(exchange_rate_url)
+        if r.status_code == 200:
+            exchange_json = r.json()
+            rate = exchange_json["rates"]["INR"]
+
         url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms={}&tsyms={}".format(crypto_list_string, currency_list_string)
         r = requests.get(url)
         if r.status_code == 200:
@@ -161,8 +168,15 @@ def get_current_crypto_price():
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
 
-                        dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
-                        dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
+                        if currency == "INR" and rate is not None:
+                                dict[crypto]["INR"]["change_24hrs_fiat"] = float(
+                                    data[crypto]["USD"]["CHANGE24HOUR"]*rate)
+                                dict[crypto][currency]["change_24hrs_percent"] = float(
+                                    data[crypto]["USD"]["CHANGEPCT24HOUR"])
+                        else:
+                            dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
+                            dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
+
                         dict[crypto][currency]["vol_24hrs_coin"] = float(data[crypto][currency]["VOLUME24HOUR"])
                         dict[crypto][currency]["vol_24hrs_fiat"] = float(data[crypto][currency]["VOLUME24HOURTO"])
                         dict[crypto][currency]["high_24hrs"] = float(data[crypto][currency]["HIGH24HOUR"])
