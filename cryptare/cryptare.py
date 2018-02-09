@@ -111,30 +111,29 @@ def update_24hr_change(current_price, min_24hr_price, coin):
 def update_zebpay_price():
     prices = get_zebpay_price()
     if prices is not None:
-        buy_price, sell_price, vol_24hrs = prices
-        data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
+        last_price, buy_price, sell_price, vol_24hrs = prices
+        data = {"timestamp": time.time(), "last_price": last_price ,"buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": vol_24hrs}
         db.child("zebpay").push(data)
-        # all_exchange_prices["BTC"]["INR"].append(buy_price)
+        all_exchange_prices["BTC"]["INR"].append(last_price)
     else:
         print("zebpay error")
 
 
 def get_zebpay_price():
-    url = "https://www.zebapi.com/api/v1/market/ticker/btc/inr"
+    url = "https://www.zebapi.com/api/v1/market/ticker-new/btc/inr"
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
         try:
-            # buy_price = json["buy"]
-            # because of zebpay api bug
-            buy_price = json["sell"]
+            last_price = json["market"]
+            buy_price = json["buy"]
             sell_price = json["sell"]
             vol_24hrs = json["volume"]
         except:
             return None
 
-        if buy_price is not None and sell_price is not None and vol_24hrs is not None:
-            return buy_price, sell_price, vol_24hrs
+        if last_price is not None and buy_price is not None and sell_price is not None and vol_24hrs is not None:
+            return last_price, buy_price, sell_price, vol_24hrs
     return None
 
 ###################################################
