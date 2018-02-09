@@ -58,7 +58,6 @@ btc_markets = {"INR": {
                 }, "BTC": {}}
 
 eth_markets = {"INR": {
-                    "Zebpay": "zebpay_new/ETH",
                     "Koinex": "koinex_ETH_INR",
                     "Throughbit": "throughbit_ETH_INR",
                     "Bitbns": "bitbns_ETH_INR"
@@ -118,7 +117,7 @@ xrp_markets = {"INR": {
                 },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
 
 bch_markets = {"INR": {
-                    "Zebpay": "zebpay/BCH",
+                    "Zebpay": "zebpay_new/BCH",
                     "Koinex": "koinex_BCH_INR",
                     "Coinome": "coinome_BCH_INR"
                 }, "USD": {
