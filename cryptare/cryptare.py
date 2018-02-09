@@ -115,7 +115,7 @@ def update_zebpay_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]["last_price"] ,"buy_price": result[coin]["buy_price"],
                     "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
-            db.child("zebpay").child(coin).push(data)
+            # db.child("zebpay").child(coin).push(data)
             if coin == "BTC": #support old version of cryptare
                 db.child("zebpay").push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]["last_price"])
