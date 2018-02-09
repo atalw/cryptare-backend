@@ -434,7 +434,7 @@ def update_coindelta_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                db.child("coindelta").child(coin).child(coin_pair).update(details)
+                db.child("coindelta").child(coin).child(coin_pair).push(details)
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
     else:
