@@ -101,7 +101,7 @@ def update_24hr_change(current_price, min_24hr_price, coin):
     change = current_price - min_24hr_price
     percent = change / min_24hr_price * 100
     rounded_percentage = round(percent, 2)
-    db.child(coin).child("Data").child("INR").update({"change_24hrs_percent": rounded_percentage, "change_24hrs_fiat": change})
+    # db.child(coin).child("Data").child("INR").update({"change_24hrs_percent": rounded_percentage, "change_24hrs_fiat": change})
 
 
 ###################################################

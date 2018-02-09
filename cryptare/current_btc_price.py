@@ -149,20 +149,20 @@ def get_current_crypto_price():
                                 db.child(crypto).child("Data").child(currency).child("price").get().val())
                             dict[crypto][currency]["timestamp"] = float(
                                 db.child(crypto).child("Data").child(currency).child("timestamp").get().val())
-                            change_fiat = db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val()
-                            change_percent = db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val()
-                            if change_fiat is not None and change_percent is not None:
-                                dict[crypto][currency]["change_24hrs_fiat"] = float(change_fiat)
-                                dict[crypto][currency]["change_24hrs_percent"] = float(change_percent)
-                            else:
-                                dict[crypto][currency]["change_24hrs_fiat"] = 0
-                                dict[crypto][currency]["change_24hrs_percent"] = 0
+                            # change_fiat = db.child(crypto).child("Data").child(currency).child("change_24hrs_fiat").get().val()
+                            # change_percent = db.child(crypto).child("Data").child(currency).child("change_24hrs_percent").get().val()
+                            # if change_fiat is not None and change_percent is not None:
+                            #     dict[crypto][currency]["change_24hrs_fiat"] = float(change_fiat)
+                            #     dict[crypto][currency]["change_24hrs_percent"] = float(change_percent)
+                            # else:
+                            #     dict[crypto][currency]["change_24hrs_fiat"] = 0
+                            #     dict[crypto][currency]["change_24hrs_percent"] = 0
                         else:
                             dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
                             dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
-                            dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
-                            dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
 
+                        dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
+                        dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
                         dict[crypto][currency]["vol_24hrs_coin"] = float(data[crypto][currency]["VOLUME24HOUR"])
                         dict[crypto][currency]["vol_24hrs_fiat"] = float(data[crypto][currency]["VOLUME24HOURTO"])
                         dict[crypto][currency]["high_24hrs"] = float(data[crypto][currency]["HIGH24HOUR"])
