@@ -706,12 +706,10 @@ def get_bittrex_price():
 def update_kucoin_price():
     result = get_kucoin_price()
     if result is not None:
-        print(result)
         for coin, pair_data in result.items():
-            print(coin)
             for coin_pair, details in pair_data.items():
-                # print(" ", details)
-                db.child("kucoin").child(coin).child(coin_pair).push(details)
+                db.child("kucoin").child(coin).child(coin_pair).update(details)
+
     else:
         print("kucoin error")
 
