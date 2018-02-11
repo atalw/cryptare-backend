@@ -56,7 +56,7 @@ btc_markets = {"INR": {
                     "LocalBitcoins": "localbitcoins_BTC_SGD"
                 }, "ZAR": {
                     "LocalBitcoins": "localbitcoins_BTC_ZAR"
-                }, "BTC": {}}
+                }, "BTC": {}, "ETH": {}}
 
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
@@ -82,14 +82,15 @@ eth_markets = {"INR": {
                 "BTC": {
                     "Kucoin": "kucoin/ETH/BTC",
                     "Coindelta": "coindelta/ETH/BTC"
-                }
+                },
+                "ETH": {}
                 }
 
 ltc_markets = {"INR": {
                     "Zebpay": "zebpay_new/LTC",
                     "Koinex": "koinex_LTC_INR",
                     "Coinome": "coinome_LTC_INR",
-                    "Coindelta": "coindelta/BTC/INR"
+                    "Coindelta": "coindelta/LTC/INR"
                 }, "USD": {
                     "Coinbase": "coinbase_LTC_USD",
                     "Kraken": "kraken_LTC_USD",
@@ -106,6 +107,9 @@ ltc_markets = {"INR": {
                 "BTC": {
                     "Kucoin": "kucoin/LTC/BTC",
                     "Coindelta": "coindelta/LTC/BTC"
+                },
+                "ETH": {
+                    "Kucoin": "kucoin/LTC/ETH"
                 }}
 
 xrp_markets = {"INR": {
@@ -123,7 +127,8 @@ xrp_markets = {"INR": {
                 },  "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
                 "BTC": {
                     "Coindelta": "coindelta/XRP/BTC"
-                }}
+                },
+                "ETH": {}}
 
 bch_markets = {"INR": {
                     "Zebpay": "zebpay_new/BCH",
@@ -132,7 +137,12 @@ bch_markets = {"INR": {
                     "Coindelta": "coindelta/BCH/INR"
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
-                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {}, "BTC": {}}
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/BCH/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/BCH/ETH"
+                }}
 
 indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
 
