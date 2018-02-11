@@ -21,7 +21,7 @@ firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
-currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC"]
+currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC", "ETH"]
 btc_markets = {"INR": {
                     "Zebpay": "zebpay_new/BTC",
                     "LocalBitcoins": "localbitcoins_BTC_INR",
