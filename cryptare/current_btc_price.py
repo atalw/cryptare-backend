@@ -21,7 +21,7 @@ firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
-currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC", "ETH", "CAD"]
+currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC", "ETH", "CAD", "AUD", "TRY", "AED"]
 btc_markets = {"INR": {
                     "Zebpay": "zebpay_new/BTC",
                     "LocalBitcoins": "localbitcoins_BTC_INR",
@@ -56,7 +56,7 @@ btc_markets = {"INR": {
                     "LocalBitcoins": "localbitcoins_BTC_SGD"
                 }, "ZAR": {
                     "LocalBitcoins": "localbitcoins_BTC_ZAR"
-                }, "BTC": {}, "ETH": {}, "CAD": {}}
+                }, "BTC": {}, "ETH": {}, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
 
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
@@ -83,7 +83,7 @@ eth_markets = {"INR": {
                     "Kucoin": "kucoin/ETH/BTC",
                     "Coindelta": "coindelta/ETH/BTC"
                 },
-                "ETH": {}, "CAD": {}
+                "ETH": {}, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
                 }
 
 ltc_markets = {"INR": {
@@ -110,7 +110,7 @@ ltc_markets = {"INR": {
                 },
                 "ETH": {
                     "Kucoin": "kucoin/LTC/ETH"
-                }, "CAD": {}}
+                }, "CAD": {}, "TRY": {}, "AUD": {}, "AED": {}}
 
 xrp_markets = {"INR": {
                     "Zebpay": "zebpay_new/XRP",
@@ -128,7 +128,7 @@ xrp_markets = {"INR": {
                 "BTC": {
                     "Coindelta": "coindelta/XRP/BTC"
                 },
-                "ETH": {}, "CAD": {}}
+                "ETH": {}, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
 
 bch_markets = {"INR": {
                     "Zebpay": "zebpay_new/BCH",
@@ -142,7 +142,7 @@ bch_markets = {"INR": {
                     "Kucoin": "kucoin/BCH/BTC"
                 }, "ETH": {
                     "Kucoin": "kucoin/BCH/ETH"
-                }, "CAD": {}}
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
 
 indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
 
