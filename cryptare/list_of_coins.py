@@ -23,6 +23,8 @@ def update_list_of_coins_with_rank():
             symbol = json[index]["symbol"]
             if symbol == "MIOTA":
                 symbol = "IOT"
+            elif symbol == "NANO":
+                symbol = "XRB"
             dict[symbol] = {}
             dict[symbol]["rank"] = float(json[index]["rank"])
             dict[symbol]["name"] = json[index]["name"]
