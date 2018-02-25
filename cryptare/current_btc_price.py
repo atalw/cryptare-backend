@@ -146,7 +146,7 @@ bch_markets = {"INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
 
 omg_markets = { "INR": {
-                    "Zebpay": "zebpay_new/OMG",
+                    "Koinex": "koinex_OMG_INR",
                     "Coindelta": "coindelta/OMG/INR"
                 }, "USD": {
 
