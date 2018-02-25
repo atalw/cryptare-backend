@@ -62,7 +62,8 @@ eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
                     "Throughbit": "throughbit_ETH_INR",
                     "Bitbns": "bitbns_ETH_INR",
-                    "Coindelta": "coindelta/ETH/INR"
+                    "Coindelta": "coindelta/ETH/INR",
+                    "Zebpay": "zebpay_new/ETH"
                 }, "USD": {
                     "Coinbase": "coinbase_ETH_USD",
                     "Kraken": "kraken_ETH_USD",
@@ -144,14 +145,39 @@ bch_markets = {"INR": {
                     "Kucoin": "kucoin/BCH/ETH"
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
 
-indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC"]
+omg_markets = { "INR": {
+                    "Zebpay": "zebpay_new/OMG",
+                    "Coindelta": "coindelta/OMG/INR"
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/OMG/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/OMG/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+req_markets = { "INR": {
+                    "Koinex": "koinex_REQ_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/REQ/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/REQ/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
     if dict is not None:
         crypto_list = list()
         for i in dict.keys():
-            crypto_list.append(i)
+             crypto_list.append(i)
         crypto_list_string = ",".join(crypto_list)
         currency_list_string = ",".join(currencies)
 
@@ -206,6 +232,10 @@ def get_current_crypto_price():
                             dict[crypto][currency]["markets"] = xrp_markets[currency]
                         elif crypto == "BCH":
                             dict[crypto][currency]["markets"] = bch_markets[currency]
+                        elif crypto == "OMG":
+                            dict[crypto][currency]["markets"] = omg_markets[currency]
+                        elif crypto == "REQ":
+                            dict[crypto][currency]["markets"] = req_markets[currency]
                         else:
                             dict[crypto][currency]["markets"] = {}
 

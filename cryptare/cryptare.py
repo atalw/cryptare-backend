@@ -25,7 +25,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
-coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG", "QTUM"]
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG", "QTUM", "REQ"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -110,7 +110,7 @@ def update_24hr_change(current_price, min_24hr_price, coin):
 
 
 def update_zebpay_price():
-    coins = ["BTC", "LTC", "BCH", "XRP"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
     result = get_zebpay_price(coins)
     if result is not None:
         for coin in coins:
@@ -150,7 +150,7 @@ def get_zebpay_price(coins):
 
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
@@ -797,8 +797,23 @@ def get_kucoin_price():
         return None
 
 
-
 ###################################################
 
+def update_binance_price():
+    result = get_binance_price()
+
+
+def get_binance_price():
+    url = "https://api.binance.com/api/v1/ticker/24hr"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        data = {}
+        for result in json:
+            print(result)
+
+
+###################################################
 
 execute()
