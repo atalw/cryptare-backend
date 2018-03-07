@@ -326,7 +326,6 @@ def get_current_crypto_price():
 
         for index, value in enumerate(crypto_list_string):
             url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms={}&tsyms={}".format(crypto_list_string[index], currency_list_string)
-            print(url)
             r = requests.get(url)
             if r.status_code == 200:
                 json = r.json()
