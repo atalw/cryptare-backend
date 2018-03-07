@@ -91,7 +91,8 @@ ltc_markets = {"INR": {
                     "Zebpay": "zebpay_new/LTC",
                     "Koinex": "koinex_LTC_INR",
                     "Coinome": "coinome_LTC_INR",
-                    "Coindelta": "coindelta/LTC/INR"
+                    "Coindelta": "coindelta/LTC/INR",
+                    "Bitbns": "bitbns_LTC_INR"
                 }, "USD": {
                     "Coinbase": "coinbase_LTC_USD",
                     "Kraken": "kraken_LTC_USD",
@@ -135,7 +136,8 @@ bch_markets = {"INR": {
                     "Zebpay": "zebpay_new/BCH",
                     "Koinex": "koinex_BCH_INR",
                     "Coinome": "coinome_BCH_INR",
-                    "Coindelta": "coindelta/BCH/INR"
+                    "Coindelta": "coindelta/BCH/INR",
+                    "Bitbns": "bitbns_BCH_INR",
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -214,7 +216,88 @@ ae_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
-indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE"]
+rpx_markets = { "INR": {
+                    "Bitbns": "bitbns_RPX_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/RPX/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/RPX/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+dbc_markets = { "INR": {
+                    "Bitbns": "bitbns_DBC_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/DBC/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/DBC/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+xmr_markets = { "INR": {
+                    "Bitbns": "bitbns_XMR_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+doge_markets = { "INR": {
+                    "Bitbns": "bitbns_DOGE_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+sia_markets = { "INR": {
+                    "Bitbns": "bitbns_SIA_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+xlm_markets = { "INR": {
+                    "Bitbns": "bitbns_XLM_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+neo_markets = { "INR": {
+                    "Bitbns": "bitbns_NEO_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/NEO/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/NEO/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR",
+                      "DOGE", "SIA", "XLM", "NEO"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -288,6 +371,20 @@ def get_current_crypto_price():
                             dict[crypto][currency]["markets"] = gnt_markets[currency]
                         elif crypto == "AE":
                             dict[crypto][currency]["markets"] = ae_markets[currency]
+                        elif crypto == "RPX":
+                            dict[crypto][currency]["markets"] = rpx_markets[currency]
+                        elif crypto == "DBC":
+                            dict[crypto][currency]["markets"] = dbc_markets[currency]
+                        elif crypto == "XMR":
+                            dict[crypto][currency]["markets"] = xmr_markets[currency]
+                        elif crypto == "DOGE":
+                            dict[crypto][currency]["markets"] = doge_markets[currency]
+                        elif crypto == "SIA":
+                            dict[crypto][currency]["markets"] = sia_markets[currency]
+                        elif crypto == "XLM":
+                            dict[crypto][currency]["markets"] = xlm_markets[currency]
+                        elif crypto == "NEO":
+                            dict[crypto][currency]["markets"] = neo_markets[currency]
                         else:
                             dict[crypto][currency]["markets"] = {}
 
