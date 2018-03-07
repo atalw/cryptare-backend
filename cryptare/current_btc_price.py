@@ -170,7 +170,51 @@ req_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
-indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ"]
+zrx_markets = { "INR": {
+                    "Koinex": "koinex_ZRX_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+gnt_markets = { "INR": {
+                    "Koinex": "koinex_GNT_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                }, "ETH": {
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+bat_markets = { "INR": {
+                    "Koinex": "koinex_BAT_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                }, "ETH": {
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+ae_markets = { "INR": {
+                    "Koinex": "koinex_AE_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+
+                }, "ETH": {
+
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+indian_crypto_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -236,6 +280,14 @@ def get_current_crypto_price():
                             dict[crypto][currency]["markets"] = omg_markets[currency]
                         elif crypto == "REQ":
                             dict[crypto][currency]["markets"] = req_markets[currency]
+                        elif crypto == "ZRX":
+                            dict[crypto][currency]["markets"] = zrx_markets[currency]
+                        elif crypto == "BAT":
+                            dict[crypto][currency]["markets"] = bat_markets[currency]
+                        elif crypto == "GNT":
+                            dict[crypto][currency]["markets"] = gnt_markets[currency]
+                        elif crypto == "AE":
+                            dict[crypto][currency]["markets"] = ae_markets[currency]
                         else:
                             dict[crypto][currency]["markets"] = {}
 

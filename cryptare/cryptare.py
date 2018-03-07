@@ -25,7 +25,7 @@ firebase = pyrebase.initialize_app(config)
 # Get a reference to the database service
 db = firebase.database()
 
-coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG", "QTUM", "REQ"]
+coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG", "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -150,7 +150,7 @@ def get_zebpay_price(coins):
 
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
