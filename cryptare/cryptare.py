@@ -360,7 +360,7 @@ def get_throughbit_price():
 ###################################################
 
 def update_bitbns_price():
-    coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR", "DASH", "DOGE", "BCH", "SIA"]
+    coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR", "DASH", "DOGE", "BCH", "SIA", "TRX"]
     result = get_bitbns_price(coins)
     if result is not None:
         for coin in coins:

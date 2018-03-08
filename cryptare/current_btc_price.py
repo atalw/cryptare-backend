@@ -298,6 +298,7 @@ neo_markets = { "INR": {
 
 trx_markets = { "INR": {
                     "Koinex": "koinex_TRX_INR",
+                    "Bitbns": "bitbns_TRX_INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
