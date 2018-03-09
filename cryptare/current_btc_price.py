@@ -307,8 +307,30 @@ trx_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
+dgb_markets = { "INR": {
+                    "Coinome": "coinome_DGB_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/DGB/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/OMG/BTC"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+zec_markets = { "INR": {
+                    "Coinome": "coinome_ZEC_INR"
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                }, "ETH": {
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
 crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR",
-                      "DOGE", "SIA", "XLM", "NEO", "TRX"]
+                      "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB", "ZEC"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -417,6 +439,10 @@ def get_current_crypto_price():
                                 dict[crypto][currency]["markets"] = neo_markets[currency]
                             elif crypto == "TRX":
                                 dict[crypto][currency]["markets"] = trx_markets[currency]
+                            elif crypto == "DGB":
+                                dict[crypto][currency]["markets"] = dgb_markets[currency]
+                            elif crypto == "ZEC":
+                                dict[crypto][currency]["markets"] = zec_markets[currency]
                             else:
                                 dict[crypto][currency]["markets"] = {}
 
