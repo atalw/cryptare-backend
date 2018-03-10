@@ -274,6 +274,7 @@ sia_markets = { "INR": {
 
 xlm_markets = { "INR": {
                     "Bitbns": "bitbns_XLM_INR",
+                    "Koinex": "koinex_XLM_INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -341,8 +342,22 @@ qtum_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
-crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR",
-                      "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB", "ZEC", "QTUM"]
+dash_markets = { "INR": {
+                    "Coinome": "coinome_QTUM_INR",
+                    "Bitbns": "bitbns_DASH_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/DASH/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/DASH/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT",
+                            "AE", "RPX", "DBC", "XMR", "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB",
+                            "ZEC", "QTUM", "GAS", "DASH"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -457,6 +472,8 @@ def get_current_crypto_price():
                                 dict[crypto][currency]["markets"] = zec_markets[currency]
                             elif crypto == "QTUM":
                                 dict[crypto][currency]["markets"] = qtum_markets[currency]
+                            elif crypto == "DASH":
+                                dict[crypto][currency]["markets"] = dash_markets[currency]
                             else:
                                 dict[crypto][currency]["markets"] = {}
 
