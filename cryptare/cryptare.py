@@ -394,7 +394,7 @@ def get_bitbns_price(coins):
 
 
 def update_coinome_price():
-    coins = ["BTC", "BCH", "LTC", "DASH", "DGB", "ZEC"]
+    coins = ["BTC", "BCH", "LTC", "DASH", "DGB", "ZEC", "QTUM"]
     result = get_coinome_price(coins)
     if result is not None:
         for coin in coins:

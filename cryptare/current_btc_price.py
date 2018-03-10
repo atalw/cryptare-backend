@@ -329,8 +329,20 @@ zec_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
+qtum_markets = { "INR": {
+                    "Coindelta": "coindelta/QTUM/INR",
+                    "Coinome": "coinome_QTUM_INR"
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/QTUM/BTC"
+                }, "ETH": {
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
 crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR",
-                      "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB", "ZEC"]
+                      "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB", "ZEC", "QTUM"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -443,6 +455,8 @@ def get_current_crypto_price():
                                 dict[crypto][currency]["markets"] = dgb_markets[currency]
                             elif crypto == "ZEC":
                                 dict[crypto][currency]["markets"] = zec_markets[currency]
+                            elif crypto == "QTUM":
+                                dict[crypto][currency]["markets"] = qtum_markets[currency]
                             else:
                                 dict[crypto][currency]["markets"] = {}
 
