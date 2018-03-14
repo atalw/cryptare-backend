@@ -287,6 +287,7 @@ xlm_markets = { "INR": {
 
 neo_markets = { "INR": {
                     "Bitbns": "bitbns_NEO_INR",
+                    "Koinex": "koinex_NEO_INR"
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -316,7 +317,7 @@ dgb_markets = { "INR": {
                 "BTC": {
                     "Kucoin": "kucoin/DGB/BTC"
                 }, "ETH": {
-                    "Kucoin": "kucoin/OMG/BTC"
+                    "Kucoin": "kucoin/DGB/ETH"
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
@@ -343,8 +344,8 @@ qtum_markets = { "INR": {
             }
 
 dash_markets = { "INR": {
-                    "Coinome": "coinome_QTUM_INR",
-                    "Bitbns": "bitbns_DASH_INR",
+                    "Coinome": "coinome_DASH_INR",
+                    "Bitbns": "bitbns_DASH_INR"
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -352,6 +353,18 @@ dash_markets = { "INR": {
                     "Kucoin": "kucoin/DASH/BTC"
                 }, "ETH": {
                     "Kucoin": "kucoin/DASH/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
+gas_markets = { "INR": {
+                    "Bitbns": "bitbns_GAS_INR",
+                    "Koinex": "koinex_GAS_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/GAS/BTC"
+                }, "ETH": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
@@ -474,6 +487,8 @@ def get_current_crypto_price():
                                 dict[crypto][currency]["markets"] = qtum_markets[currency]
                             elif crypto == "DASH":
                                 dict[crypto][currency]["markets"] = dash_markets[currency]
+                            elif crypto == "GAS":
+                                dict[crypto][currency]["markets"] = gas_markets[currency]
                             else:
                                 dict[crypto][currency]["markets"] = {}
 

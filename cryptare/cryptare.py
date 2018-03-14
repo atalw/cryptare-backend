@@ -152,7 +152,7 @@ def get_zebpay_price(coins):
 
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "TRX", "XLM"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "TRX", "XLM", "NEO", "GAS"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
