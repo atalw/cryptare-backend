@@ -688,17 +688,22 @@ def get_poloniex_price():
 
 def update_gemini_price():
     coins = ["BTC", "ETH"]
-    currencies = ["USD"]
+    currencies = ["USD", "BTC"]
     for coin in coins:
         for currency in currencies:
-            result = get_gemini_price(coin, currency)
-            if result is not None:
-                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
-                        "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
-                db.child("gemini_{0}_{1}".format(coin, currency)).push(data)
-                all_exchange_prices[coin][currency].append(result[0])
+            if coin == "BTC" and currency == "BTC":
+                continue
             else:
-                print("gemini error")
+                result = get_gemini_price(coin, currency)
+                if result is not None:
+                    data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
+                            "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
+                    db.child("gemini/{0}/{1}".format(coin, currency)).push(data)
+                    db.child("gemini_{0}_{1}".format(coin, currency)).remove()
+                    if currency != "BTC":
+                        all_exchange_prices[coin][currency].append(result[0])
+                else:
+                    print("gemini error")
 
 
 def get_gemini_price(coin, currency):

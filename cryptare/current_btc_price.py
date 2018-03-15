@@ -35,7 +35,7 @@ btc_markets = {"INR": {
                 }, "USD": {
                     "Coinbase": "coinbase/BTC/USD",
                     "Kraken": "kraken/BTC/USD",
-                    "Gemini": "gemini_BTC_USD",
+                    "Gemini": "gemini/BTC/USD",
                     "LocalBitcoins": "localbitcoins_BTC_USD",
                     "Bitfinex": "bitfinex_BTC_USD",
                     "Bitstamp": "bitstamp_BTC_USD",
@@ -73,7 +73,7 @@ eth_markets = {"INR": {
                 }, "USD": {
                     "Coinbase": "coinbase/ETH/USD",
                     "Kraken": "kraken/ETH/USD",
-                    "Gemini": "gemini_ETH_USD",
+                    "Gemini": "gemini/ETH/USD",
                     "Bitfinex": "bitfinex_ETH_USD",
                     "Bitstamp": "bitstamp_ETH_USD",
                     "Kucoin": "kucoin/ETH/USDT"
@@ -98,6 +98,7 @@ eth_markets = {"INR": {
                     "Kucoin": "kucoin/ETH/BTC",
                     "Coindelta": "coindelta/ETH/BTC",
                     "Kraken": "kraken/ETH/BTC",
+                    "Gemini": "gemini/ETH/BTC"
                 },
                 "ETH": {}}
 
