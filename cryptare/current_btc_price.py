@@ -368,9 +368,21 @@ gas_markets = { "INR": {
                 }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
             }
 
+btg_markets = { "INR": {
+                    "Coinome": "coinome_DGB_INR",
+                }, "USD": {
+
+                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "BTC": {
+                    "Kucoin": "kucoin/BTG/BTC"
+                }, "ETH": {
+                    "Kucoin": "kucoin/BTG/ETH"
+                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
+            }
+
 crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT",
                             "AE", "RPX", "DBC", "XMR", "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB",
-                            "ZEC", "QTUM", "GAS", "DASH"]
+                            "ZEC", "QTUM", "GAS", "DASH", "BTG"]
 
 def get_current_crypto_price():
     dict = get_list_of_coins_with_rank()
@@ -489,6 +501,8 @@ def get_current_crypto_price():
                                 dict[crypto][currency]["markets"] = dash_markets[currency]
                             elif crypto == "GAS":
                                 dict[crypto][currency]["markets"] = gas_markets[currency]
+                            elif crypto == "BTG":
+                                dict[crypto][currency]["markets"] = btg_markets[currency]
                             else:
                                 dict[crypto][currency]["markets"] = {}
 

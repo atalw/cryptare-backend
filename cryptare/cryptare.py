@@ -27,7 +27,7 @@ db = firebase.database()
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
-         "SIA", "TRX", "DGB", "ZEC"]
+         "SIA", "TRX", "DGB", "ZEC", "BTG"]
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
 all_exchange_prices = {}
 
@@ -395,7 +395,7 @@ def get_bitbns_price(coins):
 
 
 def update_coinome_price():
-    coins = ["BTC", "BCH", "LTC", "DASH", "DGB", "ZEC", "QTUM"]
+    coins = ["BTC", "BCH", "LTC", "DASH", "DGB", "ZEC", "QTUM", "BTG"]
     result = get_coinome_price(coins)
     if result is not None:
         for coin in coins:
