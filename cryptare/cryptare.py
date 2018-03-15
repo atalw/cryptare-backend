@@ -28,7 +28,7 @@ db = firebase.database()
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
          "SIA", "TRX", "DGB", "ZEC", "BTG"]
-currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR"]
+currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR", "AUD"]
 all_exchange_prices = {}
 
 ###################################################
@@ -474,20 +474,22 @@ def get_coindelta_price(coins):
 ###################################################
 
 def update_coinbase_price():
-    coins = ["BTC", "ETH", "LTC"]
+    coins = ["BTC", "ETH", "LTC", "BCH"]
+    currencies = ["USD", "GBP", "EUR", "AUD", "SGD", "CAD"]
+
     for coin in coins:
-        if coin == "ETH" or coin == "LTC":
-            currencies = ["USD", "EUR"]
-        else:
-            currencies = ["USD", "GBP", "EUR"]
         for currency in currencies:
             prices = get_coinbase_price(coin, currency)
             stats = get_gdax_market_stats(coin, currency)
-            if prices is not None and stats is not None:
+            if prices is not None:
                 buy_price, sell_price = prices
-                data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "max_24hrs": stats[0],
+                if stats is not None:
+                    data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "max_24hrs": stats[0],
                         "min_24hrs": stats[1], "vol_24hrs": stats[2], "vol_30days": stats[3]}
-                db.child("coinbase_{0}_{1}".format(coin, currency)).push(data)
+                else:
+                    data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price,
+                            "max_24hrs": -1, "min_24hrs": -1, "vol_24hrs": -1, "vol_30days": -1}
+                db.child("coinbase/{0}/{1}".format(coin, currency)).push(data)
                 all_exchange_prices[coin][currency].append(buy_price)
             else:
                 print("coinbase error")

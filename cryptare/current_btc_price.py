@@ -33,7 +33,7 @@ btc_markets = {"INR": {
                     "Coinome": "coinome_BTC_INR",
                     "Coindelta": "coindelta/BTC/INR"
                 }, "USD": {
-                    "Coinbase": "coinbase_BTC_USD",
+                    "Coinbase": "coinbase/BTC/USD",
                     "Kraken": "kraken_BTC_USD",
                     "Gemini": "gemini_BTC_USD",
                     "LocalBitcoins": "localbitcoins_BTC_USD",
@@ -41,11 +41,11 @@ btc_markets = {"INR": {
                     "Bitstamp": "bitstamp_BTC_USD",
                     "Kucoin": "kucoin/BTC/USDT"
                 }, "GBP": {
-                    "Coinbase": "coinbase_BTC_GBP",
+                    "Coinbase": "coinbase/BTC/GBP",
                     "Kraken": "kraken_BTC_GBP",
                     "LocalBitcoins": "localbitcoins_BTC_GBP"
                 }, "EUR": {
-                   "Coinbase": "coinbase_BTC_EUR",
+                   "Coinbase": "coinbase/BTC/EUR",
                    "LocalBitcoins": "localbitcoins_BTC_EUR",
                    "Kraken": "kraken_BTC_EUR"
                 }, "JPY": {
@@ -53,10 +53,15 @@ btc_markets = {"INR": {
                 }, "CNY": {
                     "LocalBitcoins": "localbitcoins_BTC_CNY"
                 }, "SGD": {
-                    "LocalBitcoins": "localbitcoins_BTC_SGD"
+                    "LocalBitcoins": "localbitcoins_BTC_SGD",
+                    "Coinbase": "coinbase/BTC/SGD"
                 }, "ZAR": {
                     "LocalBitcoins": "localbitcoins_BTC_ZAR"
-                }, "BTC": {}, "ETH": {}, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
+                }, "CAD": {
+                    "Coinbase": "coinbase/BTC/CAD"
+                }, "AUD": {
+                    "Coinbase": "coinbase/BTC/AUD"
+                }, "TRY": {}, "AED": {}, "BTC": {}, "ETH": {}}
 
 eth_markets = {"INR": {
                     "Koinex": "koinex_ETH_INR",
@@ -65,27 +70,33 @@ eth_markets = {"INR": {
                     "Coindelta": "coindelta/ETH/INR",
                     "Zebpay": "zebpay_new/ETH"
                 }, "USD": {
-                    "Coinbase": "coinbase_ETH_USD",
+                    "Coinbase": "coinbase/ETH/USD",
                     "Kraken": "kraken_ETH_USD",
                     "Gemini": "gemini_ETH_USD",
                     "Bitfinex": "bitfinex_ETH_USD",
                     "Bitstamp": "bitstamp_ETH_USD",
                     "Kucoin": "kucoin/ETH/USDT"
                 },  "GBP": {
-                    "Kraken": "kraken_ETH_GBP"
+                    "Kraken": "kraken_ETH_GBP",
+                    "Coinbase": "coinbase/ETH/GBP"
                 }, "EUR": {
-                    "Coinbase": "coinbase_ETH_EUR",
+                    "Coinbase": "coinbase/ETH/EUR",
                     "Bitstamp": "bitstamp_ETH_EUR",
                     "Kraken": "kraken_ETH_EUR"
                 },  "JPY": {
                     "Kraken": "kraken_ETH_JPY"
-                }, "CNY": {}, "SGD": {}, "ZAR": {},
+                }, "CNY": {}, "SGD": {
+                    "Coinbase": "coinbase/ETH/SGD"
+                }, "ZAR": {}, "CAD": {
+                    "Coinbase": "coinbase/ETH/CAD"
+                }, "AUD": {
+                    "Coinbase": "coinbase/ETH/AUD"
+                }, "TRY": {}, "AED": {},
                 "BTC": {
                     "Kucoin": "kucoin/ETH/BTC",
                     "Coindelta": "coindelta/ETH/BTC"
                 },
-                "ETH": {}, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}
-                }
+                "ETH": {}}
 
 ltc_markets = {"INR": {
                     "Zebpay": "zebpay_new/LTC",
@@ -94,25 +105,37 @@ ltc_markets = {"INR": {
                     "Coindelta": "coindelta/LTC/INR",
                     "Bitbns": "bitbns/LTC/INR"
                 }, "USD": {
-                    "Coinbase": "coinbase_LTC_USD",
+                    "Coinbase": "coinbase/LTC/USD",
                     "Kraken": "kraken_LTC_USD",
                     "Bitfinex": "bitfinex_LTC_USD",
                     "Bitstamp": "bitstamp_LTC_USD",
                     "Kucoin": "kucoin/LTC/USDT"
-                }, "GBP": {},
+                }, "GBP": {
+                    "Coinbase": "coinbase/LTC/GBP"
+                },
                 "EUR": {
-                    "Coinbase": "coinbase_LTC_EUR",
+                    "Coinbase": "coinbase/LTC/EUR",
                     "Bitstamp": "bitstamp_LTC_EUR",
                     "Kraken": "kraken_LTC_EUR"
                 },
-                "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                "JPY": {},
+                "CNY": {},
+                "SGD": {
+                    "Coinbase": "coinbase/LTC/SGD"
+                }, "ZAR": {},
+                "CAD": {
+                    "Coinbase": "coinbase/LTC/CAD"
+                }, "TRY": {},
+                "AUD": {
+                    "Coinbase": "coinbase/LTC/AUD"
+                }, "AED": {},
                 "BTC": {
                     "Kucoin": "kucoin/LTC/BTC",
                     "Coindelta": "coindelta/LTC/BTC"
                 },
                 "ETH": {
                     "Kucoin": "kucoin/LTC/ETH"
-                }, "CAD": {}, "TRY": {}, "AUD": {}, "AED": {}}
+                }}
 
 xrp_markets = {"INR": {
                     "Zebpay": "zebpay_new/XRP",
@@ -140,12 +163,29 @@ bch_markets = {"INR": {
                     "Bitbns": "bitbns/BCH/INR",
                 }, "USD": {
                     "Bitfinex": "bitfinex_BCH_USD",
-                }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
+                    "Coinbase": "coinbase/BCH/USD"
+                }, "GBP": {
+                    "Coinbase": "coinbase/BCH/GBP"
+                }, "EUR": {
+                    "Coinbase": "coinbase/BCH/EUR"
+                }, "JPY": {
+
+                }, "CNY": {
+
+                }, "SGD": {
+                    "Coinbase": "coinbase/BCH/SGD"
+                }, "ZAR": {
+
+                }, "CAD": {
+                    "Coinbase": "coinbase/BCH/CAD"
+                }, "AUD": {
+                    "Coinbase": "coinbase/BCH/AUD"
+                }, "TRY": {}, "AED": {},
                 "BTC": {
                     "Kucoin": "kucoin/BCH/BTC"
                 }, "ETH": {
                     "Kucoin": "kucoin/BCH/ETH"
-                }, "CAD": {}, "AUD": {}, "TRY": {}, "AED": {}}
+                }}
 
 omg_markets = { "INR": {
                     "Koinex": "koinex_OMG_INR",
