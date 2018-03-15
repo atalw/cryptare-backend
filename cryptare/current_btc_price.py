@@ -27,7 +27,7 @@ btc_markets = {"INR": {
                     "LocalBitcoins": "localbitcoins_BTC_INR",
                     "Coinsecure": "coinsecure",
                     "PocketBits": "pocketbits",
-                    "Koinex": "koinex_BTC_INR",
+                    "Koinex": "koinex/BTC/INR",
                     "Throughbit": "throughbit_BTC_INR",
                     "Bitbns": "bitbns/BTC/INR",
                     "Coinome": "coinome_BTC_INR",
@@ -64,7 +64,7 @@ btc_markets = {"INR": {
                 }, "TRY": {}, "AED": {}, "BTC": {}, "ETH": {}}
 
 eth_markets = {"INR": {
-                    "Koinex": "koinex_ETH_INR",
+                    "Koinex": "koinex/ETH/INR",
                     "Throughbit": "throughbit_ETH_INR",
                     "Bitbns": "bitbns/ETH/INR",
                     "Coindelta": "coindelta/ETH/INR",
@@ -100,7 +100,7 @@ eth_markets = {"INR": {
 
 ltc_markets = {"INR": {
                     "Zebpay": "zebpay_new/LTC",
-                    "Koinex": "koinex_LTC_INR",
+                    "Koinex": "koinex/LTC/INR",
                     "Coinome": "coinome_LTC_INR",
                     "Coindelta": "coindelta/LTC/INR",
                     "Bitbns": "bitbns/LTC/INR"
@@ -139,7 +139,7 @@ ltc_markets = {"INR": {
 
 xrp_markets = {"INR": {
                     "Zebpay": "zebpay_new/XRP",
-                    "Koinex": "koinex_XRP_INR",
+                    "Koinex": "koinex/XRP/INR",
                     "Bitbns": "bitbns/XRP/INR",
                     "Coindelta": "coindelta/XRP/INR"
                 },  "USD": {
@@ -157,7 +157,7 @@ xrp_markets = {"INR": {
 
 bch_markets = {"INR": {
                     "Zebpay": "zebpay_new/BCH",
-                    "Koinex": "koinex_BCH_INR",
+                    "Koinex": "koinex/BCH/INR",
                     "Coinome": "coinome_BCH_INR",
                     "Coindelta": "coindelta/BCH/INR",
                     "Bitbns": "bitbns/BCH/INR",
@@ -188,7 +188,7 @@ bch_markets = {"INR": {
                 }}
 
 omg_markets = { "INR": {
-                    "Koinex": "koinex_OMG_INR",
+                    "Koinex": "koinex/OMG/INR",
                     "Coindelta": "coindelta/OMG/INR"
                 }, "USD": {
 
@@ -201,7 +201,7 @@ omg_markets = { "INR": {
             }
 
 req_markets = { "INR": {
-                    "Koinex": "koinex_REQ_INR",
+                    "Koinex": "koinex/REQ/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -213,7 +213,7 @@ req_markets = { "INR": {
             }
 
 zrx_markets = { "INR": {
-                    "Koinex": "koinex_ZRX_INR",
+                    "Koinex": "koinex/ZRX/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -225,7 +225,7 @@ zrx_markets = { "INR": {
             }
 
 gnt_markets = { "INR": {
-                    "Koinex": "koinex_GNT_INR",
+                    "Koinex": "koinex/GNT/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -235,7 +235,7 @@ gnt_markets = { "INR": {
             }
 
 bat_markets = { "INR": {
-                    "Koinex": "koinex_BAT_INR",
+                    "Koinex": "koinex/BAT/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -245,7 +245,7 @@ bat_markets = { "INR": {
             }
 
 ae_markets = { "INR": {
-                    "Koinex": "koinex_AE_INR",
+                    "Koinex": "koinex/AE/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -314,7 +314,7 @@ sia_markets = { "INR": {
 
 xlm_markets = { "INR": {
                     "Bitbns": "bitbns/XLM/INR",
-                    "Koinex": "koinex_XLM_INR",
+                    "Koinex": "koinex/XLM/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -327,7 +327,7 @@ xlm_markets = { "INR": {
 
 neo_markets = { "INR": {
                     "Bitbns": "bitbns/NEO/INR",
-                    "Koinex": "koinex_NEO_INR"
+                    "Koinex": "koinex/NEO/INR"
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},
@@ -339,7 +339,7 @@ neo_markets = { "INR": {
             }
 
 trx_markets = { "INR": {
-                    "Koinex": "koinex_TRX_INR",
+                    "Koinex": "koinex/TRX/INR",
                     "Bitbns": "bitbns/TRX/INR",
                 }, "USD": {
 
@@ -398,7 +398,7 @@ dash_markets = { "INR": {
 
 gas_markets = { "INR": {
                     "Bitbns": "bitbns/GAS/INR",
-                    "Koinex": "koinex_GAS_INR",
+                    "Koinex": "koinex/GAS/INR",
                 }, "USD": {
 
                 }, "GBP": {}, "EUR": {}, "JPY": {}, "CNY": {}, "SGD": {}, "ZAR": {},

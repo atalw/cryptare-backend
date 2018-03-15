@@ -159,7 +159,7 @@ def update_koinex_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]['last_price'], "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
-            db.child("koinex_{}_INR".format(coin)).push(data)
+            db.child("koinex/{}/INR".format(coin)).push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]['last_price'])
             update_24hr_change(result[coin]['last_price'], result[coin]['min_24hrs'], coin)
     else:
