@@ -541,46 +541,117 @@ def get_gdax_market_stats(coin, currency):
 
 
 def update_kraken_price():
-    coins = ["BTC", "ETH", "LTC"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "DASH", "EOS", "ETC", "GNO", "ICN", "MLN", "REP", "XDG", "XLM", "XMR", "XRP", "ZEC"]
+    trade_pairs_dict = {}
+    trade_pairs_array = []
     for coin in coins:
-        if coin == "LTC":
-            currencies = ["USD", "EUR"]
-        else:
-            currencies = ["USD", "GBP", "JPY", "CAD", "EUR"]
+        currencies = []
+        if coin == "BTC":
+            currencies = ["CAD", "EUR", "GBP", "JPY", "USD"]
+        elif coin == "ETH":
+            currencies = ["CAD", "EUR", "GBP", "JPY", "USD", "BTC"]
+        elif coin == "LTC":
+            currencies = ["USD", "EUR", "BTC"]
+        elif coin == "BCH":
+            currencies = ["USD", "EUR", "BTC"]
+        elif coin == "DASH":
+            currencies = ["USD", "EUR", "BTC"]
+        elif coin == "EOS":
+            currencies = ["USD", "EUR", "BTC", "ETH"]
+        elif coin == "ETC":
+            currencies = ["USD", "EUR", "BTC", "ETH"]
+        elif coin == "GNO":
+            currencies = ["USD", "EUR", "BTC", "ETH"]
+        elif coin == "ICN":
+            currencies = ["BTC", "ETH"]
+        elif coin == "MLN":
+            currencies = ["BTC", "ETH"]
+        elif coin == "REP":
+            currencies = ["USD", "EUR", "BTC", "ETH"]
+        elif coin == "XGD":
+            currencies = ["BTC"]
+        elif coin == "XLM":
+            currencies = ["USD", "EUR", "BTC"]
+        elif coin == "XMR":
+            currencies = ["USD", "EUR", "BTC"]
+        elif coin == "XRP":
+            currencies = ["CAD", "EUR", "JPY", "USD", "BTC"]
+        elif coin == "ZEC":
+            currencies = ["EUR", "JPY", "USD", "BTC"]
+
+        trade_pairs_dict[coin] = currencies
+        trade_pairs_array.extend(create_trade_pairs(coin, currencies))
+
+    result = get_kraken_price(trade_pairs_dict, trade_pairs_array)
+
+    for coin, currencies in trade_pairs_dict.items():
+        dict_coin = coin
+        if coin == "BTC":
+            dict_coin = "XBT"
         for currency in currencies:
-            result = get_kraken_price(coin, currency)
+            dict_currency = currency
+            if currency == "BTC":
+                dict_currency = "XBT"
             if result is not None:
-                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
-                        "vol_24hrs": result[2], "max_24hrs": result[3], "min_24hrs": result[4]}
-                db.child("kraken_{0}_{1}".format(coin, currency)).push(data)
-                all_exchange_prices[coin][currency].append(result[0])
+                data = {"timestamp": time.time(), "buy_price": result[dict_coin][dict_currency]["buy_price"], "sell_price": result[dict_coin][dict_currency]["sell_price"],
+                        "vol_24hrs": result[dict_coin][dict_currency]["sell_price"], "max_24hrs": result[dict_coin][dict_currency]["sell_price"], "min_24hrs": result[dict_coin][dict_currency]["sell_price"]}
+                db.child("kraken/{0}/{1}".format(coin, currency)).push(data)
             else:
                 print("kraken error")
 
 
-def get_kraken_price(coin, currency):
-    if coin == "BTC":
-        coin = "XBT"
-    url = "https://api.kraken.com/0/public/Ticker?pair={0}{1}".format(coin, currency)
+def get_kraken_price(trade_pairs_dict, trade_pairs_array):
+    trade_pairs_string = ",".join(trade_pairs_array)
+
+    url = "https://api.kraken.com/0/public/Ticker?pair={}".format(trade_pairs_string)
 
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        coin_currency_pair = "X{0}Z{1}".format(coin, currency)
-        try:
-            buy_price = json["result"][coin_currency_pair]["a"][0]
-            sell_price = json["result"][coin_currency_pair]["b"][0]
-            vol_24hrs = json["result"][coin_currency_pair]["v"][1]
-            max_24hrs = json["result"][coin_currency_pair]["h"][1]
-            min_24hrs = json["result"][coin_currency_pair]["l"][1]
-        except:
-            return None
+        dict = {}
+        for coin, currencies in trade_pairs_dict.items():
+            if coin == "BTC":
+                coin = "XBT"
+            dict[coin] = {}
+            for currency in currencies:
+                if currency == "BTC":
+                    currency = "XBT"
 
-        if buy_price is not None and sell_price is not None and vol_24hrs is not None and \
-                        max_24hrs is not None and min_24hrs is not None:
-            return [float(buy_price), float(sell_price), float(vol_24hrs), float(max_24hrs), float(min_24hrs)]
+                if coin == "BCH" or coin == "DASH" or coin == "EOS" or coin == "GNO":
+                    coin_currency_pair = "{0}{1}".format(coin, currency)
+                else:
+                    if currency == "XBT" or currency == "ETH":
+                        coin_currency_pair = "X{0}X{1}".format(coin, currency)
+                    else:
+                        coin_currency_pair = "X{0}Z{1}".format(coin, currency)
+                try:
+                    dict[coin][currency] = {}
+                    dict[coin][currency]["buy_price"] = float(json["result"][coin_currency_pair]["a"][0])
+                    dict[coin][currency]["sell_price"] = float(json["result"][coin_currency_pair]["b"][0])
+                    dict[coin][currency]["vol_24hrs"] = float(json["result"][coin_currency_pair]["v"][1])
+                    dict[coin][currency]["max_24hrs"] = float(json["result"][coin_currency_pair]["h"][1])
+                    dict[coin][currency]["min_24hrs"] = float(json["result"][coin_currency_pair]["l"][1])
+                except:
+                    print("error", coin_currency_pair)
+
+        if dict is not None:
+            return dict
     return None
 
+
+def create_trade_pairs(coin, currencies):
+    trade_pairs = []
+
+    for currency in currencies:
+        if coin == "BTC":
+            trade_pairs.append("XBT{}".format(currency))
+        else:
+            if currency == "BTC":
+                trade_pairs.append("{}XBT".format(coin))
+            else:
+                trade_pairs.append("{0}{1}".format(coin, currency))
+
+    return trade_pairs
 
 ###################################################
 
