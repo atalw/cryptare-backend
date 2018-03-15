@@ -367,7 +367,7 @@ def update_bitbns_price():
         for coin in coins:
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
-            db.child("bitbns_{}_INR".format(coin)).push(data)
+            db.child("bitbns/{}/INR".format(coin)).push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
     else:
         print("bitbns error")
