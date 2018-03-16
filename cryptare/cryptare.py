@@ -1004,6 +1004,8 @@ def add_market_entry(coin, currency, market_name, market_title):
 def update_markets():
     for coin, values in all_markets.items():
         for currency, markets in values.items():
+            if currency == 'USDT':
+                currency = "USD"
             db.child("{0}/Data/{1}/markets".format(coin, currency)).update(markets)
 
 execute()
