@@ -28,7 +28,7 @@ db = firebase.database()
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
-         "SIA", "TRX", "DGB", "ZEC", "BTG", "IOT"]
+         "SIA", "TRX", "DGB", "ZEC", "BTG", "IOT", "ZIL"]
 
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR", "AUD"]
 
@@ -455,7 +455,7 @@ def get_coinome_price(coins):
 
 
 def update_coindelta_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM", "ZIL", "ZRX"]
     result = get_coindelta_price(coins)
     if result is not None:
         for coin, pair_data in result.items():
