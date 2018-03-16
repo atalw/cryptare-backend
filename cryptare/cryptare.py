@@ -935,26 +935,35 @@ def get_kucoin_price():
             if status:
                 results = json["data"]
                 data = {}
-                for coin in coins:
-                    data[coin] = {}
+
                 for result in results:
                     coin = result["coinType"]
                     coin_pair = result["coinTypePair"]
-                    if coin in coins and (coin_pair in coins or coin_pair == "USDT"):
-                        data[coin][coin_pair] = {}
-                        data[coin][coin_pair]["last_price"] = result["lastDealPrice"]
-                        data[coin][coin_pair]["price_change"] = result["change"]
-                        data[coin][coin_pair]["percentage_change"] = result["changeRate"] * 100
+
+                    if coin not in data:
+                        data[coin] = {}
+
+                    data[coin][coin_pair] = {}
+                    data[coin][coin_pair]["last_price"] = result["lastDealPrice"]
+                    data[coin][coin_pair]["price_change"] = result["change"]
+                    data[coin][coin_pair]["percentage_change"] = result["changeRate"] * 100
+                    try:
                         data[coin][coin_pair]["high"] = result["high"]
+                    except:
+                        data[coin][coin_pair]["high"] = result["sell"]
+
+                    try:
                         data[coin][coin_pair]["low"] = result["low"]
-                        data[coin][coin_pair]["volume"] = result["volValue"]
-                        data[coin][coin_pair]["sell_price"] = result["sell"]
-                        try:
-                            data[coin][coin_pair]["buy_price"] = result["buy"]
-                        except:
-                            data[coin][coin_pair]["buy_price"] = result["sell"]
-                    else:
-                        continue
+                    except:
+                        data[coin][coin_pair]["low"] = result["sell"]
+
+                    data[coin][coin_pair]["volume"] = result["volValue"]
+                    data[coin][coin_pair]["sell_price"] = result["sell"]
+                    try:
+                        data[coin][coin_pair]["buy_price"] = result["buy"]
+                    except:
+                        data[coin][coin_pair]["buy_price"] = result["sell"]
+
                 return data
         except:
             return None
