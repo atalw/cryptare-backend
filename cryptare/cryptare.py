@@ -1019,11 +1019,11 @@ def get_binance_price():
         for coin, coin_pairs in dict.items():
             for coin_pair in coin_pairs:
                 if entry['symbol'] == '{0}{1}'.format(coin, coin_pair):
-                    dict[coin][coin_pair]['buy_price'] = entry['askPrice']
-                    dict[coin][coin_pair]['sell_price'] = entry['bidPrice']
-                    dict[coin][coin_pair]['max_24hrs'] = entry['highPrice']
-                    dict[coin][coin_pair]['min_24hrs'] = entry['lowPrice']
-                    dict[coin][coin_pair]['vol_24hrs'] = entry['volume']
+                    dict[coin][coin_pair]['buy_price'] = float(entry['askPrice'])
+                    dict[coin][coin_pair]['sell_price'] = float(entry['bidPrice'])
+                    dict[coin][coin_pair]['max_24hrs'] = float(entry['highPrice'])
+                    dict[coin][coin_pair]['min_24hrs'] = float(entry['lowPrice'])
+                    dict[coin][coin_pair]['vol_24hrs'] = float(entry['volume'])
 
     for coin, coin_pairs in dict.items():
         for coin_pair in coin_pairs:
