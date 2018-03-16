@@ -27,8 +27,12 @@ db = firebase.database()
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
-         "SIA", "TRX", "DGB", "ZEC", "BTG"]
+         "SIA", "TRX", "DGB", "ZEC", "BTG", "IOT"]
+
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR", "AUD"]
+
+all_markets = {}
+
 all_exchange_prices = {}
 
 ###################################################
@@ -83,6 +87,7 @@ def update_exchanges():
 
     update_kucoin_price()
 
+    update_markets()
 
 ###################################################
 
@@ -110,7 +115,6 @@ def update_24hr_change(current_price, min_24hr_price, coin):
 ###################################################
 
 
-
 def update_zebpay_price():
     coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
     result = get_zebpay_price(coins)
@@ -118,10 +122,11 @@ def update_zebpay_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]["last_price"] ,"buy_price": result[coin]["buy_price"],
                     "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
-            db.child("zebpay_new").child(coin).push(data)
+            db.child("zebpay_new/{}/INR".format(coin)).push(data)
             if coin == "BTC": #support old version of cryptare
                 db.child("zebpay").push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]["last_price"])
+            add_market_entry(coin, 'INR', 'Zebpay', 'zebpay_new')
     else:
         print("zebpay error")
 
@@ -148,11 +153,10 @@ def get_zebpay_price(coins):
 
 ###################################################
 
-###################################################
-
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT", "AE", "TRX", "XLM", "NEO", "GAS"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT",
+             "AE", "TRX", "XLM", "NEO", "GAS"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
@@ -160,6 +164,7 @@ def update_koinex_price():
             data = {"timestamp": time.time(), "last_price": result[coin]['last_price'], "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
             db.child("koinex/{}/INR".format(coin)).push(data)
+            add_market_entry(coin, 'INR', 'Koinex', 'koinex')
             all_exchange_prices[coin]["INR"].append(result[coin]['last_price'])
             update_24hr_change(result[coin]['last_price'], result[coin]['min_24hrs'], coin)
     else:
@@ -202,8 +207,9 @@ def update_localbitcoins_price():
         if prices is not None and volume_data is not None:
             buy_price, sell_price = prices
             data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": volume_data[currency]}
-            title = "localbitcoins_BTC_{}".format(currency)
+            title = "localbitcoins/BTC/{}".format(currency)
             db.child(title).push(data)
+            add_market_entry('BTC', currency, 'Localbitcoins', 'localbitcoins')
             all_exchange_prices["BTC"][currency].append(buy_price)
         else:
             print("localbitcoins error")
@@ -252,7 +258,8 @@ def update_coinsecure_price():
     if result is not None:
         data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "max_24hrs": result[2],
                 "min_24hrs": result[3], "fiat_volume_24hrs": result[4], "coin_volume_24hrs": result[5]}
-        db.child("coinsecure").push(data)
+        db.child("coinsecure/BTC/INR").push(data)
+        add_market_entry('BTC', 'INR', 'Coinsecure', 'coinsecure')
         all_exchange_prices["BTC"]["INR"].append(result[0])
     else:
         print("coinsecure error")
@@ -298,7 +305,8 @@ def update_pocketbits_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("pocketbits").push(data)
+        db.child("pocketbits/BTC/INR").push(data)
+        add_market_entry('BTC', 'INR', 'PocketBits', 'pocketbits')
         all_exchange_prices["BTC"]["INR"].append(buy_price)
     else:
         print("pockebits error")
@@ -329,10 +337,12 @@ def update_throughbit_price():
     prices = get_throughbit_price()
     if prices is not None:
         data = {"timestamp": time.time(), "buy_price": prices[0], "sell_price": prices[1]}
-        db.child("throughbit_BTC_INR").push(data)
+        db.child("throughbit/BTC/INR").push(data)
+        add_market_entry('BTC', 'INR', 'Throughbit', 'throughbit')
         all_exchange_prices["BTC"]["INR"].append(prices[0])
         data = {"timestamp": time.time(), "buy_price": prices[2], "sell_price": prices[3]}
-        db.child("throughbit_ETH_INR").push(data)
+        db.child("throughbit/ETH/INR").push(data)
+        add_market_entry('ETH', 'INR', 'Throughbit', 'throughbit')
         all_exchange_prices["ETH"]["INR"].append(prices[2])
 
     else:
@@ -368,6 +378,7 @@ def update_bitbns_price():
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
             db.child("bitbns/{}/INR".format(coin)).push(data)
+            add_market_entry(coin, 'INR', 'Bitbns', 'bitbns')
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
     else:
         print("bitbns error")
@@ -401,7 +412,8 @@ def update_coinome_price():
         for coin in coins:
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
-            db.child("coinome_{}_INR".format(coin)).push(data)
+            db.child("coinome/{}/INR".format(coin)).push(data)
+            add_market_entry(coin, 'INR', 'Coinome', 'coinome')
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
     else:
         print("coinome error")
@@ -437,6 +449,7 @@ def update_coindelta_price():
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
                 db.child("coindelta").child(coin).child(coin_pair).push(details)
+                add_market_entry(coin, coin_pair, 'Coindelta', 'coindelta')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
     else:
@@ -453,7 +466,6 @@ def get_coindelta_price(coins):
     if r.status_code == 200:
         json = r.json()
         for entry in json:
-            print(entry)
             try:
                 market_name = entry["MarketName"]
                 coins = market_name.split('-')
@@ -490,6 +502,7 @@ def update_coinbase_price():
                     data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price,
                             "max_24hrs": -1, "min_24hrs": -1, "vol_24hrs": -1, "vol_30days": -1}
                 db.child("coinbase/{0}/{1}".format(coin, currency)).push(data)
+                add_market_entry(coin, currency, 'Coinbase', 'coinbase')
                 all_exchange_prices[coin][currency].append(buy_price)
             else:
                 print("coinbase error")
@@ -580,7 +593,7 @@ def update_kraken_price():
             currencies = ["EUR", "JPY", "USD", "BTC"]
 
         trade_pairs_dict[coin] = currencies
-        trade_pairs_array.extend(create_trade_pairs(coin, currencies))
+        trade_pairs_array.extend(create_trade_pairs_kraken(coin, currencies))
 
     result = get_kraken_price(trade_pairs_dict, trade_pairs_array)
 
@@ -596,6 +609,7 @@ def update_kraken_price():
                 data = {"timestamp": time.time(), "buy_price": result[dict_coin][dict_currency]["buy_price"], "sell_price": result[dict_coin][dict_currency]["sell_price"],
                         "vol_24hrs": result[dict_coin][dict_currency]["sell_price"], "max_24hrs": result[dict_coin][dict_currency]["sell_price"], "min_24hrs": result[dict_coin][dict_currency]["sell_price"]}
                 db.child("kraken/{0}/{1}".format(coin, currency)).push(data)
+                add_market_entry(coin, currency, 'Kraken', 'kraken')
             else:
                 print("kraken error")
 
@@ -639,7 +653,7 @@ def get_kraken_price(trade_pairs_dict, trade_pairs_array):
     return None
 
 
-def create_trade_pairs(coin, currencies):
+def create_trade_pairs_kraken(coin, currencies):
     trade_pairs = []
 
     for currency in currencies:
@@ -699,7 +713,7 @@ def update_gemini_price():
                     data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
                             "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
                     db.child("gemini/{0}/{1}".format(coin, currency)).push(data)
-                    db.child("gemini_{0}_{1}".format(coin, currency)).remove()
+                    add_market_entry(coin, currency, 'Gemini', 'gemini')
                     if currency != "BTC":
                         all_exchange_prices[coin][currency].append(result[0])
                 else:
@@ -728,43 +742,105 @@ def get_gemini_price(coin, currency):
 ###################################################
 
 def update_bitfinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "XMR", "OMG", "NEO", "BTG", "GNT",
+             "IOT", "BAT", "ZRX", "TRX", "REP", "ETC", "DASH", "QTUM"]
+
+    trade_pairs_dict = {}
+    trade_pairs_array = []
     for coin in coins:
         if coin == "BTC":
             currencies = ["USD", "EUR"]
-        else:
-            currencies = ["USD"]
-        for currency in currencies:
-            result = get_bitfinex_price(coin, currency)
-            if result is not None:
-                data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
-                        "max_24hrs": result[2], "min_24hrs": result[3], "vol_24hrs": result[4]}
-                db.child("bitfinex_{0}_{1}".format(coin, currency)).push(data)
-                all_exchange_prices[coin][currency].append(result[0])
-            else:
-                print("bitfinex error")
+        elif coin == "ETH":
+            currencies = ["USD", "BTC"]
+        elif coin == "LTC":
+            currencies = ["USD", "BTC"]
+        elif coin == "BCH":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "XRP":
+            currencies = ["USD", "BTC"]
+        elif coin == "XMR":
+            currencies = ["USD", "BTC"]
+        elif coin == "OMG":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "NEO":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "BTG":
+            currencies = ["USD", "BTC"]
+        elif coin == "GNT":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "IOT":
+            currencies = ["USD", "EUR", "BTC", "ETH"]
+        elif coin == "BAT":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "ZRX":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "TRX":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "REP":
+            currencies = ["USD", "BTC", "ETH"]
+        elif coin == "ETC":
+            currencies = ["USD", "BTC"]
+        elif coin == "DASH":
+            currencies = ["USD", "BTC"]
+        elif coin == "QTUM":
+            currencies = ["USD", "BTC", "ETH"]
 
+        trade_pairs_dict[coin] = currencies
+        trade_pairs_array.extend(create_trade_pairs_bitfinex(coin, currencies))
 
-def get_bitfinex_price(coin, currency):
-    url =  "https://api.bitfinex.com/v1/pubticker/{0}{1}".format(coin, currency)
+    result = get_bitfinex_price(coins, trade_pairs_dict, trade_pairs_array)
 
+    if result is not None or result != {}:
+        for coin, currencies in result.items():
+            for currency in currencies:
+                data = {"timestamp": time.time(),
+                        "buy_price": result[coin][currency]["buy_price"],
+                        "sell_price": result[coin][currency]["sell_price"],
+                        "max_24hrs": result[coin][currency]["max_24hrs"],
+                        "min_24hrs": result[coin][currency]["min_24hrs"],
+                        "vol_24hrs": result[coin][currency]["vol_24hrs"]}
+                db.child("bitfinex/{0}/{1}".format(coin, currency)).update(data)
+                add_market_entry(coin, currency, 'Bitfinex', 'bitfinex')
+
+def get_bitfinex_price(coins, trade_pairs_dict, trade_pairs_array):
+    trade_pairs_string = ",".join(trade_pairs_array)
+    url = "https://api.bitfinex.com/v2/tickers?symbols={}".format(trade_pairs_string)
     r = requests.get(url)
     if r.status_code == 200:
         if r.headers['Content-Type'] == 'application/json; charset=utf-8':
             json = r.json()
-            try:
-                buy_price = json["ask"]
-                sell_price = json["bid"]
-                max_24hrs = json["high"]
-                min_24hrs = json["low"]
-                vol_24hrs = json["volume"]
-            except:
-                return None
+            dict = {}
+            index = 0
+            for coin in coins:
+                dict[coin] = {}
+                for currency in trade_pairs_dict[coin]:
+                    try:
+                        dict[coin][currency] = {}
+                        dict[coin][currency]["buy_price"] = float(json[index][3])
+                        dict[coin][currency]["sell_price"] = float(json[index][1])
+                        dict[coin][currency]["max_24hrs"] = float(json[index][9])
+                        dict[coin][currency]["min_24hrs"] = float(json[index][10])
+                        dict[coin][currency]["vol_24hrs"] = float(json[index][8])
+                    except:
+                        print("bitfinex error", coin, currency)
 
-            if buy_price is not None and sell_price is not None and max_24hrs is not None \
-                    and min_24hrs is not None and vol_24hrs is not None:
-                return [float(buy_price), float(sell_price), float(max_24hrs), float(min_24hrs), float(vol_24hrs)]
+                    index += 1
+
+            if dict is not None:
+                return dict
     return None
+
+def create_trade_pairs_bitfinex(coin, currencies):
+    trade_pairs = []
+    for currency in currencies:
+        if coin == "DASH":
+            trade_pairs.append("tDSH{}".format(currency))
+        elif coin == "QTUM":
+            trade_pairs.append("tQTM{}".format(currency))
+        else:
+            trade_pairs.append("t{0}{1}".format(coin, currency))
+
+    return trade_pairs
 
 ###################################################
 
@@ -777,7 +853,10 @@ def update_bitstamp_price():
             if result is not None:
                 data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
                         "max_24hrs": result[2], "min_24hrs": result[3], "vol_24hrs": result[4]}
-                db.child("bitstamp_{0}_{1}".format(coin, currency)).push(data)
+                db.child("bitstamp/{0}/{1}".format(coin, currency)).push(data)
+                db.child("bitstamp_{0}_{1}".format(coin, currency)).remove()
+                add_market_entry(coin, currency, 'Bitstamp', 'bitstamp')
+
                 all_exchange_prices[coin][currency].append(result[0])
             else:
                 print("bitstamp error")
@@ -840,6 +919,7 @@ def update_kucoin_price():
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
                 db.child("kucoin").child(coin).child(coin_pair).update(details)
+                add_market_entry(coin, coin_pair, 'Kucoin', 'kucoin')
 
     else:
         print("kucoin error")
@@ -868,8 +948,13 @@ def get_kucoin_price():
                         data[coin][coin_pair]["high"] = result["high"]
                         data[coin][coin_pair]["low"] = result["low"]
                         data[coin][coin_pair]["volume"] = result["volValue"]
-                        data[coin][coin_pair]["buy_price"] = result["buy"]
                         data[coin][coin_pair]["sell_price"] = result["sell"]
+                        try:
+                            data[coin][coin_pair]["buy_price"] = result["buy"]
+                        except:
+                            data[coin][coin_pair]["buy_price"] = result["sell"]
+                    else:
+                        continue
                 return data
         except:
             return None
@@ -895,5 +980,21 @@ def get_binance_price():
 
 
 ###################################################
+
+def add_market_entry(coin, currency, market_name, market_title):
+
+    if coin not in all_markets :
+        all_markets[coin] = {}
+
+    if currency not in all_markets[coin]:
+        all_markets[coin][currency] = {}
+
+    all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
+
+
+def update_markets():
+    for coin, values in all_markets.items():
+        for currency, markets in values.items():
+            db.child("{0}/Data/{1}/markets".format(coin, currency)).update(markets)
 
 execute()

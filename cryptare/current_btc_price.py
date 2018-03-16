@@ -522,58 +522,58 @@ def get_current_crypto_price():
                             dict[crypto][currency]["last_trade_market"] = data[crypto][currency]["LASTMARKET"]
                             dict[crypto][currency]["supply"] = float(data[crypto][currency]["SUPPLY"])
                             dict[crypto][currency]["marketcap"] = float(data[crypto][currency]["MKTCAP"])
-                            if crypto == "BTC":
-                                dict[crypto][currency]["markets"] = btc_markets[currency]
-                            elif crypto == "ETH":
-                                dict[crypto][currency]["markets"] = eth_markets[currency]
-                            elif crypto == "LTC":
-                                dict[crypto][currency]["markets"] = ltc_markets[currency]
-                            elif crypto == "XRP":
-                                dict[crypto][currency]["markets"] = xrp_markets[currency]
-                            elif crypto == "BCH":
-                                dict[crypto][currency]["markets"] = bch_markets[currency]
-                            elif crypto == "OMG":
-                                dict[crypto][currency]["markets"] = omg_markets[currency]
-                            elif crypto == "REQ":
-                                dict[crypto][currency]["markets"] = req_markets[currency]
-                            elif crypto == "ZRX":
-                                dict[crypto][currency]["markets"] = zrx_markets[currency]
-                            elif crypto == "BAT":
-                                dict[crypto][currency]["markets"] = bat_markets[currency]
-                            elif crypto == "GNT":
-                                dict[crypto][currency]["markets"] = gnt_markets[currency]
-                            elif crypto == "AE":
-                                dict[crypto][currency]["markets"] = ae_markets[currency]
-                            elif crypto == "RPX":
-                                dict[crypto][currency]["markets"] = rpx_markets[currency]
-                            elif crypto == "DBC":
-                                dict[crypto][currency]["markets"] = dbc_markets[currency]
-                            elif crypto == "XMR":
-                                dict[crypto][currency]["markets"] = xmr_markets[currency]
-                            elif crypto == "DOGE":
-                                dict[crypto][currency]["markets"] = doge_markets[currency]
-                            elif crypto == "SIA":
-                                dict[crypto][currency]["markets"] = sia_markets[currency]
-                            elif crypto == "XLM":
-                                dict[crypto][currency]["markets"] = xlm_markets[currency]
-                            elif crypto == "NEO":
-                                dict[crypto][currency]["markets"] = neo_markets[currency]
-                            elif crypto == "TRX":
-                                dict[crypto][currency]["markets"] = trx_markets[currency]
-                            elif crypto == "DGB":
-                                dict[crypto][currency]["markets"] = dgb_markets[currency]
-                            elif crypto == "ZEC":
-                                dict[crypto][currency]["markets"] = zec_markets[currency]
-                            elif crypto == "QTUM":
-                                dict[crypto][currency]["markets"] = qtum_markets[currency]
-                            elif crypto == "DASH":
-                                dict[crypto][currency]["markets"] = dash_markets[currency]
-                            elif crypto == "GAS":
-                                dict[crypto][currency]["markets"] = gas_markets[currency]
-                            elif crypto == "BTG":
-                                dict[crypto][currency]["markets"] = btg_markets[currency]
-                            else:
-                                dict[crypto][currency]["markets"] = {}
+                            # if crypto == "BTC":
+                            #     dict[crypto][currency]["markets"] = btc_markets[currency]
+                            # elif crypto == "ETH":
+                            #     dict[crypto][currency]["markets"] = eth_markets[currency]
+                            # elif crypto == "LTC":
+                            #     dict[crypto][currency]["markets"] = ltc_markets[currency]
+                            # elif crypto == "XRP":
+                            #     dict[crypto][currency]["markets"] = xrp_markets[currency]
+                            # elif crypto == "BCH":
+                            #     dict[crypto][currency]["markets"] = bch_markets[currency]
+                            # elif crypto == "OMG":
+                            #     dict[crypto][currency]["markets"] = omg_markets[currency]
+                            # elif crypto == "REQ":
+                            #     dict[crypto][currency]["markets"] = req_markets[currency]
+                            # elif crypto == "ZRX":
+                            #     dict[crypto][currency]["markets"] = zrx_markets[currency]
+                            # elif crypto == "BAT":
+                            #     dict[crypto][currency]["markets"] = bat_markets[currency]
+                            # elif crypto == "GNT":
+                            #     dict[crypto][currency]["markets"] = gnt_markets[currency]
+                            # elif crypto == "AE":
+                            #     dict[crypto][currency]["markets"] = ae_markets[currency]
+                            # elif crypto == "RPX":
+                            #     dict[crypto][currency]["markets"] = rpx_markets[currency]
+                            # elif crypto == "DBC":
+                            #     dict[crypto][currency]["markets"] = dbc_markets[currency]
+                            # elif crypto == "XMR":
+                            #     dict[crypto][currency]["markets"] = xmr_markets[currency]
+                            # elif crypto == "DOGE":
+                            #     dict[crypto][currency]["markets"] = doge_markets[currency]
+                            # elif crypto == "SIA":
+                            #     dict[crypto][currency]["markets"] = sia_markets[currency]
+                            # elif crypto == "XLM":
+                            #     dict[crypto][currency]["markets"] = xlm_markets[currency]
+                            # elif crypto == "NEO":
+                            #     dict[crypto][currency]["markets"] = neo_markets[currency]
+                            # elif crypto == "TRX":
+                            #     dict[crypto][currency]["markets"] = trx_markets[currency]
+                            # elif crypto == "DGB":
+                            #     dict[crypto][currency]["markets"] = dgb_markets[currency]
+                            # elif crypto == "ZEC":
+                            #     dict[crypto][currency]["markets"] = zec_markets[currency]
+                            # elif crypto == "QTUM":
+                            #     dict[crypto][currency]["markets"] = qtum_markets[currency]
+                            # elif crypto == "DASH":
+                            #     dict[crypto][currency]["markets"] = dash_markets[currency]
+                            # elif crypto == "GAS":
+                            #     dict[crypto][currency]["markets"] = gas_markets[currency]
+                            # elif crypto == "BTG":
+                            #     dict[crypto][currency]["markets"] = btg_markets[currency]
+                            # else:
+                            #     dict[crypto][currency]["markets"] = {}
 
         for coin in dict.keys():
             data = {"Data": dict[coin]}
