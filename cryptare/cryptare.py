@@ -5,6 +5,7 @@ import requests
 import pyrebase
 import time
 import json as jsonmodule
+from binance.client import Client
 
 config = {
     "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -86,6 +87,8 @@ def update_exchanges():
     # update_bittrex_price()
 
     update_kucoin_price()
+
+    update_binance_price()
 
     update_markets()
 
@@ -978,14 +981,37 @@ def update_binance_price():
 
 
 def get_binance_price():
-    url = "https://api.binance.com/api/v1/ticker/24hr"
+    client = Client("", "")
+    dict = {}
 
-    r = requests.get(url)
-    if r.status_code == 200:
-        json = r.json()
-        data = {}
-        for result in json:
-            print(result)
+    info = client.get_exchange_info()
+
+    for entry in info['symbols']:
+        if entry['status'] == 'TRADING':
+            coin = entry['baseAsset']
+            coin_pair = entry['quoteAsset']
+            if coin not in dict:
+                dict[coin] = {}
+
+            if coin_pair not in dict[coin]:
+                dict[coin][coin_pair] = {}
+
+    tickers = client.get_ticker()
+
+    for entry in tickers:
+        for coin, coin_pairs in dict.items():
+            for coin_pair in coin_pairs:
+                if entry['symbol'] == '{0}{1}'.format(coin, coin_pair):
+                    dict[coin][coin_pair]['buy_price'] = entry['askPrice']
+                    dict[coin][coin_pair]['sell_price'] = entry['bidPrice']
+                    dict[coin][coin_pair]['max_24hrs'] = entry['highPrice']
+                    dict[coin][coin_pair]['min_24hrs'] = entry['lowPrice']
+                    dict[coin][coin_pair]['vol_24hrs'] = entry['volume']
+
+    for coin, coin_pairs in dict.items():
+        for coin_pair in coin_pairs:
+            db.child('binance/{0}/{1}'.format(coin, coin_pair)).update(dict[coin][coin_pair])
+            add_market_entry(coin, coin_pair, 'Binance', 'binance')
 
 
 ###################################################
