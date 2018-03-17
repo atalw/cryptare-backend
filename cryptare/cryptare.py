@@ -91,6 +91,8 @@ def update_exchanges():
 
     update_binance_price()
 
+    update_huobi_price()
+
     update_markets()
     update_exchange_update_type()
 
@@ -1035,6 +1037,60 @@ def get_binance_price():
 
 ###################################################
 
+
+def update_huobi_price():
+    result = get_huobi_price()
+
+    for coin, coin_pairs in result.items():
+        for coin_pair in coin_pairs:
+            db.child('huobi/{0}/{1}'.format(coin.upper(), coin_pair.upper())).update(result[coin][coin_pair])
+            add_market_entry(coin, coin_pair, 'Huobi', 'huobi')
+    all_exchange_update_type['Huobi'] = 'update'
+
+def get_huobi_price():
+    symbols_dict = get_huobi_symbols()
+    for coin, coin_pairs in symbols_dict.items():
+        for coin_pair in coin_pairs:
+            url = "https://api.huobi.pro/market/detail/merged?symbol={0}{1}".format(coin, coin_pair)
+
+            r = requests.get(url)
+            if r.status_code == 200:
+                json = r.json()
+                try:
+                    if json['status'] == 'ok':
+                        timestamp = json['ts']
+                        symbols_dict[coin][coin_pair]['buy_price'] = float(json['tick']['ask'][0])
+                        symbols_dict[coin][coin_pair]['sell_price'] = float(json['tick']['bid'][0])
+                        symbols_dict[coin][coin_pair]['max_24hrs'] = float(json['tick']['high'])
+                        symbols_dict[coin][coin_pair]['min_24hrs'] = float(json['tick']['low'])
+                        symbols_dict[coin][coin_pair]['vol_24hrs'] = float(json['tick']['vol'])
+                        symbols_dict[coin][coin_pair]['timestamp'] = timestamp
+                except:
+                    print(coin, coin_pair, 'huobi error')
+    return symbols_dict
+
+def get_huobi_symbols():
+    url = "https://api.huobi.pro/v1/common/symbols"
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        try:
+            if json['status'] == 'ok':
+                symbols_dict = {}
+                for entry in json['data']:
+                    coin = entry['base-currency']
+                    coin_pair = entry['quote-currency']
+                    if coin not in symbols_dict:
+                        symbols_dict[coin] = {}
+                    if coin_pair not in symbols_dict[coin]:
+                        symbols_dict[coin][coin_pair] = {}
+                return symbols_dict
+        except:
+            print('huobi symbol error')
+
+###################################################
+
 def add_market_entry(coin, currency, market_name, market_title):
 
     if coin not in all_markets :
@@ -1044,7 +1100,6 @@ def add_market_entry(coin, currency, market_name, market_title):
         all_markets[coin][currency] = {}
 
     all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
-
 
 def update_markets():
     for coin, values in all_markets.items():
