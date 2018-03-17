@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/python3
 
+from concurrent.futures import ThreadPoolExecutor
 import requests
 import pyrebase
 import time
@@ -64,11 +65,20 @@ def execute():
         all_exchange_prices[coin] = {}
         for currency in currencies:
             all_exchange_prices[coin][currency] = []
-    update_exchanges()
-    update_average_price()
+    # update_exchanges()
+    # update_average_price()
 
 
-def update_exchanges():
+# def update_exchanges():
+#
+#     update_indian_exchanges()
+#     update_us_exchanges()
+#     update_international_exchanges()
+#
+#     update_markets()
+#     update_exchange_update_type()
+
+def update_indian_exchanges():
     update_zebpay_price()
     update_localbitcoins_price()
     update_coinsecure_price()
@@ -79,6 +89,7 @@ def update_exchanges():
     update_coinome_price()
     update_coindelta_price()
 
+def update_us_exchanges():
     update_coinbase_price()
     update_kraken_price()
     # update_poloniex_price()
@@ -87,14 +98,10 @@ def update_exchanges():
     update_bitstamp_price()
     # update_bittrex_price()
 
+def update_international_exchanges():
     update_kucoin_price()
-
     update_binance_price()
-
     update_huobi_price()
-
-    update_markets()
-    update_exchange_update_type()
 
 ###################################################
 
@@ -1040,34 +1047,39 @@ def get_binance_price():
 
 def update_huobi_price():
     result = get_huobi_price()
-
-    for coin, coin_pairs in result.items():
-        for coin_pair in coin_pairs:
-            db.child('huobi/{0}/{1}'.format(coin.upper(), coin_pair.upper())).update(result[coin][coin_pair])
-            add_market_entry(coin, coin_pair, 'Huobi', 'huobi')
-    all_exchange_update_type['Huobi'] = 'update'
+    if result is not None:
+        for coin, coin_pairs in result.items():
+            for coin_pair in coin_pairs:
+                db.child('huobi/{0}/{1}'.format(coin.upper(), coin_pair.upper())).update(result[coin][coin_pair])
+                add_market_entry(coin.upper(), coin_pair.upper(), 'Huobi', 'huobi')
+        all_exchange_update_type['Huobi'] = 'update'
+    else:
+        print('huobi error')
 
 def get_huobi_price():
     symbols_dict = get_huobi_symbols()
-    for coin, coin_pairs in symbols_dict.items():
-        for coin_pair in coin_pairs:
-            url = "https://api.huobi.pro/market/detail/merged?symbol={0}{1}".format(coin, coin_pair)
+    if symbols_dict is not None:
+        for coin, coin_pairs in symbols_dict.items():
+            for coin_pair in coin_pairs:
+                url = "https://api.huobi.pro/market/detail/merged?symbol={0}{1}".format(coin, coin_pair)
 
-            r = requests.get(url)
-            if r.status_code == 200:
-                json = r.json()
-                try:
-                    if json['status'] == 'ok':
-                        timestamp = json['ts']
-                        symbols_dict[coin][coin_pair]['buy_price'] = float(json['tick']['ask'][0])
-                        symbols_dict[coin][coin_pair]['sell_price'] = float(json['tick']['bid'][0])
-                        symbols_dict[coin][coin_pair]['max_24hrs'] = float(json['tick']['high'])
-                        symbols_dict[coin][coin_pair]['min_24hrs'] = float(json['tick']['low'])
-                        symbols_dict[coin][coin_pair]['vol_24hrs'] = float(json['tick']['vol'])
-                        symbols_dict[coin][coin_pair]['timestamp'] = timestamp
-                except:
-                    print(coin, coin_pair, 'huobi error')
-    return symbols_dict
+                r = requests.get(url)
+                if r.status_code == 200:
+                    json = r.json()
+                    try:
+                        if json['status'] == 'ok':
+                            timestamp = json['ts']
+                            symbols_dict[coin][coin_pair]['buy_price'] = float(json['tick']['ask'][0])
+                            symbols_dict[coin][coin_pair]['sell_price'] = float(json['tick']['bid'][0])
+                            symbols_dict[coin][coin_pair]['max_24hrs'] = float(json['tick']['high'])
+                            symbols_dict[coin][coin_pair]['min_24hrs'] = float(json['tick']['low'])
+                            symbols_dict[coin][coin_pair]['vol_24hrs'] = float(json['tick']['vol'])
+                            symbols_dict[coin][coin_pair]['timestamp'] = timestamp
+                    except:
+                        print(coin, coin_pair, 'huobi error')
+        return symbols_dict
+    else:
+        return None
 
 def get_huobi_symbols():
     url = "https://api.huobi.pro/v1/common/symbols"
@@ -1088,6 +1100,8 @@ def get_huobi_symbols():
                 return symbols_dict
         except:
             print('huobi symbol error')
+            return None
+    return None
 
 ###################################################
 
@@ -1112,4 +1126,17 @@ def update_exchange_update_type():
     """Store type of update method used for exchange data in Firebase - 'push' or 'update' """
     db.child("all_exchanges_update_type").update(all_exchange_update_type)
 
+###################################################
+
 execute()
+
+with ThreadPoolExecutor(max_workers=5) as executor:
+    executor.submit(update_indian_exchanges)
+    executor.submit(update_us_exchanges)
+    executor.submit(update_kucoin_price)
+    executor.submit(update_binance_price)
+    executor.submit(update_huobi_price)
+
+update_average_price()
+update_markets()
+update_exchange_update_type()
