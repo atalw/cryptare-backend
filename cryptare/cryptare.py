@@ -7,6 +7,7 @@ import pyrebase
 import time
 import json as jsonmodule
 from binance.client import Client
+import ccxt
 
 config = {
     "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -1105,6 +1106,46 @@ def get_huobi_symbols():
 
 ###################################################
 
+
+def update_hitbtc_price():
+    hitbtc = ccxt.hitbtc()
+    hitbtc_markets = hitbtc.fetch_markets()
+    hitbtc_tickers = hitbtc.fetch_tickers()
+
+    dict = {}
+
+    for symbol in hitbtc_markets:
+        coin = symbol['base']
+        coin_pair = symbol['quote']
+        if coin not in dict:
+            dict[coin] = {}
+        if coin_pair not in dict[coin]:
+            dict[coin][coin_pair] = {}
+
+    for coin, coin_pairs in dict.items():
+        for coin_pair in coin_pairs:
+            symbol = "{0}/{1}".format(coin, coin_pair)
+            info = hitbtc_tickers[symbol]
+            ask = info['ask']
+            bid = info['bid']
+            try:
+                dict[coin][coin_pair]['buy_price'] = float(info['ask'])
+                dict[coin][coin_pair]['sell_price'] = float(info['bid'])
+                dict[coin][coin_pair]['last_price'] = float(info['last'])
+                dict[coin][coin_pair]['max_24hrs'] = float(info['high'])
+                dict[coin][coin_pair]['min_24hrs'] = float(info['low'])
+                dict[coin][coin_pair]['vol_24hrs'] = float(info['baseVolume'])
+            except:
+                continue
+
+    for coin, coin_pairs in dict.items():
+        for coin_pair in coin_pairs:
+            db.child('hitbtc/{0}/{1}'.format(coin, coin_pair)).update(dict[coin][coin_pair])
+            add_market_entry(coin, coin_pair, 'HitBTC', 'hitbtc')
+    all_exchange_update_type['HitBTC'] = 'update'
+
+###################################################
+
 def add_market_entry(coin, currency, market_name, market_title):
 
     if coin not in all_markets :
@@ -1136,6 +1177,9 @@ with ThreadPoolExecutor(max_workers=5) as executor:
     executor.submit(update_kucoin_price)
     executor.submit(update_binance_price)
     executor.submit(update_huobi_price)
+    executor.submit(update_huobi_price)
+
+# print(ccxt.exchanges)
 
 update_average_price()
 update_markets()
