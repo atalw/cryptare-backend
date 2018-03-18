@@ -1175,9 +1175,9 @@ with ThreadPoolExecutor(max_workers=5) as executor:
     executor.submit(update_indian_exchanges)
     executor.submit(update_us_exchanges)
     executor.submit(update_kucoin_price)
-    executor.submit(update_binance_price)
-    executor.submit(update_huobi_price)
-    executor.submit(update_hitbtc_price)
+    # executor.submit(update_binance_price)
+    # executor.submit(update_huobi_price)
+    # executor.submit(update_hitbtc_price)
 
 # print(ccxt.exchanges)
 
