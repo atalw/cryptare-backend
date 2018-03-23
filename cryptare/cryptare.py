@@ -30,7 +30,8 @@ db = firebase.database()
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
-         "SIA", "TRX", "DGB", "ZEC", "BTG", "IOT", "ZIL", "ETN", "ONT"]
+         "SIA", "TRX", "DGB", "ZEC", "BTG", "IOT", "ZIL", "ETN", "ONT", "KNC",
+         "EOS", "POLY", "AION", "NCASH"]
 
 currencies = ["INR", "USD", "GBP", "CAD","JPY", "CNY", "SGD", "EUR", "ZAR", "AUD"]
 
@@ -172,7 +173,7 @@ def get_zebpay_price(coins):
 
 def update_koinex_price():
     coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT",
-             "AE", "TRX", "XLM", "NEO", "GAS"]
+             "AE", "TRX", "XLM", "NEO", "GAS", "NCASH", "AION", "EOS"]
     # make only 1 API call to koinex
     result = get_koinex_price(coins)
     if result is not None:
@@ -392,7 +393,8 @@ def get_throughbit_price():
 
 def update_bitbns_price():
     coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR",
-             "DASH", "DOGE", "BCH", "SIA", "TRX", "ETN", "ONT", "ZIL"]
+             "DASH", "DOGE", "BCH", "SIA", "TRX", "ETN", "ONT", "ZIL", "EOS", "POLY",
+             "DGB", "NCASH"]
     result = get_bitbns_price(coins)
     if result is not None:
         for coin in coins:
@@ -466,7 +468,8 @@ def get_coinome_price(coins):
 
 
 def update_coindelta_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM", "ZIL", "ZRX"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM", "ZIL", "ZRX", "KNC",
+             "EOS"]
     result = get_coindelta_price(coins)
     if result is not None:
         for coin, pair_data in result.items():
