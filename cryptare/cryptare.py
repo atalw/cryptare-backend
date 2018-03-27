@@ -163,6 +163,8 @@ def get_zebpay_price(coins):
                 data[coin]["vol_24hrs"] = json["volume"]
             except:
                 return None
+        else:
+            return None
 
     if data is not None:
         return data
@@ -1240,7 +1242,6 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 update_average_price()
 update_markets()
 update_exchange_update_type()
-
 
 # update_ccxt_market_price(ccxt.coinfloor(), 'Coinfloor', 'coinfloor')
 # update_ccxt_market_price(ccxt.bitflyer(), 'Bitflyer', 'bitflyer')
