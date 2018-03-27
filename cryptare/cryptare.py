@@ -507,7 +507,8 @@ def get_coindelta_price(coins):
                 data[coin][base_coin]["sell_price"] = entry["Bid"]
             except:
                 return None
-
+    else:
+        return None
     if data is not None:
         return data
     return None
