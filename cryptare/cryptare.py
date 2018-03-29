@@ -471,7 +471,7 @@ def get_coinome_price(coins):
 
 def update_coindelta_price():
     coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM", "ZIL", "ZRX", "KNC",
-             "EOS"]
+             "EOS", "ZEC"]
     result = get_coindelta_price(coins)
     if result is not None:
         for coin, pair_data in result.items():
