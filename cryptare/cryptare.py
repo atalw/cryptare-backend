@@ -394,12 +394,12 @@ def get_throughbit_price():
 ###################################################
 
 def update_bitbns_price():
-    coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR",
-             "DASH", "DOGE", "BCH", "SIA", "TRX", "ETN", "ONT", "ZIL", "EOS", "POLY",
-             "DGB", "NCASH", "ADA", "ICX", "VEN", "OMG", "REQ"]
-    result = get_bitbns_price(coins)
+    # coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR",
+    #          "DASH", "DOGE", "BCH", "SIA", "TRX", "ETN", "ONT", "ZIL", "EOS", "POLY",
+    #          "DGB", "NCASH", "ADA", "ICX", "VEN", "OMG", "REQ"]
+    result = get_bitbns_price()
     if result is not None:
-        for coin in coins:
+        for coin in result:
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
             db.child("bitbns/{}/INR".format(coin)).update(data)
@@ -409,14 +409,16 @@ def update_bitbns_price():
     else:
         print("bitbns error")
 
-def get_bitbns_price(coins):
+def get_bitbns_price():
     url = "https://bitbns.com/order/getTickerAll"
     data = {}
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
         new_dict = dict([(key, d[key]) for d in json for key in d])
-        for coin in coins:
+        for coin in new_dict:
+            if coin not in coins:
+                coins.append(coin)
             data[coin] = {}
             try:
                 data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
