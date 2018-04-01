@@ -85,12 +85,6 @@ def update_indian_exchanges():
     update_localbitcoins_price()
     update_coinsecure_price()
     update_pocketbits_price()
-    update_koinex_price()
-    update_throughbit_price()
-    update_bitbns_price()
-    update_coinome_price()
-    update_coindelta_price()
-    update_wazirx_price()
 
 def update_us_exchanges():
     update_coinbase_price()
@@ -525,9 +519,7 @@ def update_wazirx_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                print(coin, coin_pair, details)
                 db.child("wazirx").child(coin).child(coin_pair).update(details)
-
                 add_market_entry(coin, coin_pair, 'WazirX', 'wazirx')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
@@ -537,7 +529,6 @@ def update_wazirx_price():
         print("wazirx error")
 
 def get_wazirx_price():
-
     data = {}
     url = "https://api.wazirx.com/api/v2/tickers"
     r = requests.get(url)
@@ -1272,6 +1263,13 @@ execute()
 
 with ThreadPoolExecutor(max_workers=5) as executor:
     executor.submit(update_indian_exchanges)
+    executor.submit(update_wazirx_price)
+    executor.submit(update_koinex_price)
+    executor.submit(update_bitbns_price)
+    executor.submit(update_coinome_price)
+    executor.submit(update_coindelta_price)
+    executor.submit(update_throughbit_price)
+
     executor.submit(update_us_exchanges)
     executor.submit(update_kucoin_price)
 
