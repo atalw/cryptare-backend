@@ -90,6 +90,7 @@ def update_indian_exchanges():
     update_bitbns_price()
     update_coinome_price()
     update_coindelta_price()
+    update_wazirx_price()
 
 def update_us_exchanges():
     update_coinbase_price()
@@ -517,6 +518,57 @@ def get_coindelta_price(coins):
 
 
 ###################################################
+
+def update_wazirx_price():
+    result = get_wazirx_price()
+
+    if result is not None:
+        for coin, pair_data in result.items():
+            for coin_pair, details in pair_data.items():
+                print(coin, coin_pair, details)
+                db.child("wazirx").child(coin).child(coin_pair).update(details)
+
+                add_market_entry(coin, coin_pair, 'WazirX', 'wazirx')
+                if coin_pair == "INR":
+                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+            all_exchange_update_type['WazirX'] = 'update'
+
+    else:
+        print("wazirx error")
+
+def get_wazirx_price():
+
+    data = {}
+    url = "https://api.wazirx.com/api/v2/tickers"
+    r = requests.get(url)
+    if r.status_code == 200:
+        json = r.json()
+        for key, entry  in json.items():
+            try:
+                base = entry["base_unit"].upper()
+                quote = entry["quote_unit"].upper()
+                if base not in data:
+                    data[base] = {}
+
+                data[base][quote] = {}
+                data[base][quote]["buy_price"] = float(entry["buy"])
+                data[base][quote]["sell_price"] = float(entry["sell"])
+                data[base][quote]["last_price"] = float(entry["last"])
+                data[base][quote]["max_24hrs"] = float(entry["high"])
+                data[base][quote]["min_24hrs"] = float(entry["low"])
+                data[base][quote]["vol_24hrs"] = float(entry["volume"])
+                data[base][quote]["timestamp"] = float(entry["at"])
+            except:
+                return None
+    else:
+        return None
+
+    if data is not None:
+        return data
+    return None
+
+###################################################
+
 
 def update_coinbase_price():
     coins = ["BTC", "ETH", "LTC", "BCH"]
