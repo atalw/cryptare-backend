@@ -523,8 +523,7 @@ def update_wazirx_price():
                 add_market_entry(coin, coin_pair, 'WazirX', 'wazirx')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
-            all_exchange_update_type['WazirX'] = 'update'
-
+        all_exchange_update_type['WazirX'] = 'update'
     else:
         print("wazirx error")
 
