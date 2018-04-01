@@ -175,10 +175,8 @@ def get_zebpay_price(coins):
 
 
 def update_koinex_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "REQ", "ZRX", "GNT", "BAT",
-             "AE", "TRX", "XLM", "NEO", "GAS", "NCASH", "AION", "EOS"]
     # make only 1 API call to koinex
-    result = get_koinex_price(coins)
+    result = get_koinex_price()
     if result is not None:
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]['last_price'], "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
@@ -191,24 +189,26 @@ def update_koinex_price():
     else:
         print("koinex error")
 
-def get_koinex_price(coins):
+def get_koinex_price():
     url = "https://koinex.in/api/ticker"
     data = {}
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
 
-        for coin in coins:
-            data[coin] = {}
-            try:
-                data[coin]['last_price'] = float(json["stats"][coin]["last_traded_price"])
-                data[coin]['buy_price'] = float(json["stats"][coin]["lowest_ask"])
-                data[coin]['sell_price'] = float(json["stats"][coin]["highest_bid"])
-                data[coin]['vol_24hrs'] = float(json["stats"][coin]["vol_24hrs"])
-                data[coin]['max_24hrs'] = float(json["stats"][coin]["max_24hrs"])
-                data[coin]['min_24hrs'] = float(json["stats"][coin]["min_24hrs"])
-            except:
-                return None
+        for key, result in json.items():
+            if key == "stats":
+                try:
+                    for coin, entry in result.items():
+                        data[coin] = {}
+                        data[coin]['last_price'] = float(entry["last_traded_price"])
+                        data[coin]['buy_price'] = float(entry["lowest_ask"])
+                        data[coin]['sell_price'] = float(entry["highest_bid"])
+                        data[coin]['vol_24hrs'] = float(entry["vol_24hrs"])
+                        data[coin]['max_24hrs'] = float(entry["max_24hrs"])
+                        data[coin]['min_24hrs'] = float(entry["min_24hrs"])
+                except:
+                    return None
 
         if data is not None:
             return data
@@ -1186,8 +1186,6 @@ def update_hitbtc_price():
         for coin_pair in coin_pairs:
             symbol = "{0}/{1}".format(coin, coin_pair)
             info = hitbtc_tickers[symbol]
-            ask = info['ask']
-            bid = info['bid']
             try:
                 dict[coin][coin_pair]['buy_price'] = float(info['ask'])
                 dict[coin][coin_pair]['sell_price'] = float(info['bid'])
