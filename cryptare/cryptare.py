@@ -111,16 +111,16 @@ def update_international_exchanges():
 
 def update_average_price():
     average_prices = {}
-    for coin in coins:
-        average_prices[coin] = {}
-        for currency in currencies:
-            total_sum = sum(all_exchange_prices[coin][currency])
-            if len(all_exchange_prices[coin][currency]) > 0:
-                average = total_sum/len(all_exchange_prices[coin][currency])
+    for coin, currency_data in all_exchange_prices.items():
+        for currency, data in currency_data.items():
+            if len(data) > 0:
+                total_sum = sum(data)
+                average = total_sum / len(data)
+                if coin not in average_prices:
+                    average_prices[coin] = {}
                 average_prices[coin][currency] = average
-                db.child(coin).child("Data").child(currency).update({"price": average, "timestamp": time.time()})
-            else:
-                average_prices[coin][currency] = 0
+                db.child(coin).child("Data").child(currency).update({"price": average})
+
 
 def update_24hr_change(current_price, min_24hr_price, coin):
     change = current_price - min_24hr_price

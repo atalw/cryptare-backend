@@ -64,21 +64,21 @@ def get_current_crypto_price():
                         if crypto in data and currency in data[crypto]:
                             if currency == "INR" and crypto in crypto_with_markets_list:
                                 old_price = db.child(crypto).child("Data").child(currency).child("price").get().val()
-                                old_timestamp = db.child(crypto).child("Data").child(currency).child("timestamp").get().val()
+                                # old_timestamp = db.child(crypto).child("Data").child(currency).child("timestamp").get().val()
                                 if old_price is not None:
                                     dict[crypto][currency]["price"] = float(old_price)
                                 else:
                                     dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
 
-                                if old_timestamp is not None:
-                                    dict[crypto][currency]["timestamp"] =  float(old_timestamp)
-                                else:
-                                    dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
+                                # if old_timestamp is not None:
+                                #     dict[crypto][currency]["timestamp"] =  float(old_timestamp)
+                                # else:
+                                #     dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
 
                             else:
-
                                 dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
-                                dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
+
+                            dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
 
                             if currency == "INR" and rate is not None:
                                     dict[crypto]["INR"]["change_24hrs_fiat"] = float(
