@@ -467,9 +467,7 @@ def get_coinome_price(coins):
 
 
 def update_coindelta_price():
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "OMG", "QTUM", "ZIL", "ZRX", "KNC",
-             "EOS", "ZEC"]
-    result = get_coindelta_price(coins)
+    result = get_coindelta_price()
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
@@ -483,10 +481,8 @@ def update_coindelta_price():
         print("coindelta error")
 
 
-def get_coindelta_price(coins):
+def get_coindelta_price():
     data = {}
-    for coin in coins:
-        data[coin] = {}
 
     url = "https://coindelta.com/api/v1/public/getticker/"
     r = requests.get(url)
@@ -498,6 +494,10 @@ def get_coindelta_price(coins):
                 coins = market_name.split('-')
                 coin = coins[0].upper()
                 base_coin = coins[1].upper()
+
+                if coin not in data:
+                    data[coin] = {}
+
                 data[coin][base_coin] = {}
                 data[coin][base_coin]["last_price"] = entry["Last"]
                 data[coin][base_coin]["buy_price"]= entry["Ask"]
