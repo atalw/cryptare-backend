@@ -12,6 +12,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
+storage = firebase.storage()
 
 def update_list_of_coins_with_rank():
     url = "https://api.coinmarketcap.com/v1/ticker/?limit=50"
@@ -25,9 +26,13 @@ def update_list_of_coins_with_rank():
                 symbol = "IOT"
             elif symbol == "NANO":
                 symbol = "XRB"
+
+            icon_url = storage.child("icons/{}.png".format(symbol.lower())).get_url()
             dict[symbol] = {}
             dict[symbol]["rank"] = float(json[index]["rank"])
             dict[symbol]["name"] = json[index]["name"]
+            if icon_url is not None:
+                dict[symbol]["icon_url"] = icon_url
 
         title = "coins"
         db.child(title).push(dict)
