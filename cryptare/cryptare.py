@@ -1291,9 +1291,14 @@ def add_market_entry(coin, currency, market_name, market_title):
 def update_markets():
     for coin, values in all_markets.items():
         for currency, markets in values.items():
-            if currency == 'USDT':
-                currency = "USD"
-            all_market_data["{0}/Data/{1}/markets".format(coin, currency)] = markets
+            title = "{0}/Data/{1}/markets".format(coin, currency)
+            if (currency == "USDT" or currency == "USD") and coin == "BTC":
+                usd_title = "{}/Data/USD/markets".format(coin)
+                if usd_title not in all_market_data:
+                    all_market_data[usd_title] = {}
+                all_market_data[usd_title].update(markets)
+            else:
+                all_market_data[title] = markets
 
 
 def update_exchange_update_type():
@@ -1302,7 +1307,20 @@ def update_exchange_update_type():
 
 
 def update_all_market_data():
-    db.update(all_market_data)
+    data = all_market_data
+    split_all_market_data = []
+    if len(data) > 500:
+        while len(data) > 500:
+            pice = dict(list(data.items())[:500])
+            split_all_market_data.append(pice)
+            data = dict(list(data.items())[500:])
+        split_all_market_data.append(data)
+    else:
+        split_all_market_data.append(data)
+
+    for chunk  in split_all_market_data:
+        db.update(chunk)
+
 ###################################################
 
 execute()
@@ -1322,11 +1340,11 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_gemini_price)
     executor.submit(update_bitfinex_price)
     executor.submit(update_bitstamp_price)
-
+    #
     executor.submit(update_kucoin_price)
     executor.submit(update_binance_price)
-    executor.submit(update_huobi_price)
     executor.submit(update_hitbtc_price)
+    # executor.submit(update_huobi_price) # very very slow
 
     # executor.submit(update_ccxt_market_price, ccxt.gateio(), 'Gate.io', 'gateio')
     # executor.submit(update_ccxt_market_price, ccxt.cex(), 'Cex.io', 'cex')
@@ -1336,7 +1354,6 @@ with ThreadPoolExecutor() as executor:
 
     # executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
     # executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
-
 
 
 # print(ccxt.exchanges)
