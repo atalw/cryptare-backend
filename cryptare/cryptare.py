@@ -1338,7 +1338,6 @@ with ThreadPoolExecutor(max_workers=8) as executor:
 # print(ccxt.exchanges)
 
 update_all_market_data()
-update_all_market_data()
 update_average_price()
 update_markets()
 update_exchange_update_type()
