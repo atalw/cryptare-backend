@@ -83,7 +83,7 @@ def execute():
 def update_indian_exchanges():
     update_zebpay_price()
     update_localbitcoins_price()
-    update_coinsecure_price()
+    # update_coinsecure_price()
     update_pocketbits_price()
 
 def update_us_exchanges():
@@ -114,14 +114,6 @@ def update_average_price():
                     average_prices[coin] = {}
                 average_prices[coin][currency] = average
                 db.child(coin).child("Data").child(currency).update({"price": average})
-
-
-def update_24hr_change(current_price, min_24hr_price, coin):
-    change = current_price - min_24hr_price
-    percent = change / min_24hr_price * 100
-    rounded_percentage = round(percent, 2)
-    # db.child(coin).child("Data").child("INR").update({"change_24hrs_percent": rounded_percentage, "change_24hrs_fiat": change})
-
 
 ###################################################
 
@@ -389,9 +381,6 @@ def get_throughbit_price():
 ###################################################
 
 def update_bitbns_price():
-    # coins = ["BTC", "XRP", "NEO", "GAS", "ETH", "XLM", "RPX", "DBC", "LTC", "XMR",
-    #          "DASH", "DOGE", "BCH", "SIA", "TRX", "ETN", "ONT", "ZIL", "EOS", "POLY",
-    #          "DGB", "NCASH", "ADA", "ICX", "VEN", "OMG", "REQ"]
     result = get_bitbns_price()
     if result is not None:
         for coin in result:
@@ -533,7 +522,7 @@ def get_wazirx_price():
     r = requests.get(url)
     if r.status_code == 200:
         json = r.json()
-        for key, entry  in json.items():
+        for key, entry in json.items():
             try:
                 base = entry["base_unit"].upper()
                 quote = entry["quote_unit"].upper()
@@ -558,6 +547,61 @@ def get_wazirx_price():
     return None
 
 ###################################################
+
+def update_coindcx_price():
+    result = get_coindcx_price()
+
+    if result is not None:
+        for coin, pair_data in result.items():
+            for coin_pair, details in pair_data.items():
+                db.child("coindcx").child(coin).child(coin_pair).update(details)
+                add_market_entry(coin, coin_pair, 'CoinDCX', 'coindcx')
+                if coin_pair == "INR":
+                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+        all_exchange_update_type['CoinDCX'] = 'update'
+    else:
+        print("coindcx error")
+
+def get_coindcx_price():
+    data = {}
+    currency_pairs_url = "https://api.coindcx.com/api/v1/app_data"
+    price_url = "https://api.coindcx.com/api/v1/trending_pairs/"
+
+    r = requests.get(currency_pairs_url)
+    if r.status_code == 200:
+        json = r.json()
+        for entry in json['currency_pairs']:
+            try:
+                base = entry["base_currency_short_name"]
+                quote = entry["target_currency_short_name"]
+                if quote not in data:
+                    data[quote] = {}
+
+                if quote not in coins:
+                    coins.append(quote)
+
+                data[quote][base] = {}
+            except:
+                return None
+
+        r = requests.get(price_url)
+        if r.status_code == 200:
+            json = r.json()
+            try:
+                all_current_prices = json['currenct_prices']
+                for quote, base_array in data.items():
+                    for base in base_array:
+                        price = float(all_current_prices['{0}{1}'.format(quote, base)])
+                        data[quote][base]['buy_price'] = price
+                        data[quote][base]['sell_price'] = price
+            except:
+                return None
+    else:
+        return None
+
+    if data is not None:
+        return data
+    return None
 
 
 def update_coinbase_price():
@@ -1260,7 +1304,7 @@ def update_exchange_update_type():
 
 execute()
 
-with ThreadPoolExecutor(max_workers=5) as executor:
+with ThreadPoolExecutor(max_workers=8) as executor:
     executor.submit(update_indian_exchanges)
     executor.submit(update_wazirx_price)
     executor.submit(update_koinex_price)
@@ -1268,13 +1312,14 @@ with ThreadPoolExecutor(max_workers=5) as executor:
     executor.submit(update_coinome_price)
     executor.submit(update_coindelta_price)
     executor.submit(update_throughbit_price)
+    executor.submit(update_coindcx_price())
 
     executor.submit(update_us_exchanges)
     executor.submit(update_kucoin_price)
 
-    # executor.submit(update_binance_price)
-    # executor.submit(update_huobi_price)
-    # executor.submit(update_hitbtc_price)
+    executor.submit(update_binance_price)
+    executor.submit(update_huobi_price)
+    executor.submit(update_hitbtc_price)
 
     # executor.submit(update_ccxt_market_price, ccxt.gateio(), 'Gate.io', 'gateio')
     # executor.submit(update_ccxt_market_price, ccxt.cex(), 'Cex.io', 'cex')
