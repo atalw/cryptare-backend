@@ -1293,7 +1293,8 @@ def update_markets():
         for currency, markets in values.items():
             if currency == 'USDT':
                 currency = "USD"
-            db.child("{0}/Data/{1}/markets".format(coin, currency)).update(markets)
+            all_market_data["{0}/Data/{1}/markets".format(coin, currency)] = markets
+
 
 def update_exchange_update_type():
     """Store type of update method used for exchange data in Firebase - 'push' or 'update' """
@@ -1301,13 +1302,12 @@ def update_exchange_update_type():
 
 
 def update_all_market_data():
-    for key, value in all_market_data.items():
-        db.child(key).update(value)
+    db.update(all_market_data)
 ###################################################
 
 execute()
 
-with ThreadPoolExecutor(max_workers=8) as executor:
+with ThreadPoolExecutor() as executor:
     executor.submit(update_indian_exchanges)
     executor.submit(update_wazirx_price)
     executor.submit(update_koinex_price)
@@ -1317,9 +1317,13 @@ with ThreadPoolExecutor(max_workers=8) as executor:
     executor.submit(update_throughbit_price)
     executor.submit(update_coindcx_price())
 
-    executor.submit(update_us_exchanges)
-    executor.submit(update_kucoin_price)
+    executor.submit(update_coinbase_price)
+    executor.submit(update_kraken_price)
+    executor.submit(update_gemini_price)
+    executor.submit(update_bitfinex_price)
+    executor.submit(update_bitstamp_price)
 
+    executor.submit(update_kucoin_price)
     executor.submit(update_binance_price)
     executor.submit(update_huobi_price)
     executor.submit(update_hitbtc_price)
@@ -1336,11 +1340,11 @@ with ThreadPoolExecutor(max_workers=8) as executor:
 
 
 # print(ccxt.exchanges)
-
-update_all_market_data()
 update_average_price()
 update_markets()
 update_exchange_update_type()
+update_all_market_data()
+
 
 # update_ccxt_market_price(ccxt.coinfloor(), 'Coinfloor', 'coinfloor')
 # update_ccxt_market_price(ccxt.bitflyer(), 'Bitflyer', 'bitflyer')
