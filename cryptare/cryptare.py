@@ -39,6 +39,7 @@ all_markets = {}
 all_exchange_update_type = {}
 
 all_exchange_prices = {}
+all_market_data = {}
 
 ###################################################
 
@@ -125,7 +126,7 @@ def update_zebpay_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]["last_price"] ,"buy_price": result[coin]["buy_price"],
                     "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
-            db.child("zebpay_new/{}/INR".format(coin)).update(data)
+            all_market_data["zebpay_new/{}/INR".format(coin)] = data
             # if coin == "BTC": #support old version of cryptare
             #     db.child("zebpay").push(data)
             all_exchange_prices[coin]["INR"].append(result[coin]["last_price"])
@@ -167,10 +168,9 @@ def update_koinex_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]['last_price'], "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'], "vol_24hrs": result[coin]['vol_24hrs'],
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
-            db.child("koinex/{}/INR".format(coin)).update(data)
+            all_market_data["koinex/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Koinex', 'koinex')
             all_exchange_prices[coin]["INR"].append(result[coin]['last_price'])
-            update_24hr_change(result[coin]['last_price'], result[coin]['min_24hrs'], coin)
         all_exchange_update_type['Koinex'] = 'update'
     else:
         print("koinex error")
@@ -215,7 +215,7 @@ def update_localbitcoins_price():
             buy_price, sell_price = prices
             data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price, "vol_24hrs": volume_data[currency]}
             title = "localbitcoins/BTC/{}".format(currency)
-            db.child(title).update(data)
+            all_market_data[title] = data
             add_market_entry('BTC', currency, 'Localbitcoins', 'localbitcoins')
             all_exchange_prices["BTC"][currency].append(buy_price)
             all_exchange_update_type['Localbitcoins'] = 'update'
@@ -266,7 +266,7 @@ def update_coinsecure_price():
     if result is not None:
         data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "max_24hrs": result[2],
                 "min_24hrs": result[3], "fiat_volume_24hrs": result[4], "coin_volume_24hrs": result[5]}
-        db.child("coinsecure/BTC/INR").update(data)
+        # db.child("coinsecure/BTC/INR").update(data)
         add_market_entry('BTC', 'INR', 'Coinsecure', 'coinsecure')
         all_exchange_prices["BTC"]["INR"].append(result[0])
         all_exchange_update_type['Coinsecure'] = 'update'
@@ -314,7 +314,7 @@ def update_pocketbits_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("pocketbits/BTC/INR").update(data)
+        all_market_data["pocketbits/BTC/INR"] = data
         add_market_entry('BTC', 'INR', 'PocketBits', 'pocketbits')
         all_exchange_prices["BTC"]["INR"].append(buy_price)
         all_exchange_update_type['PocketBits'] = 'update'
@@ -347,11 +347,12 @@ def update_throughbit_price():
     prices = get_throughbit_price()
     if prices is not None:
         data = {"timestamp": time.time(), "buy_price": prices[0], "sell_price": prices[1]}
-        db.child("throughbit/BTC/INR").update(data)
+        all_market_data["throughbit/BTC/INR"] = data
         add_market_entry('BTC', 'INR', 'Throughbit', 'throughbit')
         all_exchange_prices["BTC"]["INR"].append(prices[0])
+
         data = {"timestamp": time.time(), "buy_price": prices[2], "sell_price": prices[3]}
-        db.child("throughbit/ETH/INR").update(data)
+        all_market_data["throughbit/ETH/INR"] = data
         add_market_entry('ETH', 'INR', 'Throughbit', 'throughbit')
         all_exchange_prices["ETH"]["INR"].append(prices[2])
         all_exchange_update_type['Throughbit'] = 'update'
@@ -386,7 +387,7 @@ def update_bitbns_price():
         for coin in result:
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
-            db.child("bitbns/{}/INR".format(coin)).update(data)
+            all_market_data["bitbns/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Bitbns', 'bitbns')
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
         all_exchange_update_type['Bitbns'] = 'update'
@@ -424,7 +425,7 @@ def update_coinome_price():
         for coin in coins:
             data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
                     "sell_price": result[coin]['sell_price']}
-            db.child("coinome/{}/INR".format(coin)).update(data)
+            all_market_data["coinome/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Coinome', 'coinome')
             all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
         all_exchange_update_type['Coinome'] = 'update'
@@ -460,8 +461,7 @@ def update_coindelta_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                db.child("coindelta").child(coin).child(coin_pair).update(details)
-
+                all_market_data['coindelta/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'Coindelta', 'coindelta')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
@@ -508,7 +508,7 @@ def update_wazirx_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                db.child("wazirx").child(coin).child(coin_pair).update(details)
+                all_market_data['wazirx/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'WazirX', 'wazirx')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
@@ -554,7 +554,7 @@ def update_coindcx_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                db.child("coindcx").child(coin).child(coin_pair).update(details)
+                all_market_data['coindcx/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'CoinDCX', 'coindcx')
                 if coin_pair == "INR":
                     all_exchange_prices[coin]["INR"].append(details["last_price"])
@@ -620,10 +620,10 @@ def update_coinbase_price():
                 else:
                     data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price,
                             "max_24hrs": -1, "min_24hrs": -1, "vol_24hrs": -1, "vol_30days": -1}
-                db.child("coinbase/{0}/{1}".format(coin, currency)).push(data)
+                all_market_data["coinbase/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Coinbase', 'coinbase')
                 all_exchange_prices[coin][currency].append(buy_price)
-                all_exchange_update_type['Coinbase'] = 'push'
+                all_exchange_update_type['Coinbase'] = 'update'
             else:
                 print("coinbase error")
 
@@ -728,9 +728,9 @@ def update_kraken_price():
             if result is not None:
                 data = {"timestamp": time.time(), "buy_price": result[dict_coin][dict_currency]["buy_price"], "sell_price": result[dict_coin][dict_currency]["sell_price"],
                         "vol_24hrs": result[dict_coin][dict_currency]["sell_price"], "max_24hrs": result[dict_coin][dict_currency]["sell_price"], "min_24hrs": result[dict_coin][dict_currency]["sell_price"]}
-                db.child("kraken/{0}/{1}".format(coin, currency)).push(data)
+                all_market_data["kraken/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Kraken', 'kraken')
-                all_exchange_update_type['Kraken'] = 'push'
+                all_exchange_update_type['Kraken'] = 'update'
             else:
                 print("kraken error")
 
@@ -833,11 +833,11 @@ def update_gemini_price():
                 if result is not None:
                     data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
                             "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
-                    db.child("gemini/{0}/{1}".format(coin, currency)).push(data)
+                    all_market_data["gemini/{0}/{1}".format(coin, currency)] = data
                     add_market_entry(coin, currency, 'Gemini', 'gemini')
                     if currency != "BTC":
                         all_exchange_prices[coin][currency].append(result[0])
-                    all_exchange_update_type['Gemini'] = 'push'
+                    all_exchange_update_type['Gemini'] = 'update'
                 else:
                     print("gemini error")
 
@@ -921,7 +921,7 @@ def update_bitfinex_price():
                         "max_24hrs": result[coin][currency]["max_24hrs"],
                         "min_24hrs": result[coin][currency]["min_24hrs"],
                         "vol_24hrs": result[coin][currency]["vol_24hrs"]}
-                db.child("bitfinex/{0}/{1}".format(coin, currency)).update(data)
+                all_market_data["bitfinex/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Bitfinex', 'bitfinex')
         all_exchange_update_type['Bitfinex'] = 'update'
 
@@ -976,11 +976,11 @@ def update_bitstamp_price():
             if result is not None:
                 data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1],
                         "max_24hrs": result[2], "min_24hrs": result[3], "vol_24hrs": result[4]}
-                db.child("bitstamp/{0}/{1}".format(coin, currency)).push(data)
+                all_market_data["bitstamp/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Bitstamp', 'bitstamp')
 
                 all_exchange_prices[coin][currency].append(result[0])
-                all_exchange_update_type['Bitstamp'] = 'push'
+                all_exchange_update_type['Bitstamp'] = 'update'
             else:
                 print("bitstamp error")
 
@@ -1011,9 +1011,9 @@ def update_bittrex_price():
     if prices is not None:
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-        db.child("bittrex_price").push(data)
+        all_market_data["bittrex"] = data
         all_exchange_prices["BTC"]["USD"].append(buy_price)
-        all_exchange_update_type['Bittrex'] = 'push'
+        all_exchange_update_type['Bittrex'] = 'update'
     else:
         print("bittrex error")
 
@@ -1042,7 +1042,7 @@ def update_kucoin_price():
     if result is not None:
         for coin, pair_data in result.items():
             for coin_pair, details in pair_data.items():
-                db.child("kucoin").child(coin).child(coin_pair).update(details)
+                all_market_data["kucoin/{0}/{1}".format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'Kucoin', 'kucoin')
         all_exchange_update_type['Kucoin'] = 'update'
 
@@ -1132,7 +1132,7 @@ def get_binance_price():
 
     for coin, coin_pairs in dict.items():
         for coin_pair in coin_pairs:
-            db.child('binance/{0}/{1}'.format(coin, coin_pair)).update(dict[coin][coin_pair])
+            all_market_data['binance/{0}/{1}'.format(coin, coin_pair)] = dict[coin][coin_pair]
             add_market_entry(coin, coin_pair, 'Binance', 'binance')
     all_exchange_update_type['Binance'] = 'update'
 
@@ -1145,7 +1145,7 @@ def update_huobi_price():
     if result is not None:
         for coin, coin_pairs in result.items():
             for coin_pair in coin_pairs:
-                db.child('huobi/{0}/{1}'.format(coin.upper(), coin_pair.upper())).update(result[coin][coin_pair])
+                all_market_data['huobi/{0}/{1}'.format(coin.upper(), coin_pair.upper())] = result[coin][coin_pair]
                 add_market_entry(coin.upper(), coin_pair.upper(), 'Huobi', 'huobi')
         all_exchange_update_type['Huobi'] = 'update'
     else:
@@ -1232,7 +1232,7 @@ def update_hitbtc_price():
 
     for coin, coin_pairs in dict.items():
         for coin_pair in coin_pairs:
-            db.child('hitbtc/{0}/{1}'.format(coin, coin_pair)).update(dict[coin][coin_pair])
+            all_market_data['hitbtc/{0}/{1}'.format(coin, coin_pair)] = dict[coin][coin_pair]
             add_market_entry(coin, coin_pair, 'HitBTC', 'hitbtc')
     all_exchange_update_type['HitBTC'] = 'update'
 
@@ -1270,7 +1270,6 @@ def update_ccxt_market_price(market, market_name, market_database_title):
 
     for coin, coin_pairs in dict.items():
         for coin_pair in coin_pairs:
-            # db.child('cex/{0}/{1}'.format(coin, coin_pair)).update(dict[coin][coin_pair])
             add_market_entry(coin, coin_pair, '{}'.format(market_name), '{}'.format(market_database_title))
     all_exchange_update_type['{}'.format(market_name)] = 'update'
 
@@ -1300,6 +1299,10 @@ def update_exchange_update_type():
     """Store type of update method used for exchange data in Firebase - 'push' or 'update' """
     db.child("all_exchanges_update_type").update(all_exchange_update_type)
 
+
+def update_all_market_data():
+    for key, value in all_market_data.items():
+        db.child(key).update(value)
 ###################################################
 
 execute()
@@ -1334,6 +1337,8 @@ with ThreadPoolExecutor(max_workers=8) as executor:
 
 # print(ccxt.exchanges)
 
+update_all_market_data()
+update_all_market_data()
 update_average_price()
 update_markets()
 update_exchange_update_type()
