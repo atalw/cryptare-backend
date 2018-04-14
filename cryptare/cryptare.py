@@ -354,7 +354,6 @@ def update_bitbns_price():
     else:
         print("bitbns error")
 
-    print('done')
 
 def get_bitbns_price():
     url = "https://bitbns.com/order/getTickerAll"
@@ -1281,9 +1280,7 @@ def update_exchange_update_type():
 
 
 def update_all_market_data():
-    print(len(all_market_data))
     for item in dict_chunks(all_market_data, 500):
-        print(item)
         db.update(item)
 
 
