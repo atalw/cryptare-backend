@@ -8,6 +8,7 @@ import time
 import json as jsonmodule
 from binance.client import Client
 import ccxt
+from itertools import islice
 
 config = {
     "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -63,58 +64,17 @@ all_market_data = {}
 ###################################################
 
 
-def execute():
-    for coin in coins:
-        all_exchange_prices[coin] = {}
-        for currency in currencies:
-            all_exchange_prices[coin][currency] = []
-    # update_exchanges()
-    # update_average_price()
-
-
-# def update_exchanges():
-#
-#     update_indian_exchanges()
-#     update_us_exchanges()
-#     update_international_exchanges()
-#
-#     update_markets()
-#     update_exchange_update_type()
-
-def update_indian_exchanges():
-    update_zebpay_price()
-    update_localbitcoins_price()
-    # update_coinsecure_price()
-    update_pocketbits_price()
-
-def update_us_exchanges():
-    update_coinbase_price()
-    update_kraken_price()
-    # update_poloniex_price()
-    update_gemini_price()
-    update_bitfinex_price()
-    update_bitstamp_price()
-    # update_bittrex_price()
-
-def update_international_exchanges():
-    update_kucoin_price()
-    update_binance_price()
-    update_huobi_price()
-
-###################################################
-
-
 def update_average_price():
-    average_prices = {}
     for coin, currency_data in all_exchange_prices.items():
-        for currency, data in currency_data.items():
-            if len(data) > 0:
-                total_sum = sum(data)
-                average = total_sum / len(data)
-                if coin not in average_prices:
-                    average_prices[coin] = {}
-                average_prices[coin][currency] = average
-                db.child(coin).child("Data").child(currency).update({"price": average})
+        for currency, exchange_data in currency_data.items():
+            count = len(exchange_data)
+            if count > 0:
+                total_sum = 0
+                for key, value in exchange_data.items():
+                    total_sum = total_sum + value
+                average = total_sum / count
+
+                all_market_data['{0}/Data/{1}/price'.format(coin, currency)] = average
 
 ###################################################
 
@@ -124,12 +84,12 @@ def update_zebpay_price():
     result = get_zebpay_price(coins)
     if result is not None:
         for coin in coins:
-            data = {"timestamp": time.time(), "last_price": result[coin]["last_price"] ,"buy_price": result[coin]["buy_price"],
+            data = {"timestamp": time.time(), "last_price": result[coin]["last_price"], "buy_price": result[coin]["buy_price"],
                     "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
             all_market_data["zebpay_new/{}/INR".format(coin)] = data
             # if coin == "BTC": #support old version of cryptare
             #     db.child("zebpay").push(data)
-            all_exchange_prices[coin]["INR"].append(result[coin]["last_price"])
+            add_market_price(coin, 'INR', 'Zebpay', result[coin]["buy_price"])
             add_market_entry(coin, 'INR', 'Zebpay', 'zebpay_new')
         all_exchange_update_type['Zebpay'] = 'update'
     else:
@@ -170,7 +130,7 @@ def update_koinex_price():
                 "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
             all_market_data["koinex/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Koinex', 'koinex')
-            all_exchange_prices[coin]["INR"].append(result[coin]['last_price'])
+            add_market_price(coin, 'INR', 'Koinex', result[coin]["buy_price"])
         all_exchange_update_type['Koinex'] = 'update'
     else:
         print("koinex error")
@@ -217,7 +177,7 @@ def update_localbitcoins_price():
             title = "localbitcoins/BTC/{}".format(currency)
             all_market_data[title] = data
             add_market_entry('BTC', currency, 'Localbitcoins', 'localbitcoins')
-            all_exchange_prices["BTC"][currency].append(buy_price)
+            add_market_price('BTC', 'INR', 'Localbitcoins', buy_price)
             all_exchange_update_type['Localbitcoins'] = 'update'
         else:
             print("localbitcoins error")
@@ -268,7 +228,7 @@ def update_coinsecure_price():
                 "min_24hrs": result[3], "fiat_volume_24hrs": result[4], "coin_volume_24hrs": result[5]}
         # db.child("coinsecure/BTC/INR").update(data)
         add_market_entry('BTC', 'INR', 'Coinsecure', 'coinsecure')
-        all_exchange_prices["BTC"]["INR"].append(result[0])
+        add_market_price('BTC', 'INR', 'Coinsecure', result[0])
         all_exchange_update_type['Coinsecure'] = 'update'
     else:
         print("coinsecure error")
@@ -316,7 +276,7 @@ def update_pocketbits_price():
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
         all_market_data["pocketbits/BTC/INR"] = data
         add_market_entry('BTC', 'INR', 'PocketBits', 'pocketbits')
-        all_exchange_prices["BTC"]["INR"].append(buy_price)
+        add_market_price('BTC', 'INR', 'PocketBits', buy_price)
         all_exchange_update_type['PocketBits'] = 'update'
     else:
         print("pockebits error")
@@ -349,12 +309,12 @@ def update_throughbit_price():
         data = {"timestamp": time.time(), "buy_price": prices[0], "sell_price": prices[1]}
         all_market_data["throughbit/BTC/INR"] = data
         add_market_entry('BTC', 'INR', 'Throughbit', 'throughbit')
-        all_exchange_prices["BTC"]["INR"].append(prices[0])
+        add_market_price('BTC', 'INR', 'Throughbit', prices[0])
 
         data = {"timestamp": time.time(), "buy_price": prices[2], "sell_price": prices[3]}
         all_market_data["throughbit/ETH/INR"] = data
         add_market_entry('ETH', 'INR', 'Throughbit', 'throughbit')
-        all_exchange_prices["ETH"]["INR"].append(prices[2])
+        add_market_price('ETH', 'INR', 'Throughtbit', prices[2])
         all_exchange_update_type['Throughbit'] = 'update'
     else:
         print("throughbit error")
@@ -384,15 +344,17 @@ def get_throughbit_price():
 def update_bitbns_price():
     result = get_bitbns_price()
     if result is not None:
-        for coin in result:
-            data = {"timestamp": time.time(), "buy_price": result[coin]['buy_price'],
-                    "sell_price": result[coin]['sell_price']}
+        all_exchange_update_type['Bitbns'] = 'update'
+        for coin, value in result.items():
+            data = {"timestamp": time.time(), "buy_price": value['buy_price'],
+                    "sell_price": value['sell_price']}
             all_market_data["bitbns/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Bitbns', 'bitbns')
-            all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
-        all_exchange_update_type['Bitbns'] = 'update'
+            add_market_price(coin, 'INR', 'Bitbns', value['buy_price'])
     else:
         print("bitbns error")
+
+    print('done')
 
 def get_bitbns_price():
     url = "https://bitbns.com/order/getTickerAll"
@@ -427,7 +389,7 @@ def update_coinome_price():
                     "sell_price": result[coin]['sell_price']}
             all_market_data["coinome/{}/INR".format(coin)] = data
             add_market_entry(coin, 'INR', 'Coinome', 'coinome')
-            all_exchange_prices[coin]["INR"].append(result[coin]['buy_price'])
+            add_market_price(coin, 'INR', 'Coinome', result[coin]['buy_price'])
         all_exchange_update_type['Coinome'] = 'update'
     else:
         print("coinome error")
@@ -464,7 +426,7 @@ def update_coindelta_price():
                 all_market_data['coindelta/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'Coindelta', 'coindelta')
                 if coin_pair == "INR":
-                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+                    add_market_price(coin, 'INR', 'Coindelta', details['last_price'])
         all_exchange_update_type['Coindelta'] = 'update'
     else:
         print("coindelta error")
@@ -511,7 +473,7 @@ def update_wazirx_price():
                 all_market_data['wazirx/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'WazirX', 'wazirx')
                 if coin_pair == "INR":
-                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+                    add_market_price(coin, coin_pair, 'WazirX', details['last_price'])
         all_exchange_update_type['WazirX'] = 'update'
     else:
         print("wazirx error")
@@ -557,7 +519,7 @@ def update_coindcx_price():
                 all_market_data['coindcx/{0}/{1}'.format(coin, coin_pair)] = details
                 add_market_entry(coin, coin_pair, 'CoinDCX', 'coindcx')
                 if coin_pair == "INR":
-                    all_exchange_prices[coin]["INR"].append(details["last_price"])
+                    add_market_price(coin, coin_pair, 'CoinDCX', details['last_price'])
         all_exchange_update_type['CoinDCX'] = 'update'
     else:
         print("coindcx error")
@@ -622,7 +584,7 @@ def update_coinbase_price():
                             "max_24hrs": -1, "min_24hrs": -1, "vol_24hrs": -1, "vol_30days": -1}
                 all_market_data["coinbase/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Coinbase', 'coinbase')
-                all_exchange_prices[coin][currency].append(buy_price)
+                # add_market_price(coin, currency, 'Coinbase', buy_price)
                 all_exchange_update_type['Coinbase'] = 'update'
             else:
                 print("coinbase error")
@@ -796,7 +758,7 @@ def update_poloniex_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
         db.child("poloniex_price").push(data)
-        all_exchange_prices["BTC"]["USD"].append(buy_price)
+        # all_exchange_prices["BTC"]["USD"].append(buy_price)
     else:
         print("poloniex error")
 
@@ -835,8 +797,8 @@ def update_gemini_price():
                             "fiat_volume_24hrs": result[2], "coin_volume_24hrs": result[3]}
                     all_market_data["gemini/{0}/{1}".format(coin, currency)] = data
                     add_market_entry(coin, currency, 'Gemini', 'gemini')
-                    if currency != "BTC":
-                        all_exchange_prices[coin][currency].append(result[0])
+                    # if currency != "BTC":
+                        # all_exchange_prices[coin][currency].append(result[0])
                     all_exchange_update_type['Gemini'] = 'update'
                 else:
                     print("gemini error")
@@ -979,7 +941,7 @@ def update_bitstamp_price():
                 all_market_data["bitstamp/{0}/{1}".format(coin, currency)] = data
                 add_market_entry(coin, currency, 'Bitstamp', 'bitstamp')
 
-                all_exchange_prices[coin][currency].append(result[0])
+                # all_exchange_prices[coin][currency].append(result[0])
                 all_exchange_update_type['Bitstamp'] = 'update'
             else:
                 print("bitstamp error")
@@ -1012,7 +974,7 @@ def update_bittrex_price():
         buy_price, sell_price = prices
         data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
         all_market_data["bittrex"] = data
-        all_exchange_prices["BTC"]["USD"].append(buy_price)
+        # all_exchange_prices["BTC"]["USD"].append(buy_price)
         all_exchange_update_type['Bittrex'] = 'update'
     else:
         print("bittrex error")
@@ -1278,15 +1240,27 @@ def update_ccxt_market_price(market, market_name, market_database_title):
 
 ###################################################
 
+
+def add_market_price(coin, currency, market_name, price):
+    if coin not in all_exchange_prices:
+        all_exchange_prices[coin] = {}
+
+    if currency not in all_exchange_prices[coin]:
+        all_exchange_prices[coin][currency] = {}
+
+    all_exchange_prices[coin][currency][market_name] = price
+
+
 def add_market_entry(coin, currency, market_name, market_title):
 
-    if coin not in all_markets :
+    if coin not in all_markets:
         all_markets[coin] = {}
 
     if currency not in all_markets[coin]:
         all_markets[coin][currency] = {}
 
     all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
+
 
 def update_markets():
     for coin, values in all_markets.items():
@@ -1307,40 +1281,40 @@ def update_exchange_update_type():
 
 
 def update_all_market_data():
-    data = all_market_data
-    split_all_market_data = []
-    if len(data) > 500:
-        while len(data) > 500:
-            pice = dict(list(data.items())[:500])
-            split_all_market_data.append(pice)
-            data = dict(list(data.items())[500:])
-        split_all_market_data.append(data)
-    else:
-        split_all_market_data.append(data)
+    print(len(all_market_data))
+    for item in dict_chunks(all_market_data, 500):
+        print(item)
+        db.update(item)
 
-    for chunk  in split_all_market_data:
-        db.update(chunk)
+
+def dict_chunks(data, SIZE=10000):
+    it = iter(data)
+    for i in range(0, len(data), SIZE):
+        yield {k: data[k] for k in islice(it, SIZE)}
 
 ###################################################
 
-execute()
-
 with ThreadPoolExecutor() as executor:
-    executor.submit(update_indian_exchanges)
+    executor.submit(update_zebpay_price)
+    executor.submit(update_localbitcoins_price)
+    executor.submit(update_pocketbits_price)
+    # executor.submit(update_coinsecure_price)
     executor.submit(update_wazirx_price)
     executor.submit(update_koinex_price)
     executor.submit(update_bitbns_price)
     executor.submit(update_coinome_price)
     executor.submit(update_coindelta_price)
     executor.submit(update_throughbit_price)
-    executor.submit(update_coindcx_price())
+    executor.submit(update_coindcx_price)
 
     executor.submit(update_coinbase_price)
     executor.submit(update_kraken_price)
     executor.submit(update_gemini_price)
     executor.submit(update_bitfinex_price)
     executor.submit(update_bitstamp_price)
-    #
+    # executor.submit(update_poloniex_price)
+    # executor.submit(update_bittrex_price)
+
     executor.submit(update_kucoin_price)
     executor.submit(update_binance_price)
     executor.submit(update_hitbtc_price)
