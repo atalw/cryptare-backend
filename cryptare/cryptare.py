@@ -177,7 +177,7 @@ def update_localbitcoins_price():
             title = "localbitcoins/BTC/{}".format(currency)
             all_market_data[title] = data
             add_market_entry('BTC', currency, 'Localbitcoins', 'localbitcoins')
-            add_market_price('BTC', 'INR', 'Localbitcoins', buy_price)
+            add_market_price('BTC', currency, 'Localbitcoins', buy_price)
             all_exchange_update_type['Localbitcoins'] = 'update'
         else:
             print("localbitcoins error")
@@ -1292,6 +1292,7 @@ def dict_chunks(data, SIZE=10000):
 ###################################################
 
 with ThreadPoolExecutor() as executor:
+    # Indian exchanges
     executor.submit(update_zebpay_price)
     executor.submit(update_localbitcoins_price)
     executor.submit(update_pocketbits_price)
@@ -1304,6 +1305,7 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_throughbit_price)
     executor.submit(update_coindcx_price)
 
+    # US exchanges
     executor.submit(update_coinbase_price)
     executor.submit(update_kraken_price)
     executor.submit(update_gemini_price)
