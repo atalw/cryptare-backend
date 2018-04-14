@@ -1,6 +1,9 @@
 import requests
 import pyrebase
+import time
 import json
+from itertools import islice
+
 config = {
     "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
     "authDomain": "atalwcryptare.firebaseapp.com",
@@ -28,11 +31,14 @@ crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZR
                             "ZEC", "QTUM", "GAS", "DASH", "BTG", "IOT", "ZIL", "ETN", "ONT", "KNC",
                             "EOS", "POLY", "AION", "NCASH", "ICX", "VEN"]
 
+all_data = {}
+multi_path_dict = {}
+
 def get_current_crypto_price():
-    dict = get_list_of_coins_with_rank()
-    if dict is not None:
+    crypto_dict = get_list_of_coins_with_rank()
+    if crypto_dict is not None:
         crypto_list = list()
-        for i in dict.keys():
+        for i in crypto_dict.keys():
             crypto_list.append(i)
 
         crypto_list_string = list()
@@ -60,53 +66,37 @@ def get_current_crypto_price():
                 data = json["RAW"]
                 for crypto in crypto_list:
                     for currency in currencies:
-                        dict[crypto][currency] = {}
                         if crypto in data and currency in data[crypto]:
+
                             if currency == "INR" and crypto in crypto_with_markets_list:
-                                old_price = db.child(crypto).child("Data").child(currency).child("price").get().val()
-                                # old_timestamp = db.child(crypto).child("Data").child(currency).child("timestamp").get().val()
-                                if old_price is not None:
-                                    dict[crypto][currency]["price"] = float(old_price)
-                                else:
-                                    dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
-
-                                # if old_timestamp is not None:
-                                #     dict[crypto][currency]["timestamp"] =  float(old_timestamp)
-                                # else:
-                                #     dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
-
+                                pass
                             else:
-                                dict[crypto][currency]["price"] = float(data[crypto][currency]["PRICE"])
+                                multi_path_dict['{0}/Data/{1}/price'.format(crypto, currency)] = float(
+                                    data[crypto][currency]["PRICE"])
 
-                            dict[crypto][currency]["timestamp"] = float(data[crypto][currency]["LASTUPDATE"])
+                            multi_path_dict['{0}/Data/{1}/timestamp'.format(crypto, currency)] = time.time()
 
                             if currency == "INR" and rate is not None:
-                                    dict[crypto]["INR"]["change_24hrs_fiat"] = float(
+                                multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
                                         data[crypto]["USD"]["CHANGE24HOUR"]*rate)
-                                    dict[crypto][currency]["change_24hrs_percent"] = float(
+                                multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(crypto, currency)] = float(
                                         data[crypto]["USD"]["CHANGEPCT24HOUR"])
                             else:
-                                dict[crypto][currency]["change_24hrs_fiat"] = float(data[crypto][currency]["CHANGE24HOUR"])
-                                dict[crypto][currency]["change_24hrs_percent"] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
+                                multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(data[crypto][currency]["CHANGE24HOUR"])
+                                multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(crypto, currency)] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
 
-                            dict[crypto][currency]["vol_24hrs_coin"] = float(data[crypto][currency]["VOLUME24HOUR"])
-                            dict[crypto][currency]["vol_24hrs_fiat"] = float(data[crypto][currency]["VOLUME24HOURTO"])
-                            dict[crypto][currency]["high_24hrs"] = float(data[crypto][currency]["HIGH24HOUR"])
-                            dict[crypto][currency]["low_24hrs"] = float(data[crypto][currency]["LOW24HOUR"])
-                            dict[crypto][currency]["last_trade_volume"] = float(data[crypto][currency]["LASTVOLUME"])
-                            dict[crypto][currency]["last_trade_market"] = data[crypto][currency]["LASTMARKET"]
-                            dict[crypto][currency]["supply"] = float(data[crypto][currency]["SUPPLY"])
-                            dict[crypto][currency]["marketcap"] = float(data[crypto][currency]["MKTCAP"])
-                            try:
-                                markets = db.child(crypto).child("Data").child(currency).child("markets").get().val()
-                            except:
-                                markets = {}
-                            dict[crypto][currency]["markets"] = markets
+                            multi_path_dict['{0}/Data/{1}/vol_24hrs_coin'.format(crypto, currency)] = float(data[crypto][currency]["VOLUME24HOUR"])
+                            multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(crypto, currency)] = float(data[crypto][currency]["VOLUME24HOURTO"])
+                            multi_path_dict['{0}/Data/{1}/high_24hrs'.format(crypto, currency)] = float(data[crypto][currency]["HIGH24HOUR"])
+                            multi_path_dict['{0}/Data/{1}/low_24hrs'.format(crypto, currency)] = float(data[crypto][currency]["LOW24HOUR"])
+                            multi_path_dict['{0}/Data/{1}/last_trade_volume'.format(crypto, currency)] = float(data[crypto][currency]["LASTVOLUME"])
+                            multi_path_dict['{0}/Data/{1}/last_trade_market'.format(crypto, currency)] = data[crypto][currency]["LASTMARKET"]
+                            multi_path_dict['{0}/Data/{1}/supply'.format(crypto, currency)] = float(data[crypto][currency]["SUPPLY"])
+                            multi_path_dict['{0}/Data/{1}/marketcap'.format(crypto, currency)] = float(data[crypto][currency]["MKTCAP"])
 
-        for coin in dict.keys():
-            data = {"Data": dict[coin]}
-            title = coin
-            db.child(title).update(data)
+        for item in dict_chunks(multi_path_dict, 500):
+            db.update(item)
+
 
 def get_list_of_coins_with_rank():
     all_data = db.child("coins").order_by_key().limit_to_last(1).get()
@@ -118,6 +108,12 @@ def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in range(0, len(l), n):
         yield l[i:i + n]
+
+
+def dict_chunks(data, SIZE=10000):
+    it = iter(data)
+    for i in range(0, len(data), SIZE):
+        yield {k:data[k] for k in islice(it, SIZE)}
 
 get_current_crypto_price()
 
