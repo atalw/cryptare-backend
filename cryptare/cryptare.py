@@ -1324,6 +1324,26 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price, ccxt.lakebtc(), 'LakeBTC', 'lakebtc')
     executor.submit(update_ccxt_market_price, ccxt.bittrex(), 'Bittrex', 'bittrex')
 
+    executor.submit(update_ccxt_market_price, ccxt.bithumb(), 'Bithumb', 'bithumb')
+    executor.submit(update_ccxt_market_price, ccxt.luno(), 'Luno', 'luno')
+    executor.submit(update_ccxt_market_price, ccxt.exmo(), 'EXMO', 'exmo')
+    executor.submit(update_ccxt_market_price, ccxt.dsx(), 'DSX', 'dsx')
+    # executor.submit(update_ccxt_market_price, ccxt.cryptopia(), 'Cryptopia', 'cryptopia') # key error
+    executor.submit(update_ccxt_market_price, ccxt.wex(), 'WEX', 'wex')
+    executor.submit(update_ccxt_market_price, ccxt.therock(), 'TheRockTrading', 'therock')
+    executor.submit(update_ccxt_market_price, ccxt.southxchange(), 'SouthXchange', 'southxchange')
+    executor.submit(update_ccxt_market_price, ccxt.qryptos(), 'QRYPTOS', 'qryptos')
+    executor.submit(update_ccxt_market_price, ccxt.livecoin(), 'LiveCoin', 'livecoin')
+    executor.submit(update_ccxt_market_price, ccxt.liqui(), 'Liqui', 'liqui')
+    executor.submit(update_ccxt_market_price, ccxt.kuna(), 'Kuna', 'kuna')
+    executor.submit(update_ccxt_market_price, ccxt.cobinhood(), 'COBINHOOD', 'cobinhood')
+    executor.submit(update_ccxt_market_price, ccxt.btctradeim(), 'BtcTradeIM', 'btctradeim')
+    executor.submit(update_ccxt_market_price, ccxt.braziliex(), 'Braziliex', 'braziliex')
+    executor.submit(update_ccxt_market_price, ccxt.bittrex(), 'Bittrex', 'bittrex')
+    executor.submit(update_ccxt_market_price, ccxt.acx(), 'ACX', 'acx')
+
+
+
     # executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
     # executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
 
