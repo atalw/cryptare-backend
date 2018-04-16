@@ -181,6 +181,7 @@ def update_localbitcoins_price():
             all_exchange_update_type['Localbitcoins'] = 'update'
         else:
             print("localbitcoins error")
+            return
 
 def get_localbitcoins_price(currency):
     buy_url = "https://localbitcoins.com/buy-bitcoins-online/{}/.json".format(currency)
@@ -1199,8 +1200,8 @@ def update_hitbtc_price():
 
 ###################################################
 
+
 def update_ccxt_market_price(market, market_name, market_database_title):
-    print(market_name)
 
     market_markets = market.fetch_markets()
     market_tickers = market.fetch_tickers()
@@ -1231,11 +1232,9 @@ def update_ccxt_market_price(market, market_name, market_database_title):
 
     for coin, coin_pairs in dict.items():
         for coin_pair in coin_pairs:
+            all_market_data["{0}/{1}/{2}".format(market_database_title, coin, coin_pair)] = dict[coin][coin_pair]
             add_market_entry(coin, coin_pair, '{}'.format(market_name), '{}'.format(market_database_title))
     all_exchange_update_type['{}'.format(market_name)] = 'update'
-
-    print(dict)
-    print(all_markets)
 
 ###################################################
 
@@ -1319,11 +1318,11 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_hitbtc_price)
     # executor.submit(update_huobi_price) # very very slow
 
-    # executor.submit(update_ccxt_market_price, ccxt.gateio(), 'Gate.io', 'gateio')
-    # executor.submit(update_ccxt_market_price, ccxt.cex(), 'Cex.io', 'cex')
-    # executor.submit(update_ccxt_market_price, ccxt.quoinex(), 'Quoinex', 'quoinex')
-    # executor.submit(update_ccxt_market_price, ccxt.lakebtc(), 'LakeBTC', 'lakebtc')
-    # executor.submit(update_ccxt_market_price, ccxt.bittrex(), 'Bittrex', 'bittrex')
+    executor.submit(update_ccxt_market_price, ccxt.gateio(), 'GateIO', 'gateio')
+    executor.submit(update_ccxt_market_price, ccxt.cex(), 'CexIO', 'cexio')
+    executor.submit(update_ccxt_market_price, ccxt.quoinex(), 'Quoinex', 'quoinex')
+    executor.submit(update_ccxt_market_price, ccxt.lakebtc(), 'LakeBTC', 'lakebtc')
+    executor.submit(update_ccxt_market_price, ccxt.bittrex(), 'Bittrex', 'bittrex')
 
     # executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
     # executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
