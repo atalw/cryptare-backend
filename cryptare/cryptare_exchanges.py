@@ -1293,7 +1293,10 @@ def add_market_entry(coin, currency, market_name, market_title):
   if currency not in all_markets[coin]:
     all_markets[coin][currency] = {}
 
-  all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
+  if market_name == "Quoinex" and currency == "INR":
+    pass
+  else:
+    all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
 
 
 def update_markets():
