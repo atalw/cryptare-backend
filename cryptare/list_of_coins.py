@@ -66,7 +66,7 @@ def update_list_of_coins_with_rank():
     for item in dict_chunks(multi_path_dict, 500):
         db.update(item)
 
-def dict_chunks(data, SIZE=10000):
+def dict_chunks(data, SIZE=500):
     it = iter(data)
     for i in range(0, len(data), SIZE):
         yield {k:data[k] for k in islice(it, SIZE)}
