@@ -86,9 +86,7 @@ def update_zebpay_price():
         for coin in coins:
             data = {"timestamp": time.time(), "last_price": result[coin]["last_price"], "buy_price": result[coin]["buy_price"],
                     "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
-            all_market_data["zebpay_new/{}/INR".format(coin)] = data
-            # if coin == "BTC": #support old version of cryptare
-            #     db.child("zebpay").push(data)
+            all_market_data["zebpay/{}/INR".format(coin)] = data
             add_market_price(coin, 'INR', 'Zebpay', result[coin]["buy_price"])
             add_market_entry(coin, 'INR', 'Zebpay', 'zebpay_new')
         all_exchange_update_type['Zebpay'] = 'update'
