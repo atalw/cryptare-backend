@@ -82,7 +82,7 @@ def update_average_price():
 
 
 def update_zebpay_price():
-  coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
+  coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG"]
   result = get_zebpay_price(coins)
   if result is not None:
     for coin in coins:
@@ -91,7 +91,7 @@ def update_zebpay_price():
               "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
       all_market_data["zebpay/{}/INR".format(coin)] = data
       add_market_price(coin, 'INR', 'Zebpay', result[coin]["buy_price"])
-      add_market_entry(coin, 'INR', 'Zebpay', 'zebpay_new')
+      add_market_entry(coin, 'INR', 'Zebpay', 'zebpay')
     all_exchange_update_type['Zebpay'] = 'update'
   else:
     print("zebpay error")
