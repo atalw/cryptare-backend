@@ -127,14 +127,12 @@ def update_koinex_price():
   # make only 1 API call to koinex
   result = get_koinex_price()
   if result is not None:
-    for coin in coins:
-      data = {"timestamp": time.time(), "last_price": result[coin]['last_price'],
-              "buy_price": result[coin]['buy_price'], "sell_price": result[coin]['sell_price'],
-              "vol_24hrs": result[coin]['vol_24hrs'],
-              "max_24hrs": result[coin]['max_24hrs'], "min_24hrs": result[coin]['min_24hrs']}
-      all_market_data["koinex/{}/INR".format(coin)] = data
-      add_market_entry(coin, 'INR', 'Koinex', 'koinex')
-      add_market_price(coin, 'INR', 'Koinex', result[coin]["buy_price"])
+    for coin, quote_coins in result.items():
+      for quote, values in quote_coins.items():
+        all_market_data["koinex/{0}/{1}".format(coin, quote)] = values
+        add_market_entry(coin, quote, 'Koinex', 'koinex')
+        if quote == 'INR':
+          add_market_price(coin, quote, 'Koinex', values["buy_price"])
     all_exchange_update_type['Koinex'] = 'update'
   else:
     print("koinex error")
@@ -150,14 +148,39 @@ def get_koinex_price():
     for key, result in json.items():
       if key == "stats":
         try:
-          for coin, entry in result.items():
-            data[coin] = {}
-            data[coin]['last_price'] = float(entry["last_traded_price"])
-            data[coin]['buy_price'] = float(entry["lowest_ask"])
-            data[coin]['sell_price'] = float(entry["highest_bid"])
-            data[coin]['vol_24hrs'] = float(entry["vol_24hrs"])
-            data[coin]['max_24hrs'] = float(entry["max_24hrs"])
-            data[coin]['min_24hrs'] = float(entry["min_24hrs"])
+          for quote, all_coins in result.items():
+            if quote == "inr":
+              pair = "INR"
+            elif quote == "bitcoin":
+              pair = "BTC"
+            elif quote == "ether":
+              pair = "ETH"
+
+            for coin, entry in all_coins.items():
+
+              if coin not in data:
+                data[coin] = {}
+
+              if pair not in data[coin]:
+                data[coin][pair] = {}
+
+              last_traded_price = entry["last_traded_price"]
+              lowest_ask = entry["lowest_ask"]
+              highest_bid = entry["highest_bid"]
+              vol_24hrs = entry["vol_24hrs"]
+              max_24hrs = entry["max_24hrs"]
+              min_24hrs = entry["min_24hrs"]
+              per_change = entry["per_change"]
+
+              data[coin][pair]['last_price'] = string_to_float(last_traded_price)
+              data[coin][pair]['buy_price'] = string_to_float(lowest_ask)
+              data[coin][pair]['sell_price'] = string_to_float(highest_bid)
+              data[coin][pair]['vol_24hrs'] = string_to_float(vol_24hrs)
+              data[coin][pair]['max_24hrs'] = string_to_float(max_24hrs)
+              data[coin][pair]['min_24hrs'] = string_to_float(min_24hrs)
+              data[coin][pair]['per_change_24hrs'] = string_to_float(per_change)
+              data[coin][pair]['timestamp'] = time.time()
+
         except:
           return None
 
@@ -165,6 +188,12 @@ def get_koinex_price():
       return data
   return None
 
+
+def string_to_float(value):
+  if value is not None:
+    return float(value)
+  else:
+    return 0
 
 ###################################################
 
@@ -1383,9 +1412,9 @@ with ThreadPoolExecutor() as executor:
   executor.submit(update_ccxt_market_price, ccxt.acx(), 'ACX', 'acx')
 
 
-
   # executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
   # executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
+
 
 # print(ccxt.exchanges)
 update_average_price()
