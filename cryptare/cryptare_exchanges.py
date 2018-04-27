@@ -85,17 +85,25 @@ def update_zebpay_price():
   coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG"]
   result = get_zebpay_price(coins)
   if result is not None:
-    for coin in coins:
-      data = {"timestamp": time.time(), "last_price": result[coin]["last_price"],
-              "buy_price": result[coin]["buy_price"],
-              "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
-      all_market_data["zebpay/{}/INR".format(coin)] = data
+    for coin, values in result.items():
+      # data = {"timestamp": time.time(), "last_price": result[coin]["last_price"],
+      #         "buy_price": result[coin]["buy_price"],
+      #         "sell_price": result[coin]["sell_price"], "vol_24hrs": result[coin]["vol_24hrs"]}
+      all_market_data["zebpay/{}/INR".format(coin)] = values
       add_market_price(coin, 'INR', 'Zebpay', result[coin]["buy_price"])
       add_market_entry(coin, 'INR', 'Zebpay', 'zebpay')
     all_exchange_update_type['Zebpay'] = 'update'
   else:
-    print("zebpay error")
+    print("zebpay fiat error")
 
+  crypto_coins = ["ETH"]
+  crypto_result = get_zebpay_crypto_price(crypto_coins)
+  if result is not None:
+    for coin, values in crypto_result.items():
+      all_market_data["zebpay/{}/BTC".format(coin)] = values
+      add_market_entry(coin, 'BTC', 'Zebpay', 'zebpay')
+  else:
+    print("zebpay crypto error")
 
 def get_zebpay_price(coins):
   data = {}
@@ -110,6 +118,10 @@ def get_zebpay_price(coins):
         data[coin]["buy_price"] = float(json["buy"])
         data[coin]["sell_price"] = float(json["sell"])
         data[coin]["vol_24hrs"] = float(json["volume"])
+        data[coin]["max_24hrs"] = float(json["24hoursHigh"])
+        data[coin]["min_24hrs"] = float(json["24hoursLow"])
+        data[coin]["per_change_24hrs"] = float(json["pricechange"])
+        data[coin]["timestamp"] = time.time()
       except:
         return None
     else:
@@ -118,6 +130,33 @@ def get_zebpay_price(coins):
   if data is not None:
     return data
   return None
+
+def get_zebpay_crypto_price(coins):
+  data = {}
+  for coin in coins:
+    url = "https://www.zebapi.com/api/v1/market/ticker-new/{}/btc".format(coin.lower())
+    r = requests.get(url)
+    if r.status_code == 200:
+      json = r.json()
+      data[coin] = {}
+      try:
+        data[coin]["last_price"] = float(json["market"])
+        data[coin]["buy_price"] = float(json["buy"])
+        data[coin]["sell_price"] = float(json["sell"])
+        data[coin]["vol_24hrs"] = float(json["volume"])
+        data[coin]["max_24hrs"] = float(json["24hoursHigh"])
+        data[coin]["min_24hrs"] = float(json["24hoursLow"])
+        data[coin]["per_change_24hrs"] = float(json["pricechange"])
+        data[coin]["timestamp"] = time.time()
+      except:
+        return None
+    else:
+      return None
+
+  if data is not None:
+    return data
+  return None
+
 
 
 ###################################################
