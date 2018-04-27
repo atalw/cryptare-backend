@@ -21,6 +21,7 @@ supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", 
                         "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD",
                         "USD", "ZAR"]
 
+alert_users = {}
 multi_path_dict = {}
 
 illegal_characters = ["-", "."]
@@ -54,7 +55,8 @@ def update_list_of_coins_with_rank():
           pass
 
         lower_currency = currency.lower()
-        multi_path_dict['{0}/Data/{1}/price'.format(symbol, currency)] = float(coin['price_{}'.format(lower_currency)])
+        price = float(coin['price_{}'.format(lower_currency)])
+        multi_path_dict['{0}/Data/{1}/price'.format(symbol, currency)] = price
         multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(symbol, currency)] = float(
           coin['24h_volume_{}'.format(lower_currency)])
         multi_path_dict['{0}/Data/{1}/supply'.format(symbol, currency)] = float(coin['available_supply'])
@@ -63,6 +65,15 @@ def update_list_of_coins_with_rank():
         multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(symbol, currency)] = float(
           coin['percent_change_24h'])
         multi_path_dict['{0}/Data/{1}/timestamp'.format(symbol, currency)] = time.time()
+
+        # coin alerts users for MarketAverage
+        if symbol in alert_users:
+          if currency in alert_users[symbol]:
+            users = alert_users[symbol][currency]
+            for user, count in users.items():
+              for index in range(count):
+                title = 'coin_alerts/{0}/MarketAverage/{1}/{2}/{3}/current_price'.format(user, symbol, currency, index)
+                multi_path_dict[title] = price
 
     else:
       return "list coin error"
@@ -77,4 +88,10 @@ def dict_chunks(data, SIZE=500):
     yield {k: data[k] for k in islice(it, SIZE)}
 
 
+def get_market_average_alerts_users():
+  data = db.child('coin_alerts_users/MarketAverage').get().val()
+  return dict(data)
+
+
+alert_users = get_market_average_alerts_users()
 update_list_of_coins_with_rank()
