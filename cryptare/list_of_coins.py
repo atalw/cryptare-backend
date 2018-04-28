@@ -90,7 +90,9 @@ def dict_chunks(data, SIZE=500):
 
 def get_market_average_alerts_users():
   data = db.child('coin_alerts_users/MarketAverage').get().val()
-  return dict(data)
+  if data is not None:
+    return dict(data)
+  return {}
 
 
 alert_users = get_market_average_alerts_users()
