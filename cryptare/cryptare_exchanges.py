@@ -1412,13 +1412,7 @@ def update_markets():
   for coin, values in all_markets.items():
     for currency, markets in values.items():
       title = "{0}/Data/{1}/markets".format(coin, currency)
-      if (currency == "USDT" or currency == "USD") and coin == "BTC":
-        usd_title = "{}/Data/USD/markets".format(coin)
-        if usd_title not in all_market_data:
-          all_market_data[usd_title] = {}
-        all_market_data[usd_title].update(markets)
-      else:
-        all_market_data[title] = markets
+      all_market_data[title] = markets
 
 
 def update_exchange_update_type():
