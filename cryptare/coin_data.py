@@ -70,27 +70,18 @@ def get_current_crypto_price():
           for currency in currencies:
             if crypto in data and currency in data[crypto]:
 
-              # if currency == "INR" and crypto in crypto_with_markets_list:
-              #     pass
-              # else:
-              #     multi_path_dict['{0}/Data/{1}/price'.format(crypto, currency)] = float(
-              #         data[crypto][currency]["PRICE"])
-
               multi_path_dict['{0}/Data/{1}/timestamp'.format(crypto, currency)] = time.time()
 
               if currency == "INR" and rate is not None:
                 multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
                   data[crypto]["USD"]["CHANGE24HOUR"] * rate)
-                # multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(crypto, currency)] = float(
-                #         data[crypto]["USD"]["CHANGEPCT24HOUR"])
+
               else:
                 multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
                   data[crypto][currency]["CHANGE24HOUR"])
-                # multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(crypto, currency)] = float(data[crypto][currency]["CHANGEPCT24HOUR"])
 
               multi_path_dict['{0}/Data/{1}/vol_24hrs_coin'.format(crypto, currency)] = float(
                 data[crypto][currency]["VOLUME24HOUR"])
-              # multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(crypto, currency)] = float(data[crypto][currency]["VOLUME24HOURTO"])
               multi_path_dict['{0}/Data/{1}/high_24hrs'.format(crypto, currency)] = float(
                 data[crypto][currency]["HIGH24HOUR"])
               multi_path_dict['{0}/Data/{1}/low_24hrs'.format(crypto, currency)] = float(
@@ -99,8 +90,6 @@ def get_current_crypto_price():
                 data[crypto][currency]["LASTVOLUME"])
               multi_path_dict['{0}/Data/{1}/last_trade_market'.format(crypto, currency)] = data[crypto][currency][
                 "LASTMARKET"]
-              # multi_path_dict['{0}/Data/{1}/supply'.format(crypto, currency)] = float(data[crypto][currency]["SUPPLY"])
-              # multi_path_dict['{0}/Data/{1}/marketcap'.format(crypto, currency)] = float(data[crypto][currency]["MKTCAP"])
 
     for item in dict_chunks(multi_path_dict, 500):
       db.update(item)
@@ -119,7 +108,7 @@ def chunks(l, n):
     yield l[i:i + n]
 
 
-def dict_chunks(data, SIZE=10000):
+def dict_chunks(data, SIZE=500):
   it = iter(data)
   for i in range(0, len(data), SIZE):
     yield {k: data[k] for k in islice(it, SIZE)}

@@ -2,6 +2,12 @@ import requests
 import pyrebase
 from itertools import islice
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
+
+from concurrent.futures import as_completed
+
+import re
 
 config = {
   "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -22,18 +28,21 @@ supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", 
                         "USD", "ZAR"]
 
 alert_users = {}
-multi_path_dict = {}
 
 illegal_characters = ["-", "."]
 
 
 def update_list_of_coins_with_rank():
+  multi_path_dict_list = list()
+  temp_multi_path_dict = {}
+
   for currency in supported_currencies:
-    url = "https://api.coinmarketcap.com/v1/ticker/?convert={}&limit=50".format(currency)
+    url = "https://api.coinmarketcap.com/v1/ticker/?convert={}&limit=300".format(currency)
 
     r = requests.get(url)
     if r.status_code == 200:
       json = r.json()
+
       for coin in json:
         symbol = coin["symbol"]
         if symbol == "MIOTA":
@@ -41,46 +50,49 @@ def update_list_of_coins_with_rank():
         elif symbol == "NANO":
           symbol = "XRB"
 
-        if not any(substring in symbol for substring in illegal_characters) and not any(
-                substring in coin["name"] for substring in illegal_characters):
-          multi_path_dict['coins/{}/rank'.format(symbol)] = float(coin["rank"])
-          multi_path_dict['coins/{}/name'.format(symbol)] = coin["name"]
-        else:
-          continue
+        if is_symbol_valid(symbol):
+          if not any(substring in symbol for substring in illegal_characters) and not any(
+                  substring in coin["name"] for substring in illegal_characters):
+            temp_multi_path_dict['coins/{}/rank'.format(symbol)] = string_to_float(coin["rank"])
+            temp_multi_path_dict['coins/{}/name'.format(symbol)] = coin["name"]
+          else:
+            continue
 
-        try:
-          icon_url = storage.child("icons/{}.png".format(symbol.lower())).get_url(token=None)
-          multi_path_dict['coins/{}/icon_url'.format(symbol)] = icon_url
-        except:
-          pass
+          try:
+            icon_url = storage.child("icons/{}.png".format(symbol.lower())).get_url(token=None)
+            temp_multi_path_dict['coins/{}/icon_url'.format(symbol)] = icon_url
+          except:
+            pass
 
-        lower_currency = currency.lower()
-        price = float(coin['price_{}'.format(lower_currency)])
-        multi_path_dict['{0}/Data/{1}/price'.format(symbol, currency)] = price
-        multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(symbol, currency)] = float(
-          coin['24h_volume_{}'.format(lower_currency)])
-        multi_path_dict['{0}/Data/{1}/supply'.format(symbol, currency)] = float(coin['available_supply'])
-        multi_path_dict['{0}/Data/{1}/marketcap'.format(symbol, currency)] = float(
-          coin['market_cap_{}'.format(lower_currency)])
-        multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(symbol, currency)] = float(
-          coin['percent_change_24h'])
-        multi_path_dict['{0}/Data/{1}/timestamp'.format(symbol, currency)] = time.time()
+          lower_currency = currency.lower()
+          price = string_to_float(coin['price_{}'.format(lower_currency)])
+          temp_multi_path_dict['{0}/Data/{1}/price'.format(symbol, currency)] = price
+          temp_multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(symbol, currency)] = string_to_float(
+            coin['24h_volume_{}'.format(lower_currency)])
+          temp_multi_path_dict['{0}/Data/{1}/supply'.format(symbol, currency)] = string_to_float(coin['available_supply'])
+          temp_multi_path_dict['{0}/Data/{1}/marketcap'.format(symbol, currency)] = string_to_float(
+            coin['market_cap_{}'.format(lower_currency)])
+          temp_multi_path_dict['{0}/Data/{1}/change_24hrs_percent'.format(symbol, currency)] = string_to_float(
+            coin['percent_change_24h'])
+          temp_multi_path_dict['{0}/Data/{1}/timestamp'.format(symbol, currency)] = time.time()
 
-        # coin alerts users for MarketAverage
-        if symbol in alert_users:
-          if currency in alert_users[symbol]:
-            users = alert_users[symbol][currency]
-            for user, count in users.items():
-              for index in range(count):
-                title = 'coin_alerts/{0}/MarketAverage/{1}/{2}/{3}/current_price'.format(user, symbol, currency, index)
-                multi_path_dict[title] = price
+          # coin alerts users for MarketAverage
+          if symbol in alert_users:
+            if currency in alert_users[symbol]:
+              users = alert_users[symbol][currency]
+              for user, count in users.items():
+                for index in range(count):
+                  title = 'coin_alerts/{0}/MarketAverage/{1}/{2}/{3}/current_price'.format(user, symbol, currency, index)
+                  temp_multi_path_dict[title] = price
 
     else:
       return "list coin error"
 
-  for item in dict_chunks(multi_path_dict, 500):
-    db.update(item)
 
+  print(len(temp_multi_path_dict))
+  with ThreadPoolExecutor() as executor:
+    for item in dict_chunks(temp_multi_path_dict, 500):
+      executor.submit(db.update(item))
 
 def dict_chunks(data, SIZE=500):
   it = iter(data)
@@ -94,6 +106,21 @@ def get_market_average_alerts_users():
     return dict(data)
   return {}
 
+
+def string_to_float(value):
+  if value is not None:
+    return float(value)
+  else:
+    return 0
+
+
+def is_symbol_valid(symbol):
+  if '.' not in symbol and '$' not in symbol  \
+    and '[' not in symbol and ']' not in symbol \
+    and '#' not in symbol and '/' not in symbol:
+    return True
+  else:
+    return False
 
 alert_users = get_market_average_alerts_users()
 update_list_of_coins_with_rank()
