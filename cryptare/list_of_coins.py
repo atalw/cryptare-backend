@@ -104,10 +104,8 @@ def get_market_average_alerts_users():
   key = 'coin_alerts_users/MarketAverage'
   index = Index.fromcache(cache)
   if key in index:
-    print('in cache')
     return dict(index[key])
   else:
-    print('not in cache')
     data = db.child(key).get().val()
     if data is not None:
       cache.set(key, data, expire=cache_store_time)
