@@ -202,6 +202,10 @@ def get_koinex_price():
               pair = "BTC"
             elif quote == "ether":
               pair = "ETH"
+            elif quote == "ripple":
+              pair = "XRP"
+            else:
+              continue
 
             for coin, entry in all_coins.items():
 
