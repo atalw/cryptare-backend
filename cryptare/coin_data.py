@@ -3,6 +3,8 @@ import pyrebase
 import time
 import json
 from itertools import islice
+from diskcache import Cache
+from diskcache import Index
 
 config = {
   "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -22,6 +24,9 @@ firebase = pyrebase.initialize_app(config)
 
 # Get a reference to the database service
 db = firebase.database()
+
+cache = Cache('/tmp/list_of_coins')
+cache_store_time = 60*60*12
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC", "ETH", "CAD", "AUD", "TRY", "AED"]
@@ -75,7 +80,6 @@ def get_current_crypto_price():
               if currency == "INR" and rate is not None:
                 multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
                   data[crypto]["USD"]["CHANGE24HOUR"] * rate)
-
               else:
                 multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
                   data[crypto][currency]["CHANGE24HOUR"])
@@ -96,10 +100,16 @@ def get_current_crypto_price():
 
 
 def get_list_of_coins_with_rank():
-  all_data = db.child("coins").get().val()
-  return all_data
-  # for data in all_data.each():
-  #     return data.val()
+  cache.expire()
+  key = 'coins'
+  index = Index.fromcache(cache)
+
+  if key in index:
+    return dict(index[key])
+  else:
+    all_data = db.child("coins").get().val()
+    cache.set(key, all_data, expire=cache_store_time)
+    return dict(all_data)
 
 
 def chunks(l, n):
