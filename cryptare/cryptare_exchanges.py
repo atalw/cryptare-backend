@@ -10,6 +10,10 @@ from binance.client import Client
 import ccxt
 from itertools import islice
 
+from diskcache import Cache
+from diskcache import Index
+# from io import BytesIO
+
 config = {
   "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
   "authDomain": "atalwcryptare.firebaseapp.com",
@@ -28,6 +32,9 @@ firebase = pyrebase.initialize_app(config)
 
 # Get a reference to the database service
 db = firebase.database()
+
+cache = Cache('/tmp/coin_alerts_users_cache')
+cache_store_time = 60*30
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
@@ -1365,9 +1372,17 @@ def update_ccxt_market_price(market, market_name, market_database_title):
 
 
 def get_coin_alerts_users():
-  result = db.child('coin_alerts_users').get().val()
+  cache.expire()
+
   global coin_alerts_users_dict
-  coin_alerts_users_dict = dict(result)
+  key = 'coin_alerts_users'
+  index = Index.fromcache(cache)
+  if key in index:
+    coin_alerts_users_dict = dict(index[key])
+  else:
+    result = db.child(key).get().val()
+    cache.set(key, result, expire=cache_store_time)
+    coin_alerts_users_dict = dict(result)
 
 
 def get_coin_alerts_uids(market_name, coin, pair):
@@ -1386,6 +1401,7 @@ def update_coin_alerts_uids(market_name, coin, pair, price):
       for count in range(index):
         title = 'coin_alerts/{0}/{1}/{2}/{3}/{4}/current_price'.format(uid, market_name, coin, pair, count)
         all_market_data[title] = price
+        print(title)
 
 ###################################################
 
@@ -1438,7 +1454,6 @@ def dict_chunks(data, SIZE=500):
 ###################################################
 
 get_coin_alerts_users()
-
 
 with ThreadPoolExecutor() as executor:
   # Indian exchanges

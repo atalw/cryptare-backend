@@ -3,11 +3,8 @@ import pyrebase
 from itertools import islice
 import time
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import ProcessPoolExecutor
-
-from concurrent.futures import as_completed
-
-import re
+from diskcache import Cache
+from diskcache import Index
 
 config = {
   "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
@@ -22,6 +19,9 @@ firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 storage = firebase.storage()
 
+cache = Cache('/tmp/coin_alerts_users_marketavg_cache')
+cache_store_time = 60*30
+
 supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP",
                         "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK",
                         "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD",
@@ -33,7 +33,6 @@ illegal_characters = ["-", "."]
 
 
 def update_list_of_coins_with_rank():
-  multi_path_dict_list = list()
   temp_multi_path_dict = {}
 
   for currency in supported_currencies:
@@ -89,7 +88,6 @@ def update_list_of_coins_with_rank():
       return "list coin error"
 
 
-  print(len(temp_multi_path_dict))
   with ThreadPoolExecutor() as executor:
     for item in dict_chunks(temp_multi_path_dict, 500):
       executor.submit(db.update(item))
@@ -101,10 +99,22 @@ def dict_chunks(data, SIZE=500):
 
 
 def get_market_average_alerts_users():
-  data = db.child('coin_alerts_users/MarketAverage').get().val()
-  if data is not None:
-    return dict(data)
-  return {}
+  cache.expire()
+
+  key = 'coin_alerts_users/MarketAverage'
+  index = Index.fromcache(cache)
+  if key in index:
+    print('in cache')
+    return dict(index[key])
+  else:
+    print('not in cache')
+    data = db.child(key).get().val()
+    if data is not None:
+      cache.set(key, data, expire=cache_store_time)
+      return dict(data)
+    else:
+      cache.set(key, {}, expire=cache_store_time)
+      return {}
 
 
 def string_to_float(value):
