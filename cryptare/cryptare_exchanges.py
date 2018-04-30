@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python3
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
 from concurrent.futures import ThreadPoolExecutor
 import requests
-import pyrebase
 import time
 import json as jsonmodule
 from binance.client import Client
@@ -14,24 +17,13 @@ from diskcache import Cache
 from diskcache import Index
 # from io import BytesIO
 
-config = {
-  "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
-  "authDomain": "atalwcryptare.firebaseapp.com",
-  "databaseURL": "https://atalwcryptare.firebaseio.com/",
-  "storageBucket": "atalwcryptare.appspot.com",
-  "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
-}
+cred = credentials.Certificate('../service_account_info/Cryptare-9d04b184ba96.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://atalwcryptare.firebaseio.com/',
+})
 
-firebase = pyrebase.initialize_app(config)
-
-# # Get a reference to the auth service
-# auth = firebase.auth()
-#
-# # Log the user in
-# user = auth.sign_in_with_email_and_password(sys.argv[1], sys.argv[2])
-
-# Get a reference to the database service
-db = firebase.database()
+# As an admin, the app has access to read and write all data, regardless of Security Rules
+ref = db.reference()
 
 cache = Cache('/tmp/coin_alerts_users_cache')
 cache_store_time = 60*30
@@ -112,7 +104,7 @@ def update_zebpay_price():
   if result is not None:
     for coin, values in crypto_result.items():
       all_market_data["zebpay/{}/BTC".format(coin)] = values
-      add_market_entry(coin, 'BTC', market_name, 'zebpay')
+      # add_market_entry(coin, 'BTC', market_name, 'zebpay')
       update_coin_alerts_uids(market_name, coin, 'BTC', values['buy_price'])
   else:
     print("zebpay crypto error")
@@ -328,7 +320,6 @@ def update_coinsecure_price():
   if result is not None:
     data = {"timestamp": time.time(), "buy_price": result[0], "sell_price": result[1], "max_24hrs": result[2],
             "min_24hrs": result[3], "fiat_volume_24hrs": result[4], "coin_volume_24hrs": result[5]}
-    # db.child("coinsecure/BTC/INR").update(data)
     add_market_entry('BTC', 'INR', market_name, 'coinsecure')
     add_market_price('BTC', 'INR', market_name, result[0])
     update_coin_alerts_uids(market_name, 'BTC', 'INR', result[0])
@@ -897,7 +888,7 @@ def update_poloniex_price():
   if prices is not None:
     buy_price, sell_price = prices
     data = {"timestamp": time.time(), "buy_price": buy_price, "sell_price": sell_price}
-    db.child("poloniex_price").push(data)
+    ref.child("poloniex_price").push(data)
     # all_exchange_prices["BTC"]["USD"].append(buy_price)
   else:
     print("poloniex error")
@@ -1378,9 +1369,10 @@ def get_coin_alerts_users():
   key = 'coin_alerts_users'
   index = Index.fromcache(cache)
   if key in index:
-    coin_alerts_users_dict = dict(index[key])
+    # coin_alerts_users_dict = dict(index[key])
+    coin_alerts_users_dict = {} # populate dict every x minutes and write to alerts with a 15 minute delay
   else:
-    result = db.child(key).get().val()
+    result = ref.child(key).get()
     cache.set(key, result, expire=cache_store_time)
     coin_alerts_users_dict = dict(result)
 
@@ -1401,7 +1393,6 @@ def update_coin_alerts_uids(market_name, coin, pair, price):
       for count in range(index):
         title = 'coin_alerts/{0}/{1}/{2}/{3}/{4}/current_price'.format(uid, market_name, coin, pair, count)
         all_market_data[title] = price
-        print(title)
 
 ###################################################
 
@@ -1437,12 +1428,13 @@ def update_markets():
 
 def update_exchange_update_type():
   """Store type of update method used for exchange data in Firebase - 'push' or 'update' """
-  db.child("all_exchanges_update_type").update(all_exchange_update_type)
+  # ref.child("all_exchanges_update_type").update(all_exchange_update_type)
+  pass
 
 
 def update_all_market_data():
   for item in dict_chunks(all_market_data, 500):
-    db.update(item)
+    ref.update(item)
 
 
 def dict_chunks(data, SIZE=500):

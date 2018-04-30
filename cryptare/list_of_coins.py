@@ -1,26 +1,32 @@
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+from firebase_admin import storage
+from google.cloud.storage import blob
+
 import requests
-import pyrebase
 from itertools import islice
 import time
 from concurrent.futures import ThreadPoolExecutor
 from diskcache import Cache
 from diskcache import Index
 
-config = {
-  "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
-  "authDomain": "atalwcryptare.firebaseapp.com",
-  "databaseURL": "https://atalwcryptare.firebaseio.com/",
-  "storageBucket": "atalwcryptare.appspot.com",
-  "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
-}
+cred = credentials.Certificate('../service_account_info/Cryptare-9d04b184ba96.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://atalwcryptare.firebaseio.com/',
+    'storageBucket': 'atalwcryptare.appspot.com'
+})
 
-firebase = pyrebase.initialize_app(config)
-
-db = firebase.database()
-storage = firebase.storage()
+# As an admin, the app has access to read and write all data, regardless of Security Rules
+ref = db.reference()
+storageRef = storage.bucket()
 
 cache = Cache('/tmp/coin_alerts_users_marketavg_cache')
 cache_store_time = 60*30
+
+icon_cache = Cache('/tmp/icon_cache')
+icon_cache_store_time = 60*60*24*7
+
 
 supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP",
                         "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK",
@@ -34,7 +40,7 @@ illegal_characters = ["-", "."]
 
 def update_list_of_coins_with_rank():
   temp_multi_path_dict = {}
-
+  cache.expire()
   for currency in supported_currencies:
     url = "https://api.coinmarketcap.com/v1/ticker/?convert={}&limit=300".format(currency)
 
@@ -57,11 +63,20 @@ def update_list_of_coins_with_rank():
           else:
             continue
 
-          try:
-            icon_url = storage.child("icons/{}.png".format(symbol.lower())).get_url(token=None)
-            temp_multi_path_dict['coins/{}/icon_url'.format(symbol)] = icon_url
-          except:
-            pass
+          # try:
+          #   key = "{}.png".format(symbol.lower())
+          #   index = Index.fromcache(cache)
+          #   if key in index:
+          #     print('in cache - no need to update')
+          #   else:
+          #     icon = storageRef.get_blob("icons/{}.png".format(symbol.lower()))
+          #     icon_url = icon.media_link
+          #     # cache.set(key, icon_url, expire=icon_cache_store_time)
+          #     print(icon_url)
+          #     temp_multi_path_dict['coins/{}/icon_url'.format(symbol)] = icon_url
+          # except:
+          #   print('url didnt work')
+          #   pass
 
           lower_currency = currency.lower()
           price = string_to_float(coin['price_{}'.format(lower_currency)])
@@ -90,7 +105,7 @@ def update_list_of_coins_with_rank():
 
   with ThreadPoolExecutor() as executor:
     for item in dict_chunks(temp_multi_path_dict, 500):
-      executor.submit(db.update(item))
+      executor.submit(ref.update(item))
 
 def dict_chunks(data, SIZE=500):
   it = iter(data)
@@ -104,9 +119,10 @@ def get_market_average_alerts_users():
   key = 'coin_alerts_users/MarketAverage'
   index = Index.fromcache(cache)
   if key in index:
+    print('in cache')
     return dict(index[key])
   else:
-    data = db.child(key).get().val()
+    data = ref.child(key).get()
     if data is not None:
       cache.set(key, data, expire=cache_store_time)
       return dict(data)

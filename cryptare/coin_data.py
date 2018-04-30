@@ -1,40 +1,25 @@
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 import requests
-import pyrebase
 import time
-import json
 from itertools import islice
 from diskcache import Cache
 from diskcache import Index
 
-config = {
-  "apiKey": " AIzaSyBdlfUxRDXdsIXdKPFk-hBu_7s272gGE6E ",
-  "authDomain": "atalwcryptare.firebaseapp.com",
-  "databaseURL": "https://atalwcryptare.firebaseio.com/",
-  "storageBucket": "atalwcryptare.appspot.com",
-  "serviceAccount": "../service_account_info/Cryptare-9d04b184ba96.json"
-}
+cred = credentials.Certificate('../service_account_info/Cryptare-9d04b184ba96.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://atalwcryptare.firebaseio.com/'
+})
 
-firebase = pyrebase.initialize_app(config)
+# As an admin, the app has access to read and write all data, regardless of Security Rules
+ref = db.reference()
 
-# # Get a reference to the auth service
-# auth = firebase.auth()
-#
-# # Log the user in
-# user = auth.sign_in_with_email_and_password(sys.argv[1], sys.argv[2])
-
-# Get a reference to the database service
-db = firebase.database()
-
-cache = Cache('/tmp/list_of_coins')
+cache = Cache('/tmp/list_of_coins_cache')
 cache_store_time = 60*60*12
 
 # coins = ["BTC", "ETH", "LTC", "BCH", "XRP"]
 currencies = ["INR", "USD", "GBP", "EUR", "JPY", "CNY", "SGD", "ZAR", "BTC", "ETH", "CAD", "AUD", "TRY", "AED"]
-
-crypto_with_markets_list = ["BTC", "BCH", "ETH", "XRP", "LTC", "OMG", "REQ", "ZRX", "GNT", "BAT",
-                            "AE", "RPX", "DBC", "XMR", "DOGE", "SIA", "XLM", "NEO", "TRX", "DGB",
-                            "ZEC", "QTUM", "GAS", "DASH", "BTG", "IOT", "ZIL", "ETN", "ONT", "KNC",
-                            "EOS", "POLY", "AION", "NCASH", "ICX", "VEN"]
 
 all_data = {}
 multi_path_dict = {}
@@ -96,7 +81,7 @@ def get_current_crypto_price():
                 "LASTMARKET"]
 
     for item in dict_chunks(multi_path_dict, 500):
-      db.update(item)
+      ref.update(item)
 
 
 def get_list_of_coins_with_rank():
@@ -105,9 +90,10 @@ def get_list_of_coins_with_rank():
   index = Index.fromcache(cache)
 
   if key in index:
+    print('in cache')
     return dict(index[key])
   else:
-    all_data = db.child("coins").get().val()
+    all_data = ref.child("coins").get()
     cache.set(key, all_data, expire=cache_store_time)
     return dict(all_data)
 
