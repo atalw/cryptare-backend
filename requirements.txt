@@ -1,6 +1,6 @@
 requests==2.18.4
 python-binance==0.6.7
-ccxt==1.11.117
+ccxt==1.13.101
 diskcache==3.0.6
 firebase-admin
 google-cloud
