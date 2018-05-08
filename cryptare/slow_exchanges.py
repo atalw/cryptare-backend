@@ -170,7 +170,8 @@ def add_market_entry(coin, currency, market_name, market_title):
     if market_name == "Quoinex" and currency == "INR":
         pass
     else:
-        all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
+        # all_markets[coin][currency][market_name] = '{0}/{1}/{2}'.format(market_title, coin, currency)
+        all_market_data[ "{0}/Data/{1}/markets/{2}".format(coin, currency, market_name)] = '{0}/{1}/{2}'.format(market_title, coin, currency)
 
 
 def update_markets():
@@ -201,9 +202,9 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.huobipro(), 'HuobiPro', 'huobi')
     executor.submit(update_ccxt_market_price_alt, ccxt.tidex(), 'Tidex', 'tidex')
     executor.submit(update_ccxt_market_price_alt, ccxt.coinexchange(), 'CoinExchange', 'coinexchange')
-    executor.submit(update_ccxt_market_price_alt, ccxt.nova(), 'Nova', 'nova')
+    # executor.submit(update_ccxt_market_price_alt, ccxt.nova(), 'Nova', 'nova')
 
 
-update_markets()
+# update_markets()
 update_exchange_update_type()
 update_all_market_data()
