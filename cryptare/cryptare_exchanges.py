@@ -87,7 +87,7 @@ def update_average_price():
 def update_zebpay_price():
   market_name = 'Zebpay'
 
-  coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG"]
+  coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG", "TRX", "GNT", "ZRX"]
   result = get_zebpay_price(coins)
   if result is not None:
     for coin, values in result.items():
@@ -99,7 +99,7 @@ def update_zebpay_price():
   else:
     print("zebpay fiat error")
 
-  crypto_coins = ["ETH"]
+  crypto_coins = ["ETH", "BCH", "LTC", "XRP", "EOS", "OMG", "TRX"]
   crypto_result = get_zebpay_crypto_price(crypto_coins)
   if result is not None:
     for coin, values in crypto_result.items():
@@ -451,9 +451,7 @@ def update_bitbns_price():
   if result is not None:
     all_exchange_update_type[market_name] = 'update'
     for coin, value in result.items():
-      data = {"timestamp": time.time(), "buy_price": value['buy_price'],
-              "sell_price": value['sell_price']}
-      all_market_data["bitbns/{}/INR".format(coin)] = data
+      all_market_data["bitbns/{}/INR".format(coin)] = value
       add_market_entry(coin, 'INR', market_name, 'bitbns')
       add_market_price(coin, 'INR', market_name, value['buy_price'])
       update_coin_alerts_uids(market_name, coin, 'INR', value['buy_price'])
@@ -462,19 +460,25 @@ def update_bitbns_price():
 
 
 def get_bitbns_price():
-  url = "https://bitbns.com/order/getTickerAll"
+  url = "https://bitbns.com/order/getTickerWithVolume/"
   data = {}
   r = requests.get(url)
   if r.status_code == 200:
     json = r.json()
-    new_dict = dict([(key, d[key]) for d in json for key in d])
-    for coin in new_dict:
+    for coin, value in json.items():
       if coin not in coins:
         coins.append(coin)
       data[coin] = {}
       try:
-        data[coin]["buy_price"] = float(new_dict[coin]["buyPrice"])
-        data[coin]["sell_price"] = float(new_dict[coin]["sellPrice"])
+        data[coin]["buy_price"] = float(value["lowest_sell_bid"])
+        data[coin]["sell_price"] = float(value["highest_buy_bid"])
+        data[coin]["last_price"] = float(value["last_traded_price"])
+        try:
+          data[coin]["max_24hrs"] = float(value["volume"]["max"])
+          data[coin]["min_24hrs"] = float(value["volume"]["min"])
+          data[coin]["vol_24hrs"] = float(value["volume"]["volume"])
+        except:
+          pass
       except:
         return None
 
@@ -1500,8 +1504,8 @@ with ThreadPoolExecutor() as executor:
   executor.submit(update_ccxt_market_price, ccxt.acx(), 'ACX', 'acx')
 
 
-  # executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
-  # executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
+  executor.submit(update_ccxt_market_price, ccxt.coinegg(), 'CoinEgg', 'coinegg')
+  executor.submit(update_ccxt_market_price, ccxt.tidex(), 'Tidex', 'tidex')
 
 
 # print(ccxt.exchanges)
