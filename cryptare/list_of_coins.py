@@ -31,7 +31,7 @@ icon_cache_store_time = 60*60*24*7
 supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP",
                         "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK",
                         "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD",
-                        "USD", "ZAR"]
+                        "USD", "ZAR", "BTC", "ETH"]
 
 alert_users = {}
 
