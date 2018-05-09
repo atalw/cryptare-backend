@@ -241,7 +241,8 @@ def update_localbitcoins_price():
             title = "localbitcoins/BTC/{}".format(currency)
             all_market_data[title] = data
             add_market_entry('BTC', currency, market_name, 'localbitcoins')
-            add_market_price('BTC', currency, market_name, buy_price)
+            if currency == 'INR':
+                add_market_price('BTC', currency, market_name, buy_price)
             all_exchange_update_type[market_name] = 'update'
             update_coin_alerts_uids(market_name, 'BTC', currency, buy_price)
         else:
@@ -1562,7 +1563,7 @@ with ThreadPoolExecutor() as executor:
     # executor.submit(update_ccxt_market_price_alt, ccxt.btctradeua(), 'BTCTradeUA', 'btctradeua')
 
 # print(ccxt.exchanges)
-update_average_price()
+# update_average_price()
 # update_markets()
 update_exchange_update_type()
 update_all_market_data()
