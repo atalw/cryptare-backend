@@ -1,3 +1,6 @@
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -82,12 +85,14 @@ def update_ccxt_market_price_alt(market, market_name, market_database_title):
                 data_dict[coin][coin_pair] = {}
 
     # print(market_tickers)
+    # print(data_dict)
     for coin, coin_pairs in data_dict.items():
         for coin_pair in coin_pairs:
             symbol = "{0}/{1}".format(coin, coin_pair)
             if symbol in market_tickers:
                 info = market_tickers[symbol]
             else:
+                # print(symbol)
                 info = market.fetch_ticker(symbol)
             try:
                 data_dict[coin][coin_pair]['buy_price'] = string_to_float(info['ask'])
@@ -217,6 +222,11 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.vbtc(), 'VBTC', 'vbtc')
     executor.submit(update_ccxt_market_price_alt, ccxt.surbitcoin(), 'SurBitcoin', 'surbitcoin')
     executor.submit(update_ccxt_market_price_alt, ccxt.btctradeua(), 'BTCTradeUA', 'btctradeua')
+    executor.submit(update_ccxt_market_price_alt, ccxt.btcmarkets(), 'BTCMarkets', 'btcmarkets')
+    executor.submit(update_ccxt_market_price_alt, ccxt.virwox(), 'VirWoX', 'virwox')
+    executor.submit(update_ccxt_market_price_alt, ccxt.quadrigacx(), 'QuadrigaCX', 'quadrigacx')
+    executor.submit(update_ccxt_market_price_alt, ccxt.bl3p(), 'Blep', 'blep')
+    executor.submit(update_ccxt_market_price_alt, ccxt.paymium(), 'Paymium', 'paymium')
 
 
 # update_markets()
