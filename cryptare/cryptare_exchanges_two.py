@@ -240,8 +240,18 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.paymium(), 'Paymium', 'paymium')
     executor.submit(update_ccxt_market_price_alt, ccxt.anxpro(), 'ANXPro', 'anxpro')
     executor.submit(update_ccxt_market_price_alt, ccxt.cryptopia(), 'Cryptopia', 'cryptopia')
+    executor.submit(update_ccxt_market_price_alt, ccxt.coinone(), 'CoinOne', 'coinone')
+    executor.submit(update_ccxt_market_price_alt, ccxt.coinnest(), 'CoinNest', 'coinnest')
+    executor.submit(update_ccxt_market_price_alt, ccxt.coincheck(), 'CoinCheck', 'coincheck')
+    executor.submit(update_ccxt_market_price_alt, ccxt.bitbank(), 'bitbank', 'bitbank')
+    executor.submit(update_ccxt_market_price_alt, ccxt.bit2c(), 'Bit2C', 'bit2c')
+    executor.submit(update_ccxt_market_price_alt, ccxt.indodax(), 'INDODAX', 'indodax')
+    executor.submit(update_ccxt_market_price_alt, ccxt.tidebit(), 'TideBit', 'tidebit')
+    executor.submit(update_ccxt_market_price_alt, ccxt.coolcoin(), 'CoolCoin', 'coolcoin')
+    executor.submit(update_ccxt_market_price_alt, ccxt.bitz(), 'BitZ', 'bitz')
+    executor.submit(update_ccxt_market_price_alt, ccxt.exx(), 'EXX', 'exx')
 
-    # executor.submit(update_ccxt_market_price_alt, ccxt.cryptopia(), 'Cryptopia', 'cryptopia')
+    # executor.submit(update_ccxt_market_price_alt, ccxt.exx(), 'EXX', 'exx')
 
 
 # update_markets()
