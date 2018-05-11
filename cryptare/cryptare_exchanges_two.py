@@ -102,13 +102,16 @@ def update_ccxt_market_price_alt(market, market_name, market_database_title):
                 data_dict[coin][coin_pair]['min_24hrs'] = string_to_float(info['low'])
                 data_dict[coin][coin_pair]['vol_24hrs'] = string_to_float(info['baseVolume'])
             except:
+                print(market_name, 'fetch ticker(s) error')
                 continue
     # print(data_dict)
     for coin, coin_pairs in data_dict.items():
-        for coin_pair in coin_pairs:
-            all_market_data["{0}/{1}/{2}".format(market_database_title, coin, coin_pair)] = data_dict[coin][coin_pair]
-            add_market_entry(coin, coin_pair, '{}'.format(market_name), '{}'.format(market_database_title))
-            update_coin_alerts_uids(market_name, coin, coin_pair, data_dict[coin][coin_pair]['buy_price'])
+        if is_symbol_valid(coin):
+            for coin_pair in coin_pairs:
+                if is_symbol_valid(coin_pair):
+                    all_market_data["{0}/{1}/{2}".format(market_database_title, coin, coin_pair)] = data_dict[coin][coin_pair]
+                    add_market_entry(coin, coin_pair, '{}'.format(market_name), '{}'.format(market_database_title))
+                    update_coin_alerts_uids(market_name, coin, coin_pair, data_dict[coin][coin_pair]['buy_price'])
     all_exchange_update_type['{}'.format(market_name)] = 'update'
 
 
@@ -202,6 +205,14 @@ def dict_chunks(data, SIZE=500):
         yield {k: data[k] for k in islice(it, SIZE)}
 
 
+def is_symbol_valid(symbol):
+  if '.' not in symbol and '$' not in symbol  \
+    and '[' not in symbol and ']' not in symbol \
+    and '#' not in symbol and '/' not in symbol:
+    return True
+  else:
+    return False
+
 with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.coinegg(), 'CoinEgg', 'coinegg')
     executor.submit(update_ccxt_market_price_alt, ccxt.coinfloor(), 'Coinfloor', 'coinfloor')
@@ -227,6 +238,10 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.quadrigacx(), 'QuadrigaCX', 'quadrigacx')
     executor.submit(update_ccxt_market_price_alt, ccxt.bl3p(), 'Blep', 'blep')
     executor.submit(update_ccxt_market_price_alt, ccxt.paymium(), 'Paymium', 'paymium')
+    executor.submit(update_ccxt_market_price_alt, ccxt.anxpro(), 'ANXPro', 'anxpro')
+    executor.submit(update_ccxt_market_price_alt, ccxt.cryptopia(), 'Cryptopia', 'cryptopia')
+
+    # executor.submit(update_ccxt_market_price_alt, ccxt.cryptopia(), 'Cryptopia', 'cryptopia')
 
 
 # update_markets()

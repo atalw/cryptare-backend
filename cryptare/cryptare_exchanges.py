@@ -1547,7 +1547,6 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price, ccxt.luno(), 'Luno', 'luno')
     executor.submit(update_ccxt_market_price, ccxt.exmo(), 'EXMO', 'exmo')
     executor.submit(update_ccxt_market_price, ccxt.dsx(), 'DSX', 'dsx')
-    # executor.submit(update_ccxt_market_price, ccxt.cryptopia(), 'Cryptopia', 'cryptopia') # key error
     executor.submit(update_ccxt_market_price, ccxt.wex(), 'WEX', 'wex')
     executor.submit(update_ccxt_market_price, ccxt.therock(), 'TheRockTrading', 'therock')
     executor.submit(update_ccxt_market_price, ccxt.southxchange(), 'SouthXchange', 'southxchange')
