@@ -21,7 +21,7 @@ firebase_admin.initialize_app(cred, {
 ref = db.reference()
 
 cache = Cache('/tmp/coin_alerts_users_cache')
-cache_store_time = 60*30
+cache_store_time = 60*5
 
 coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "NEO", "GAS", "XLM", "DASH", "OMG",
          "QTUM", "REQ", "ZRX", "GNT", "BAT", "AE", "RPX", "DBC", "XMR", "DOGE",
