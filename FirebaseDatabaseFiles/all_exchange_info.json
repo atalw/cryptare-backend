@@ -1232,5 +1232,114 @@
       }
     },
     "name" : "EXX"
+  },
+  "Ethfinex" : {
+    "database_title" : "ethfinex",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/ethfinex",
+      "Website" : "https://www.ethfinex.com/",
+      "display_links" : {
+        "Twitter" : "@ethfinex",
+        "Website" : "ethfinex.com"
+      }
+    },
+    "name" : "Ethfinex"
+  },
+  "Bleutrade" : {
+    "database_title" : "bleutrade",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Bleutrade",
+      "Twitter" : "https://twitter.com/bleutrade",
+      "Website" : "https://bleutrade.com/",
+      "Telegram" : "https://t.me/bleutradeexchange",
+      "display_links" : {
+        "Facebook" : "fb.me/Bleutrade",
+        "Twitter" : "@bleutrade",
+        "Website" : "bleutrade.com",
+        "Telegram" : "t.me/bleutradeexchange"
+      }
+    },
+    "name" : "Bleutrade"
+  },
+  "FlowBTC" : {
+    "database_title" : "flowbtc",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/flowbtc",
+      "Twitter" : "https://twitter.com/FlowBTC",
+      "Website" : "https://trader.flowbtc.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/flowbtc",
+        "Twitter" : "@FlowBTC",
+        "Website" : "trader.flowbtc.com"
+      }
+    },
+    "name" : "FlowBTC"
+  },
+  "FoxBit" : {
+    "database_title" : "foxbit",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/foxbitcoin",
+      "Twitter" : "https://twitter.com/foxbitcoin",
+      "Website" : "https://foxbit.exchange/",
+      "display_links" : {
+        "Facebook" : "fb.me/foxbitcoin",
+        "Twitter" : "@foxbitcoin",
+        "Website" : "foxbit.exchange"
+      }
+    },
+    "name" : "FoxBit"
+  },
+  "MercadoBitcoin" : {
+    "database_title" : "mercadobitcoin",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/mbitcoin",
+      "Twitter" : "https://www.twitter.com/MercadoBitcoin",
+      "Website" : "https://www.mercadobitcoin.com.br/",
+      "Medium" : "https://blog.mercadobitcoin.com.br/",
+      "display_links" : {
+        "Facebook" : "fb.me/mbitcoin",
+        "Twitter" : "@MercadoBitcoin",
+        "Website" : "mercadobitcoin.com.br",
+        "Medium" : "blog.mercadobitcoin.com.br",
+      }
+    },
+    "name" : "Mercado Bitcoin"
+  },
+  "NegocieCoins" : {
+    "database_title" : "negociecoins",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/negociecoins",
+      "Twitter" : "https://twitter.com/foxbitcoin",
+      "Website" : "https://www.negociecoins.com.br/",
+      "Medium" : "https://medium.com/blognegociecoins",
+      "display_links" : {
+        "Facebook" : "fb.me/negociecoins",
+        "Twitter" : "@foxbitcoin",
+        "Website" : "negociecoins.com.br",
+        "Medium" : "blognegociecoins"
+      }
+    },
+    "name" : "NegocieCoins"
+  },
+  "ChileBit" : {
+    "database_title" : "chilebit",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/chilebit.net",
+      "Twitter" : "https://twitter.com/chilebitnet",
+      "Website" : "https://chilebit.net/",
+      "display_links" : {
+        "Facebook" : "fb.me/chilebit.net",
+        "Twitter" : "@chilebitnet",
+        "Website" : "chilebit.net"
+      }
+    },
+    "name" : "ChileBit"
   }
 }

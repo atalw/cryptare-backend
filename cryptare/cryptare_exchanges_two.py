@@ -250,8 +250,15 @@ with ThreadPoolExecutor() as executor:
     executor.submit(update_ccxt_market_price_alt, ccxt.coolcoin(), 'CoolCoin', 'coolcoin')
     executor.submit(update_ccxt_market_price_alt, ccxt.bitz(), 'BitZ', 'bitz')
     executor.submit(update_ccxt_market_price_alt, ccxt.exx(), 'EXX', 'exx')
+    executor.submit(update_ccxt_market_price_alt, ccxt.ethfinex(), 'Ethfinex', 'ethfinex')
+    executor.submit(update_ccxt_market_price_alt, ccxt.bleutrade(), 'Bleutrade', 'bleutrade')
+    executor.submit(update_ccxt_market_price_alt, ccxt.flowbtc(), 'FlowBTC', 'flowbtc')
+    executor.submit(update_ccxt_market_price_alt, ccxt.foxbit(), 'FoxBit', 'foxbit')
+    executor.submit(update_ccxt_market_price_alt, ccxt.mercado(), 'MercadoBitcoin', 'mercadobitcoin')
+    executor.submit(update_ccxt_market_price_alt, ccxt.negociecoins(), 'NegocieCoins', 'negociecoins')
+    executor.submit(update_ccxt_market_price_alt, ccxt.chilebit(), 'ChileBit', 'chilebit')
 
-    # executor.submit(update_ccxt_market_price_alt, ccxt.exx(), 'EXX', 'exx')
+    # executor.submit(update_ccxt_market_price_alt, ccxt.chilebit(), 'ChileBit', 'chilebit')
 
 
 # update_markets()
