@@ -1,0 +1,1236 @@
+{
+  "ACX" : {
+    "database_title" : "acx",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/acxtweet",
+      "Website" : "https://acx.io/",
+      "display_links" : {
+        "Twitter" : "@acxtweet",
+        "Website" : "acx.io"
+      }
+    },
+    "name" : "ACX"
+  },
+  "BTCTradeUA" : {
+    "database_title" : "btctradeua",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/nvctradeua",
+      "Twitter" : "https://twitter.com/btc_trade_ua",
+      "Website" : "https://btc-trade.com.ua/",
+      "display_links" : {
+        "Facebook" : "fb.me/nvctradeua",
+        "Twitter" : "@btc_trade_ua",
+        "Website" : "btc-trade.com.ua"
+      }
+    },
+    "name" : "BTCTradeUA"
+  },
+  "Bibox" : {
+    "database_title" : "bibox",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Bibox365",
+      "Reddit" : "https://www.reddit.com/r/Bibox/",
+      "Twitter" : "https://twitter.com/Bibox365",
+      "Website" : "https://www.bibox.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/Bibox365",
+        "Reddit" : "r/Bibox",
+        "Twitter" : "@Bibox365",
+        "Website" : "bibox.com"
+      }
+    },
+    "name" : "Bibox"
+  },
+  "Binance" : {
+    "database_title" : "binance",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/binanceexchange",
+      "Reddit" : "https://www.reddit.com/r/BinanceExchange/",
+      "Twitter" : "https://twitter.com/binance",
+      "Website" : "https://www.binance.com/?ref=19610967",
+      "display_links" : {
+        "Facebook" : "fb.me/binanceexchange",
+        "Reddit" : "r/BinanceExchange",
+        "Twitter" : "@binance",
+        "Website" : "binance.com"
+      }
+    },
+    "name" : "Binance"
+  },
+  "BitBay" : {
+    "database_title" : "bitbay",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bitbaybitcoin/",
+      "Twitter" : "https://twitter.com/BitBayBitcoin",
+      "Website" : "https://bitbay.net/",
+      "display_links" : {
+        "Facebook" : "fb.me/bitbaybitcoin",
+        "Twitter" : "@BitBayBitcoin",
+        "Website" : "bitbay.net"
+      }
+    },
+    "name" : "BitBay"
+  },
+  "Bitbns" : {
+    "database_title" : "bitbns",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bitbns/",
+      "Reddit" : "https://www.reddit.com/r/Bitbns/",
+      "Twitter" : "https://twitter.com/bitbns",
+      "Website" : "https://bitbns.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/bitbns",
+        "Reddit" : "r/Bitbns",
+        "Twitter" : "@bitbns",
+        "Website" : "bitbns.com"
+      }
+    },
+    "name" : "Bitbns"
+  },
+  "Bitfinex" : {
+    "database_title" : "bitfinex",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/bitfinex",
+      "Website" : "https://www.bitfinex.com/",
+      "display_links" : {
+        "Twitter" : "@bitfinex",
+        "Website" : "bitfinex.com"
+      }
+    },
+    "name" : "Bitfinex"
+  },
+  "Bithumb" : {
+    "database_title" : "bithumb",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bithumb.global/",
+      "Twitter" : "https://twitter.com/BithumbOfficial",
+      "Website" : "https://www.bithumb.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/bithumb.global",
+        "Twitter" : "@BithumbOfficial",
+        "Website" : "bithumb.com"
+      }
+    },
+    "name" : "Bithumb"
+  },
+  "Bitlish" : {
+    "database_title" : "bitlish",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/bitlish_com",
+      "Website" : "https://bitlish.com/",
+      "display_links" : {
+        "Twitter" : "@bitlish_com",
+        "Website" : "bitish.com"
+      }
+    },
+    "name" : "Bitlish"
+  },
+  "Bitstamp" : {
+    "database_title" : "bitstamp",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Bitstamp",
+      "Twitter" : "https://twitter.com/Bitstamp",
+      "Website" : "https://www.bitstamp.net/",
+      "diplay_links" : {
+        "Facebook" : "fb.me/Bitstamp",
+        "Twitter" : "@Bitstamp",
+        "Website" : "bitstamp.net"
+      }
+    },
+    "name" : "Bitstamp"
+  },
+  "Bittrex" : {
+    "database_title" : "bittrex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bittrex",
+      "Twitter" : "https://twitter.com/BittrexExchange",
+      "Website" : "https://www.bittrex.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/bittrex",
+        "Twitter" : "@BittrexExchange",
+        "Website" : "bittrex.com"
+      }
+    },
+    "name" : "Bittrex"
+  },
+  "Braziliex" : {
+    "database_title" : "braziliex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/braziliex",
+      "Twitter" : "https://twitter.com/braziliextrades",
+      "Website" : "https://braziliex.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/braziliex",
+        "Twitter" : "@braziliextrades",
+        "Website" : "braziliex.com"
+      }
+    },
+    "name" : "Braziliex"
+  },
+  "BtcTradeIM" : {
+    "database_title" : "btctradeim",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/btctrade.im/",
+      "Twitter" : "https://twitter.com/btctradeim",
+      "Website" : "https://www.btctrade.im/",
+      "links" : {
+        "Facebook" : "fb.me/btctrade.im",
+        "Twitter" : "@btctradeim",
+        "Website" : "btctrade.im"
+      }
+    },
+    "name" : "BtcTradeIM"
+  },
+  "CCEX" : {
+    "database_title" : "ccex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/ccexcom/",
+      "Twitter" : "https://twitter.com/CryptoCurrEncyX",
+      "Website" : "https://c-cex.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/ccexcom",
+        "Twitter" : "@CryptoCurrEncyX",
+        "Website" : "c-cex.com"
+      }
+    },
+    "name" : "C-CEX"
+  },
+  "COBINHOOD" : {
+    "database_title" : "cobinhood",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/cobinhood.exchange",
+      "Reddit" : "https://www.reddit.com/r/cobinhood/",
+      "Twitter" : "https://twitter.com/cobinhood",
+      "Website" : "https://cobinhood.com",
+      "display_links" : {
+        "Facebook" : "fb.me/cobinhood.exchange",
+        "Reddit" : "r/cobinhood",
+        "Twitter" : "@cobinhood",
+        "Website" : "cobinhood.com"
+      }
+    },
+    "name" : "COBINHOOD"
+  },
+  "CexIO" : {
+    "database_title" : "cexio",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/CEX.IO/",
+      "Twitter" : "https://twitter.com/cex_io",
+      "Website" : "https://cex.io/r/0/up119273984/0/",
+      "display_links" : {
+        "Facebook" : "fb.me/CEX.IO",
+        "Twitter" : "@cex_io",
+        "Website" : "cex.io"
+      }
+    },
+    "name" : "Cex.io"
+  },
+  "CoinDCX" : {
+    "database_title" : "coindcx",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coindcx/",
+      "Reddit" : "https://www.reddit.com/r/CoinDCX/",
+      "Twitter" : "https://twitter.com/coindcx",
+      "Website" : "https://www.coindcx.com/?r=41741257",
+      "display_links" : {
+        "Facebook" : "fb.me/coindcx",
+        "Reddit" : "r/CoinDCX",
+        "Twitter" : "@coindcx",
+        "Website" : "coindcx.com"
+      }
+    },
+    "name" : "CoinDCX"
+  },
+  "CoinEgg" : {
+    "database_title" : "coinegg",
+    "is_active" : true,
+    "links" : {
+      "Telegram" : "http://t.me/coineggofficial",
+      "Twitter" : "https://twitter.com/CoinEgg_LTD",
+      "Website" : "https://www.coinegg.com/",
+      "display_links" : {
+        "Telegram" : "http://t.me/coineggofficial",
+        "Twitter" : "@CoinEgg_LTD",
+        "Website" : "coinegg.com"
+      }
+    },
+    "name" : "CoinEgg"
+  },
+  "CoinExchange" : {
+    "database_title" : "coinexchange",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/CoinExchangeio-135368370506157/",
+      "Website" : "https://www.coinexchange.io/",
+      "display_links" : {
+        "Facebook" : "fb.me/CoinExchangeio",
+        "Website" : "coinexchange.io"
+      }
+    },
+    "name" : "CoinExchange"
+  },
+  "CoinMate" : {
+    "database_title" : "coinmate",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/CoinMate/",
+      "Twitter" : "https://twitter.com/coinmatebt",
+      "Website" : "https://coinmate.io/",
+      "display_links" : {
+        "Facebook" : "fb.me/CoinMate",
+        "Twitter" : "@coinmatebt",
+        "Website" : "coinmate.io"
+      }
+    },
+    "name" : "CoinMate"
+  },
+  "Coinbase" : {
+    "database_title" : "coinbase",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Coinbase/",
+      "Reddit" : "https://www.reddit.com/r/CoinBase/",
+      "Twitter" : "https://twitter.com/coinbase",
+      "Website" : "https://www.coinbase.com/join/57f5a4bef3a4f2006d0b7f4b",
+      "display_links" : {
+        "Facebook" : "fb.me/Coinbase",
+        "Reddit" : "r/CoinBase",
+        "Twitter" : "@coinbase",
+        "Website" : "coinbase.com"
+      }
+    },
+    "name" : "Coinbase"
+  },
+  "Coindelta" : {
+    "database_title" : "coindelta",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coindelta/",
+      "Twitter" : "https://twitter.com/coindelta_",
+      "Website" : "https://coindelta.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/coindelta",
+        "Twitter" : "@coindelta_",
+        "Website" : "coindelta.com"
+      }
+    },
+    "name" : "Coindelta"
+  },
+  "Coinfloor" : {
+    "database_title" : "coinfloor",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Coinfloor/",
+      "Twitter" : "https://twitter.com/Coinfloor",
+      "Website" : "https://www.coinfloor.co.uk/",
+      "display_links" : {
+        "Facebook" : "fb.me/Coinfloor",
+        "Twitter" : "@Coinfloor",
+        "Website" : "coinfloor.co.uk"
+      }
+    },
+    "name" : "Coinfloor"
+  },
+  "Coinome" : {
+    "database_title" : "coinome",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coinome/",
+      "Twitter" : "https://twitter.com/CoinomeOfficial",
+      "Website" : "https://www.coinome.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/coinome",
+        "Twitter" : "@CoinomeOfficial",
+        "Website" : "coinome.com"
+      }
+    },
+    "name" : "Coinome"
+  },
+  "Coinsecure" : {
+    "database_title" : "coinsecure",
+    "is_active" : false,
+    "links" : {
+      "Twitter" : "https://twitter.com/coinsecure",
+      "Website" : "https://coinsecure.in/signup/TVRWPVbGFVx7nYcr6YYM",
+      "display_links" : {
+        "Twitter" : "@coinsecure",
+        "Website" : "coinsecure.in"
+      }
+    },
+    "name" : "Coinsecure"
+  },
+  "DSX" : {
+    "database_title" : "dsx",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/dsx.uk",
+      "Twitter" : "https://twitter.com/dsx_uk",
+      "Website" : "https://dsx.uk/",
+      "display_links" : {
+        "Facebook" : "fb.me/dsx.uk",
+        "Twitter" : "@dsx_uk",
+        "Website" : "dsx.uk"
+      }
+    },
+    "name" : "DSX"
+  },
+  "EXMO" : {
+    "database_title" : "exmo",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/exmo.market",
+      "Twitter" : "https://twitter.com/Exmo_com",
+      "Website" : "https://exmo.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/exmo.market",
+        "Twitter" : "@Exmo_com",
+        "Website" : "exmo.com"
+      }
+    },
+    "name" : "EXMO"
+  },
+  "FYBSG" : {
+    "database_title" : "fybsg",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/FYBSG",
+      "Website" : "https://www.fybsg.com/",
+      "display_links" : {
+        "Twitter" : "@FYBSG",
+        "Website" : "fybsg.com"
+      }
+    },
+    "name" : "FYB-SG"
+  },
+  "GDAX" : {
+    "database_title" : "gdax",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/GDAX.Exchange/",
+      "Twitter" : "https://twitter.com/gdax",
+      "Website" : "https://www.gdax.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/GDAX.Exchange",
+        "Twitter" : "@gdax",
+        "Website" : "gdax.com"
+      }
+    },
+    "name" : "GDAX"
+  },
+  "GateIO" : {
+    "database_title" : "gateio",
+    "is_active" : true,
+    "links" : {
+      "Github" : "https://github.com/gateio",
+      "Twitter" : "https://twitter.com/gate_io",
+      "Website" : "https://gate.io/signup/1328628",
+      "display_links" : {
+        "Github" : "gateio",
+        "Twitter" : "@gate_io",
+        "Website" : "gate.io"
+      }
+    },
+    "name" : "Gate.io"
+  },
+  "Gemini" : {
+    "database_title" : "gemini",
+    "is_active" : true,
+    "links" : {
+      "AngelList" : "https://angel.co/gemini",
+      "Facebook" : "https://www.facebook.com/GeminiDotCom/",
+      "Google+" : "https://plus.google.com/+GeminiDotCom/",
+      "Twitter" : "https://twitter.com/GeminiDotCom",
+      "Website" : "https://gemini.com/",
+      "display_links" : {
+        "AngelList" : "angel.co/gemini",
+        "Facebook" : "fb.me/GeminiDotCom",
+        "Google+" : "+GeminiDotCom",
+        "Twitter" : "@GeminiDotCom",
+        "Website" : "gemini.com"
+      }
+    },
+    "name" : "Gemini"
+  },
+  "HitBTC" : {
+    "database_title" : "hitbtc",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/hit.btc",
+      "Github" : "https://github.com/hitbtc-com/hitbtc-api",
+      "Google+" : "https://plus.google.com/u/0/117060944392637996620",
+      "Twitter" : "https://twitter.com/hitbtc",
+      "Website" : "https://hitbtc.com/?ref_id=5aad68a490e2b",
+      "display_links" : {
+        "Facebook" : "fb.me/hit.btc",
+        "Github" : "hitbtc-com",
+        "Google+" : "u/0/117060944392637996620",
+        "Twitter" : "@hitbtc",
+        "Website" : "hitbtc.com"
+      }
+    },
+    "name" : "HitBTC"
+  },
+  "HuobiPro" : {
+    "database_title" : "huobipro",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/huobipro",
+      "Medium" : "https://medium.com/huobi-global",
+      "Twitter" : "https://twitter.com/huobi_pro",
+      "Website" : "https://www.huobi.pro/",
+      "display_links" : {
+        "Facebook" : "fb.me/huobipro",
+        "Medium" : "huobi-global",
+        "Twitter" : "@huobi_pro",
+        "Website" : "huobi.pro"
+      }
+    },
+    "name" : "HuobiPro"
+  },
+  "IndependentReserve" : {
+    "database_title" : "independentreserve",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/independentreserve",
+      "Reddit" : "https://www.reddit.com/r/independentreserve/",
+      "Twitter" : "https://twitter.com/indepreserve",
+      "Website" : "https://www.independentreserve.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/independentreserve",
+        "Reddit" : "r/independentreserve",
+        "Twitter" : "@indepreserve",
+        "Website" : "independentreserve.com"
+      }
+    },
+    "name" : "IndependentReserve"
+  },
+  "InstaShift" : {
+    "database_title" : "instashift",
+    "is_active" : false,
+    "links" : {
+      "Twitter" : "https://twitter.com/@InstaShift_io",
+      "Website" : "https://instashift.io/",
+      "display_links" : {
+        "Twitter" : "@InstaShift_io",
+        "Website" : "instashift.io"
+      }
+    },
+    "name" : "InstaShift"
+  },
+  "KoinOK" : {
+    "database_title" : "koinok",
+    "is_active" : false,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/koinoktrade",
+      "Medium" : "https://medium.com/koinok",
+      "Twitter" : "https://twitter.com/koinoktrade",
+      "Website" : "https://www.koinok.com/signup?referralCode=9KD70UR2",
+      "display_links" : {
+        "Facebook" : "fb.me/koinoktrade",
+        "Medium" : "koinok",
+        "Twitter" : "@koinoktrade",
+        "Website" : "koinok.com"
+      }
+    },
+    "name" : "KoinOK"
+  },
+  "Koinex" : {
+    "database_title" : "koinex",
+    "description" : "",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/koinex",
+      "Medium" : "https://medium.com/koinex-crunch",
+      "Twitter" : "https://twitter.com/koinexindia",
+      "Website" : "https://koinex.in/?ref=8271af",
+      "display_links" : {
+        "Facebook" : "fb.me/koinex",
+        "Medium" : "koinex-crunch",
+        "Twitter" : "@koinexindia",
+        "Website" : "koinex.in"
+      }
+    },
+    "name" : "Koinex"
+  },
+  "Kraken" : {
+    "database_title" : "kraken",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/KrakenFX/",
+      "Twitter" : "https://twitter.com/krakenfx",
+      "Website" : "https://www.kraken.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/KrakenFX",
+        "Twitter" : "@krakenfx",
+        "Website" : "kraken.com"
+      }
+    },
+    "name" : "Kraken"
+  },
+  "Kucoin" : {
+    "database_title" : "kucoin",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/kucoinexchangepage",
+      "Reddit" : "https://www.reddit.com/r/kucoin/",
+      "Twitter" : "https://twitter.com/kucoincom",
+      "Website" : "https://www.kucoin.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/kucoinexchangepage",
+        "Reddit" : "r/kucoin",
+        "Twitter" : "@kucoincom",
+        "Website" : "kucoin.com"
+      }
+    },
+    "name" : "Kucoin"
+  },
+  "Kuna" : {
+    "database_title" : "kuna",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/kunaexchange",
+      "Twitter" : "https://twitter.com/KunaExchange",
+      "Website" : "https://kuna.io/",
+      "links" : {
+        "Facebook" : "fb.me/kunaexchange",
+        "Twitter" : "@KunaExchange",
+        "Website" : "kuna.io"
+      }
+    },
+    "name" : "Kuna"
+  },
+  "LakeBTC" : {
+    "database_title" : "lakebtc",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/LakeBTC",
+      "Twitter" : "https://twitter.com/LakeBTC",
+      "Website" : "https://www.lakebtc.com/?ref=qholjo",
+      "display_links" : {
+        "Facebook" : "fb.me/LakeBTC",
+        "Twitter" : "@LakeBTC",
+        "Website" : "lakebtc.com"
+      }
+    },
+    "name" : "LakeBTC"
+  },
+  "Liqui" : {
+    "database_title" : "liqui",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/Liqui_Exchange",
+      "Website" : "https://liqui.io/",
+      "display_links" : {
+        "Twitter" : "@Liqui_Exchange",
+        "Website" : "liqui.io"
+      }
+    },
+    "name" : "Liqui"
+  },
+  "LiveCoin" : {
+    "database_title" : "livecoin",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/livecoin.net",
+      "Twitter" : "https://twitter.com/livecoin_net",
+      "Website" : "https://www.livecoin.net/",
+      "display_links" : {
+        "Facebook" : "fb.me/livecoin.net",
+        "Twitter" : "@livecoin_net",
+        "Website" : "livecoin.net"
+      }
+    },
+    "name" : "LiveCoin"
+  },
+  "LocalBitcoins" : {
+    "database_title" : "localbitcoins",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/LocalBitcoinsCom",
+      "Reddit" : "https://www.reddit.com/r/localbitcoins/",
+      "Twitter" : "https://twitter.com/LocalBitcoins",
+      "Website" : "https://localbitcoins.com/?ch=cynk",
+      "display_links" : {
+        "Facebook" : "fb.me/LocalBitcoinsCom",
+        "Reddit" : "r/localbitcoins",
+        "Twitter" : "@LocalBitcoins",
+        "Website" : "localbitcoins.com"
+      }
+    },
+    "name" : "LocalBitcoins"
+  },
+  "Luno" : {
+    "database_title" : "luno",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/luno",
+      "Twitter" : "https://twitter.com/lunomoney",
+      "Website" : "https://www.luno.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/luno",
+        "Twitter" : "@lunomoney",
+        "Website" : "luno.com"
+      }
+    },
+    "name" : "Luno"
+  },
+  "Nova" : {
+    "database_title" : "nova",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/thenovaexchange/",
+      "Twitter" : "https://twitter.com/nova_exchange",
+      "Website" : "https://novaexchange.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/thenovaexchange",
+        "Twitter" : "@nova_exchange",
+        "Website" : "novaexchange.com"
+      }
+    },
+    "name" : "Nova"
+  },
+  "OKEX" : {
+    "database_title" : "okex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/OKEx.Official",
+      "Twitter" : "https://twitter.com/OKEx_",
+      "Website" : "https://www.okex.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/OKEx.Official",
+        "Twitter" : "@OKEx_",
+        "Website" : "okex.com"
+      }
+    },
+    "name" : "OKEX"
+  },
+  "PocketBits" : {
+    "database_title" : "pocketbits",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Pocketbits.in/",
+      "Twitter" : "https://twitter.com/pocketbitsindia",
+      "Website" : "https://www.pocketbits.in/",
+      "display_links" : {
+        "Facebook" : "fb.me/Pocketbits.in",
+        "Twitter" : "@pocketbitsindia",
+        "Website" : "pocketbits.in"
+      }
+    },
+    "name" : "PocketBits"
+  },
+  "QRYPTOS" : {
+    "database_title" : "qryptos",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/QUOINE.SG",
+      "Reddit" : "https://www.reddit.com/r/QASH/",
+      "Twitter" : "https://twitter.com/quoine_SG",
+      "Website" : "https://www.qryptos.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/QUOINE.SG",
+        "Reddit" : "r/QASH",
+        "Twitter" : "@quoine_SG",
+        "Website" : "qryptos.com"
+      }
+    },
+    "name" : "QRYPTOS"
+  },
+  "Quoinex" : {
+    "database_title" : "quoinex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/QUOINE.SG",
+      "Reddit" : "https://www.reddit.com/r/QASH/",
+      "Twitter" : "https://twitter.com/quoine_SG",
+      "Website" : "https://accounts.quoinex.com/sign-up?affiliate=t-44DPVk371768",
+      "display_links" : {
+        "Facebook" : "fb.me/QUOINE.SG",
+        "Reddit" : "r/QASH",
+        "Twitter" : "@quoine_SG",
+        "Website" : "quoinex.com"
+      }
+    },
+    "name" : "Quoinex"
+  },
+  "SouthXchange" : {
+    "database_title" : "southxchange",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/southxchange",
+      "Twitter" : "https://twitter.com/southxchange",
+      "Website" : "https://www.southxchange.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/southxchange",
+        "Twitter" : "@southxchange",
+        "Website" : "southxchange.com"
+      }
+    },
+    "name" : "SouthXchange"
+  },
+  "SurBitcoin" : {
+    "database_title" : "surbitcoin",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/SURBITCOIN",
+      "Website" : "https://surbitcoin.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/SURBITCOIN",
+        "Website" : "surbitcoin.com"
+      }
+    },
+    "name" : "SurBitcoin"
+  },
+  "TheRockTrading" : {
+    "database_title" : "therocktrading",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/TheRockTrading",
+      "Medium" : "https://medium.com/the-rock-trading",
+      "Twitter" : "https://twitter.com/TheRockTrading",
+      "Website" : "https://www.therocktrading.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/TheRockTrading",
+        "Medium" : "the-rock-trading",
+        "Twitter" : "@TheRockTrading",
+        "Website" : "therocktrading.com"
+      }
+    },
+    "name" : "TheRockTrading"
+  },
+  "Throughbit" : {
+    "database_title" : "throughbit",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/throughbit",
+      "Twitter" : "https://twitter.com/throughbit",
+      "Website" : "https://www.throughbit.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/throughbit",
+        "Twitter" : "@throughbit",
+        "Website" : "throughbit.com"
+      }
+    },
+    "name" : "Throughbit"
+  },
+  "Tidex" : {
+    "database_title" : "tidex",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/TidexExchange",
+      "Telegram" : "https://t.me/Tidex_Exchange",
+      "Twitter" : "https://twitter.com/tidex_exchange",
+      "Website" : "https://tidex.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/TidexExchange",
+        "Telegram" : "t.me/Tidex_Exchange",
+        "Twitter" : "@tidex_exchange",
+        "Website" : "tidex.com"
+      }
+    },
+    "name" : "Tidex"
+  },
+  "VBTC" : {
+    "database_title" : "vbtc",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/VBTC.vn",
+      "Twitter" : "https://twitter.com/bitcoin_vietnam",
+      "Website" : "https://vbtc.exchange/",
+      "display_links" : {
+        "Facebook" : "fb.me/VBTC.vn",
+        "Twitter" : "@bitcoin_vietnam",
+        "Website" : "vbtc.exchange"
+      }
+    },
+    "name" : "VBTC"
+  },
+  "Vaultoro" : {
+    "database_title" : "vaultoro",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/vaultoro",
+      "Reddit" : "https://www.reddit.com/r/vaultoro/",
+      "Twitter" : "https://twitter.com/vaultoro",
+      "Website" : "https://www.vaultoro.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/vaultoro",
+        "Reddit" : "r/vaultoro",
+        "Twitter" : "@vaultoro",
+        "Website" : "vaultoro.com"
+      }
+    },
+    "name" : "Vaultoro"
+  },
+  "WEX" : {
+    "database_title" : "wex",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/WEXnz",
+      "Website" : "https://wex.nz/",
+      "display_links" : {
+        "Twitter" : "@WEXnz",
+        "Website" : "wex.nz"
+      }
+    },
+    "name" : "WEX"
+  },
+  "WazirX" : {
+    "database_title" : "wazirx",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/wazirx",
+      "Twitter" : "https://twitter.com/WazirxIndia",
+      "Website" : "https://wazirx.com/#/invite/tpj8k",
+      "display_links" : {
+        "Facebook" : "fb.me/wazirx",
+        "Twitter" : "@WazirxIndia",
+        "Website" : "wazirx.com"
+      }
+    },
+    "name" : "WazirX"
+  },
+  "Zebpay" : {
+    "database_title" : "zebpay",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/zebpay",
+      "Twitter" : "https://twitter.com/zebpay",
+      "Website" : "https://www.zebpay.com/?utm_campaign=app_refferal_ref/ref/REF34005162&utm_medium=app&utm_source=zebpay_app_refferal",
+      "display_links" : {
+        "Facebook" : "fb.me/zebpay",
+        "Twitter" : "@zebpay",
+        "Website" : "zebpay.com"
+      }
+    },
+    "name" : "Zebpay"
+  },
+  "bitFlyer" : {
+    "database_title" : "bitflyer",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bitflyer",
+      "Twitter" : "https://twitter.com/bitFlyer",
+      "Website" : "https://bitflyer.com/en-jp",
+      "display_links" : {
+        "Facebook" : "fb.me/bitflyer",
+        "Twitter" : "@bitFlyer",
+        "Website" : "bitflyer.com"
+      }
+    },
+    "name" : "bitFlyer"
+  },
+  "gatecoin" : {
+    "database_title" : "gatecoin",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Gatecoin",
+      "Medium" : "https://blog.gatecoin.com/",
+      "Reddit" : "https://www.reddit.com/r/gatecoinexchange/",
+      "Twitter" : "https://twitter.com/gatecoin",
+      "Website" : "https://gatecoin.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/Gatecoin",
+        "Medium" : "blog.gatecoin.com/",
+        "Reddit" : "r/gatecoinexchange",
+        "Twitter" : "@gatecoin",
+        "Website" : "gatecoin.com"
+      }
+    },
+    "name" : "gatecoin"
+  },
+  "itBit" : {
+    "database_title" : "itbit",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/itbitwelcome",
+      "Twitter" : "https://twitter.com/itBit",
+      "Website" : "https://www.itbit.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/itbitwelcome",
+        "Twitter" : "@itBit",
+        "Website" : "itbit.com"
+      }
+    },
+    "name" : "itBit"
+  },
+  "mixcoins" : {
+    "database_title" : "mixcoins",
+    "is_active" : true,
+    "links" : {
+      "Website" : "https://mixcoins.com/",
+      "display_links" : {
+        "Website" : "mixcoins.com"
+      }
+    },
+    "name" : "mixcoins"
+  },
+  "BTCMarkets" : {
+    "database_title" : "btcmarkets",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/BTCMarkets",
+      "Twitter" : "https://twitter.com/BTCMarkets",
+      "Website" : "https://btcmarkets.net/",
+      "display_links" : {
+        "Facebook" : "fb.me/BTCMarkets",
+        "Twitter" : "@BTCMarkets",
+        "Website" : "btcmarkets.net"
+      }
+    },
+    "name" : "BTCMarkets"
+  },
+  "VirWoX" : {
+    "database_title" : "virwox",
+    "is_active" : true,
+    "links" : {
+      "Twitter" : "https://twitter.com/virwox",
+      "Website" : "https://www.virwox.com/",
+      "display_links" : {
+        "Twitter" : "@virwox",
+        "Website" : "virwox.com"
+      }
+    },
+    "name" : "VirWoX"
+  },
+  "QuadrigaCX" : {
+    "database_title" : "quadrigaxc",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/quadrigacx",
+      "Twitter" : "https://twitter.com/QuadrigaCoinEx",
+      "Website" : "https://www.quadrigacx.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/quadrigacx",
+        "Twitter" : "@QuadrigaCoinEx",
+        "Website" : "quadrigacx.com"
+      }
+    },
+    "name" : "QuadrigaCX"
+  },
+  "Blep" : {
+    "database_title" : "blep",
+    "is_active" : true,
+    "links" : {
+      "Website" : "https://bl3p.eu/",
+      "display_links" : {
+        "Website" : "bl3p.eu"
+      }
+    },
+    "name" : "Bl3p"
+  },
+  "Paymium" : {
+    "database_title" : "paymium",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/Paymium/",
+      "Twitter" : "https://twitter.com/paymium",
+      "Website" : "https://www.paymium.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/Paymium",
+        "Twitter" : "@paymium",
+        "Website" : "paymium.com"
+      }
+    },
+    "name" : "Paymium"
+  },
+  "ANXPro" : {
+    "database_title" : "anxpro",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/anxpro/",
+      "Twitter" : "https://twitter.com/ANX_PRO",
+      "Website" : "https://anxpro.com/",
+      "Telegram" : "https://t.me/anxpro_en",
+      "display_links" : {
+        "Facebook" : "fb.me/anxpro",
+        "Twitter" : "@ANX_PRO",
+        "Website" : "anxpro.com",
+        "Telegram" : "t.me/anxpro_en"
+      }
+    },
+    "name" : "ANXPro"
+  },
+  "Cryptopia" : {
+    "database_title" : "cryptopia",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/cryptopiaexchange",
+      "Twitter" : "https://twitter.com/Cryptopia_NZ",
+      "Website" : " https://www.cryptopia.co.nz/Register?referrer=atalw",
+      "display_links" : {
+        "Facebook" : "fb.me/cryptopiaexchange",
+        "Twitter" : "@Cryptopia_NZ",
+        "Website" : "cryptopia.co.nz"
+      }
+    },
+    "name" : "Cryptopia"
+  },
+  "CoinOne" : {
+    "database_title" : "coinone",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coinone",
+      "Twitter" : "https://twitter.com/coinone_info",
+      "Website" : "https://coinone.co.kr/",
+      "display_links" : {
+        "Facebook" : "fb.me/coinone",
+        "Twitter" : "@coinone_info",
+        "Website" : "coinone.co.kr"
+      }
+    },
+    "name" : "CoinOne"
+  },
+  "CoinNest" : {
+    "database_title" : "coinnest",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coinone",
+      "Twitter" : "https://twitter.com/coinone_info",
+      "Website" : "https://www.coinnest.co.kr/",
+      "display_links" : {
+        "Facebook" : "fb.me/coinone",
+        "Twitter" : "@coinone_info",
+        "Website" : "coinnest.co.kr"
+      }
+    },
+    "name" : "CoinNest"
+  },
+  "Coincheck" : {
+    "database_title" : "coincheck",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/coincheck/",
+      "Twitter" : "https://twitter.com/coincheckjp",
+      "Website" : "https://coincheck.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/coincheck",
+        "Twitter" : "@coincheckjp",
+        "Website" : "coincheck.com"
+      }
+    },
+    "name" : "Coincheck"
+  },
+  "bitbank" : {
+    "database_title" : "bitbank",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bitbank.inc/",
+      "Twitter" : "https://twitter.com/bitbank_inc",
+      "Website" : "https://bitbank.cc/",
+      "display_links" : {
+        "Facebook" : "fb.me/bitbank.inc",
+        "Twitter" : "@bitbank_inc",
+        "Website" : "bitbank.cc"
+      }
+    },
+    "name" : "bitbank"
+  },
+  "Bit2C" : {
+    "database_title" : "bit2c",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/bit2c",
+      "Twitter" : "https://twitter.com/bit2c",
+      "Website" : "https://bit2c.co.il/",
+      "display_links" : {
+        "Facebook" : "fb.me/bit2c",
+        "Twitter" : "@bit2c",
+        "Website" : "bit2c.co.il"
+      }
+    },
+    "name" : "Bit2C"
+  },
+  "INDODAX" : {
+    "database_title" : "indodax",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/indodax",
+      "Twitter" : "https://twitter.com/indodaxOfficial",
+      "Website" : "https://indodax.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/indodax",
+        "Twitter" : "@indodaxOfficial",
+        "Website" : "indodax.com"
+      }
+    },
+    "name" : "INDODAX"
+  },
+  "TideBit" : {
+    "database_title" : "tidebit",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/tidebit/",
+      "Twitter" : "https://twitter.com/tidebitofficial",
+      "Website" : "https://www.tidebit.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/tidebit",
+        "Twitter" : "@tidebitofficial",
+        "Website" : "tidebit.com"
+      }
+    },
+    "name" : "TideBit"
+  },
+   "CoolCoin" : {
+    "database_title" : "coolcoin",
+    "is_active" : true,
+    "links" : {
+      "Telegram" : "https://t.me/ImCoolCoin",
+      "Twitter" : "https://twitter.com/CoolcoinEx",
+      "Website" : "https://www.coolcoin.com/",
+      "display_links" : {
+        "Telegram" : "t.me/ImCoolCoin",
+        "Twitter" : "@CoolcoinEx",
+        "Website" : "coolcoin.com"
+      }
+    },
+    "name" : "CoolCoin"
+  },
+  "BitZ" : {
+    "database_title" : "bitz",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/BitZAgency/",
+      "Twitter" : "https://twitter.com/BitZExchange",
+      "Website" : "https://www.bit-z.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/BitZAgency",
+        "Twitter" : "@BitZExchange",
+        "Website" : "bit-z.com"
+      }
+    },
+    "name" : "Bit-Z"
+  },
+  "EXX" : {
+    "database_title" : "exx",
+    "is_active" : true,
+    "links" : {
+      "Facebook" : "https://www.facebook.com/exxcom/",
+      "Twitter" : "https://twitter.com/GroupExx",
+      "Website" : "https://www.exx.com/",
+      "display_links" : {
+        "Facebook" : "fb.me/exxcom",
+        "Twitter" : "@GroupExx",
+        "Website" : "exx.com"
+      }
+    },
+    "name" : "EXX"
+  }
+}
