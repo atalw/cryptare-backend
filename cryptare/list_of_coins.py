@@ -81,7 +81,7 @@ def update_list_of_coins_with_rank():
           lower_currency = currency.lower()
           price = string_to_float(coin['price_{}'.format(lower_currency)])
           temp_multi_path_dict['{0}/Data/{1}/price'.format(symbol, currency)] = price
-          temp_multi_path_dict['{0}/Data/{1}/vol_24hrs_fiat'.format(symbol, currency)] = string_to_float(
+          temp_multi_path_dict['{0}/Data/{1}/vol_24hrs_currency'.format(symbol, currency)] = string_to_float(
             coin['24h_volume_{}'.format(lower_currency)])
           temp_multi_path_dict['{0}/Data/{1}/supply'.format(symbol, currency)] = string_to_float(coin['available_supply'])
           temp_multi_path_dict['{0}/Data/{1}/marketcap'.format(symbol, currency)] = string_to_float(

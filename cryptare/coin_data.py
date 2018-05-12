@@ -55,11 +55,11 @@ def get_current_crypto_price():
         else:
             currency_list_string.append(",".join(currencies))
 
-        exchange_rate_url = "https://api.fixer.io/latest?symbols=INR&base=USD"
-        r = requests.get(exchange_rate_url)
-        if r.status_code == 200:
-            exchange_json = r.json()
-            rate = exchange_json["rates"]["INR"]
+        # exchange_rate_url = "https://api.fixer.io/latest?symbols=INR&base=USD"
+        # r = requests.get(exchange_rate_url)
+        # if r.status_code == 200:
+        #     exchange_json = r.json()
+        #     rate = exchange_json["rates"]["INR"]
 
         for index, value in enumerate(crypto_list_string):
             for currency_index, currency_value in enumerate(currency_list_string):
