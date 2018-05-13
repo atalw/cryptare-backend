@@ -16,7 +16,7 @@ firebase_admin.initialize_app(cred, {
 ref = db.reference()
 
 cache = Cache('/tmp/list_of_coins_cache')
-cache_store_time = 60*60*12
+cache_store_time = 60 * 60 * 12
 
 list_of_coins_cryptocompare_cache = Cache('/tmp/list_of_coins_cryptocompare_cache')
 list_of_coins_cryptocompare_cache_store_time = 60*60*24
