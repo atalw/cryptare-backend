@@ -96,7 +96,7 @@ def update_list_of_coins_with_rank():
               users = alert_users[symbol][currency]
               for user, count in users.items():
                 for index in range(count):
-                  title = 'coin_alerts/{0}/MarketAverage/{1}/{2}/{3}/current_price'.format(user, symbol, currency, index)
+                  title = 'coin_alerts/{0}/None/{1}/{2}/{3}/current_price'.format(user, symbol, currency, index)
                   temp_multi_path_dict[title] = price
 
     else:
@@ -116,7 +116,7 @@ def dict_chunks(data, SIZE=500):
 def get_market_average_alerts_users():
   cache.expire()
 
-  key = 'coin_alerts_users/MarketAverage'
+  key = 'coin_alerts_users/None'
   index = Index.fromcache(cache)
   if key in index:
     # print('in cache')
