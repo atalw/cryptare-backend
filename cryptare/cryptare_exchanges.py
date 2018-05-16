@@ -57,7 +57,8 @@ def update_average_price():
                     total_sum = total_sum + value
                 average = total_sum / count
 
-                all_market_data['{0}/Data/{1}/price'.format(coin, currency)] = average
+                if currency == 'INR':
+                    all_market_data['{0}/Data/{1}/price'.format(coin, currency)] = average
 
 
 
@@ -68,7 +69,8 @@ def update_average_price():
 def update_zebpay_price():
     market_name = 'Zebpay'
 
-    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG", "TRX", "GNT", "ZRX"]
+    coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG", "TRX", "GNT", "ZRX",
+             "REP"]
     result = get_zebpay_price(coins)
     if result is not None:
         for coin, values in result.items():
@@ -85,7 +87,7 @@ def update_zebpay_price():
     if result is not None:
         for coin, values in crypto_result.items():
             all_market_data["zebpay/{}/BTC".format(coin)] = values
-            # add_market_entry(coin, 'BTC', market_name, 'zebpay')
+            add_market_entry(coin, 'BTC', market_name, 'zebpay')
             update_coin_alerts_uids(market_name, coin, 'BTC', values['buy_price'])
     else:
         print("zebpay crypto error")
@@ -1562,7 +1564,7 @@ with ThreadPoolExecutor() as executor:
     # executor.submit(update_ccxt_market_price_alt, ccxt.btctradeua(), 'BTCTradeUA', 'btctradeua')
 
 # print(ccxt.exchanges)
-# update_average_price()
+update_average_price()
 # update_markets()
 update_exchange_update_type()
 update_all_market_data()
