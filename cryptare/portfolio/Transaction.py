@@ -9,7 +9,7 @@ from diskcache import Index
 
 # from cryptare.portfolio.portfolio_data import db
 
-class Crypto_Transaction:
+class CryptoTransaction:
 
     if not len(firebase_admin._apps):
         cred = credentials.Certificate('../../service_account_info/Cryptare-9d04b184ba96.json')
@@ -22,106 +22,156 @@ class Crypto_Transaction:
     ref = db.reference()
 
     cache = Cache('/tmp/exchange_prices')
-    cache_store_time = 60 * 10
+    cache_store_time = 60
 
     supported_currencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP",
                             "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK",
                             "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD",
-                            "USD", "ZAR", "BTC", "ETH"]
+                            "USD", "ZAR"]
 
-    def __init__(self, type, coin, trading_pair, exchange, cost_per_coin, total_coins, fees, total_cost):
+    def __init__(self, type, coin, trading_pair, exchange_db_title, total_coins, fees, total_cost_usd):
         self.type = type
         self.coin = coin
         self.trading_pair = trading_pair
-        self.exchange = exchange
-        self.cost_per_coin = cost_per_coin
+        self.exchange_db_title = exchange_db_title
         self.total_coins = total_coins
         self.fees = fees
-        self.total_cost = total_cost
+        self.total_cost_usd = total_cost_usd
 
     def return_invested_cost(self):
-        if self.type == "buy":
-            return self.total_cost
-        elif self.type == "sell":
-            return -self.total_cost
+        if self.type == "buy" or self.type == "cryptoBuy":
+            return self.total_cost_usd
+        elif self.type == "sell" or self.type == "cryptoSell":
+            return -self.total_cost_usd
 
     def return_current_cost(self):
         # get current price of coin from exchange (check cache first)
         # calculate total cost
-        print(self.exchange, self.coin, self.trading_pair)
+        # print(self.exchange_db_title, self.coin, self.trading_pair)
         self.cache.expire()
 
-        if self.exchange == "None":
-            key = '{}/228/{}/price'.format(self.coin, self.trading_pair)
+        if self.type == 'sell' or self.type == 'cryptoSell':
+            return -self.total_cost_usd
+
+        if self.exchange_db_title == "none" or self.type == 'cryptoBuy':
+            key = '{}/Data/{}/price'.format(self.coin, self.trading_pair)
         else:
-            key = '{}/{}/{}/last_price'.format(self.exchange, self.coin, self.trading_pair)
+            key = '{}/buy_price'.format(self.exchange_db_title)
 
         index = Index.fromcache(self.cache)
-        print(dict(index))
         if key in index:
-            print(key, index)
-            current_coin_price = dict(index[key])
+            # print(key, index, index[key])
+            current_coin_price = index[key]
         else:
-            current_coin_price = self.ref.get(key)
+            current_coin_price = self.ref.child(key).get()
             if current_coin_price is not None:
                 self.cache.set(key, current_coin_price, expire=self.cache_store_time)
             else:
-                print("its none obv")
+                print("its none oh shit", key)
 
         total_cost = (self.total_coins * current_coin_price) - self.fees
-
-        if self.trading_pair == "USD" or self.trading_pair == "USDT":
-            # return total cost
+        if self.type == "cryptoBuy":
+            print(self.coin, self.trading_pair, self.total_coins, current_coin_price, self.fees, total_cost)
+        if self.trading_pair == "USD":
             return total_cost
         else:
-            # if trading pair is crypto
-            ## get crypto/USD price
-            # else
-            ## get currency/USD price
-
             if self.trading_pair in self.supported_currencies:
+                # print(self.trading_pair)
                 rate = self.get_fiat_usd_rate(self.trading_pair)
                 total_cost_usd = total_cost * rate
+                if self.trading_pair == 'INR':
+                    print('here INR', total_cost_usd, total_cost, rate, current_coin_price, self.total_coins, self.fees)
                 return total_cost_usd
             else:
-                key = '{}/{}/USD/last_price'.format(self.exchange, self.trading_pair)
-
-                if key in index:
-                    trading_pair_usd_price = dict(index[key])
-                else:
-                    key = '{}/{}/USDT/last_price'.format(self.exchange, self.trading_pair)
+                if self.exchange_db_title == "none":
+                    key = '{}/Data/USD/price'.format(self.trading_pair)
 
                     if key in index:
-                        trading_pair_usd_price = dict(index[key])
+                        trading_pair_usd_price = index[key]
                     else:
-                        trading_pair_usd_price = self.ref.get(key)
+                        trading_pair_usd_price = self.ref.child(key).get()
+                else:
+                    db_title_parts = self.exchange_db_title.split("/")
+                    key = '{}/{}/USD/buy_price'.format(db_title_parts[0], self.trading_pair)
+
+                    if key in index:
+                        trading_pair_usd_price = index[key]
+                    else:
+                        key = '{}/{}/USDT/buy_price'.format(db_title_parts[0], self.trading_pair)
+
+                        if key in index:
+                            trading_pair_usd_price = index[key]
+                        else:
+                            key = '{}/Data/USD/price'.format(self.trading_pair)
+                            trading_pair_usd_price = self.ref.child(key).get()
+                            if trading_pair_usd_price is None:
+                                key = '{}/{}/USDT/buy_price'.format(db_title_parts[0], self.trading_pair)
+                                trading_pair_usd_price = self.ref.child(key).get()
+                                if trading_pair_usd_price is None:
+                                    print('ERRORRRR SHOULD NEVER BE HERE', db_title_parts, key)
+
 
                 total_cost_usd = total_cost * trading_pair_usd_price
+
                 return total_cost_usd
 
 
+    def return_value_from_type(self, value, type):
+        if type == "buy" or type == "cryptoBuy":
+            return value
+        elif type == "sell" or type == "cryptoSell":
+            return -value
+
     def get_fiat_usd_rate(self, currency):
-        exchange_rate_url = "https://api.fixer.io/latest?symbols={}&base=USD".format(currency)
+        exchange_rate_url = "https://ratesapi.io/api/latest?symbols=USD&base={}".format(currency)
         r = requests.get(exchange_rate_url)
         if r.status_code == 200:
             exchange_json = r.json()
-            return exchange_json["rates"]["INR"]
+            return exchange_json["rates"]["USD"]
         else:
             print("error")
             return
 
-class Fiat_Transaction:
 
-    def __init__(self, type, currency, amount, fees, total_cost):
-        self.type = type
+class FiatTransaction:
+
+    def __init__(self, transaction_type, currency, amount, fees):
+        self.transaction_type = transaction_type
         self.currency = currency
         self.amount = amount
         self.fees = fees
-        self.total_cost = total_cost
+        self.total_cost = 0
 
     def return_invested_cost(self):
-        # print(self.type, self.total_cost)
-        if self.type == "deposit":
+        if self.transaction_type == "deposit":
             return self.total_cost
-        elif self.type == "withdraw":
+        elif self.transaction_type == "withdraw":
             return -self.total_cost
+
+    def return_current_cost(self):
+        if self.currency == 'USD':
+            return self.value_from_type(self.amount, self.fees, self.transaction_type)
+        else:
+            exchange_rate = self.get_fiat_usd_rate(self.currency)
+            print(exchange_rate)
+            amount = self.amount * exchange_rate
+            fees = self.fees * exchange_rate
+            if self.currency == 'INR':
+                print(amount, fees, self.transaction_type)
+            return self.value_from_type(amount, fees, self.transaction_type)
+
+    def get_fiat_usd_rate(self, currency):
+        exchange_rate_url = "https://ratesapi.io/api/latest?symbols=USD&base={}".format(currency)
+        r = requests.get(exchange_rate_url)
+        if r.status_code == 200:
+            exchange_json = r.json()
+            return exchange_json["rates"]["USD"]
+        else:
+            print("error")
+            return
+
+    def value_from_type(self, amount, fees, transaction_type):
+        if transaction_type == 'deposit':
+            return amount-fees
+        elif transaction_type == 'withdraw':
+            return -amount

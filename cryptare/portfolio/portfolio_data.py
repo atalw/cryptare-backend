@@ -13,10 +13,11 @@ if not len(firebase_admin._apps):
     })
 else:
     firebase_admin.get_app()
+
 ref = db.reference()
 
 cache = Cache('/tmp/portfolios_cache')
-cache_store_time = 60*60*12
+cache_store_time = 60
 
 users = []
 

@@ -22,4 +22,4 @@ class User:
             else:
                 portfolio_fiat_data = {}
 
-            self.portfolios.append(Portfolio(name, portfolio_crypto_data, portfolio_fiat_data))
+            self.portfolios.append(Portfolio(self.user_id, name, portfolio_crypto_data, portfolio_fiat_data))
