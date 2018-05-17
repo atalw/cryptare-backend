@@ -1,5 +1,6 @@
 from cryptare.portfolio.Portfolio import Portfolio
 
+
 class User:
 
     def __init__(self, user_id, crypto_data, fiat_data, names):

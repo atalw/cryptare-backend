@@ -7,6 +7,7 @@ from cryptare.portfolio.Transaction import FiatTransaction
 
 import time
 
+
 class Portfolio:
 
     if not len(firebase_admin._apps):
@@ -29,6 +30,9 @@ class Portfolio:
 
         self.create_crypto_transactions()
         self.create_fiat_transactions()
+
+        if len(fiat_data) == 0 and len(crypto_data) == 0:
+            return
 
         self.calculate_total_invested()
         self.calculate_current_value()
@@ -115,13 +119,11 @@ class Portfolio:
             'timestamp': time.time(),
             'price': total
         })
-        print(total)
 
     def calculate_current_value(self):
         total = 0
         for transaction in self.crypto_transactions:
             total += transaction.return_current_cost()
-            print(transaction.type, transaction.coin, transaction.trading_pair, transaction.total_coins, total)
 
         for transaction in self.fiat_transactions:
             total += transaction.return_current_cost()
@@ -131,4 +133,3 @@ class Portfolio:
             'timestamp': time.time(),
             'price': total
         })
-        print(total)
