@@ -4,7 +4,7 @@ from firebase_admin import db
 from diskcache import Cache
 from diskcache import Index
 
-from cryptare.portfolio.User import User
+from User import User
 
 if not len(firebase_admin._apps):
     cred = credentials.Certificate('../../service_account_info/Cryptare-9d04b184ba96.json')

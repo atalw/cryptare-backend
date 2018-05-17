@@ -2,8 +2,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-from cryptare.portfolio.Transaction import CryptoTransaction
-from cryptare.portfolio.Transaction import FiatTransaction
+from Transaction import CryptoTransaction
+from Transaction import FiatTransaction
 
 import time
 

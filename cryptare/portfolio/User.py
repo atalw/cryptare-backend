@@ -1,5 +1,4 @@
-from cryptare.portfolio.Portfolio import Portfolio
-
+from Portfolio import Portfolio
 
 class User:
 
