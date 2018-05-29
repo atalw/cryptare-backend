@@ -70,7 +70,7 @@ def update_zebpay_price():
     market_name = 'Zebpay'
 
     coins = ["BTC", "ETH", "LTC", "BCH", "XRP", "EOS", "OMG", "TRX", "GNT", "ZRX",
-             "REP"]
+             "REP", "KNC", "BAT", "VEN", "AE"]
     result = get_zebpay_price(coins)
     if result is not None:
         for coin, values in result.items():
