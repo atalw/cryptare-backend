@@ -228,7 +228,7 @@ def get_koinex_price():
 
 
 def update_localbitcoins_price():
-    market_name = 'Localbitcoins'
+    market_name = 'LocalBitcoins'
 
     # JPY currency not available
     currencies = ["INR", "USD", "GBP", "CNY", "SGD", "EUR", "ZAR"]
