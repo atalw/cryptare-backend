@@ -93,6 +93,9 @@ def update_list_of_coins_with_rank():
             coin['percent_change_24h'])
           temp_multi_path_dict['{0}/Data/{1}/timestamp'.format(symbol, currency)] = time.time()
 
+          change_24hrs_fiat = price*string_to_float(coin['percent_change_24h'])/100
+          temp_multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(symbol, currency)] = change_24hrs_fiat
+
           # coin alerts users for MarketAverage
           if symbol in alert_users:
             if currency in alert_users[symbol]:

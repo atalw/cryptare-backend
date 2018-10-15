@@ -80,8 +80,8 @@ def get_current_crypto_price():
                                 #         data[crypto]["USD"]["CHANGE24HOUR"] * rate)
                                 # else:
 
-                                multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
-                                        data[crypto][currency]["CHANGE24HOUR"])
+                                # multi_path_dict['{0}/Data/{1}/change_24hrs_fiat'.format(crypto, currency)] = float(
+                                #         data[crypto][currency]["CHANGE24HOUR"])
 
                                 multi_path_dict['{0}/Data/{1}/vol_24hrs_coin'.format(crypto, currency)] = float(
                                     data[crypto][currency]["VOLUME24HOUR"])
